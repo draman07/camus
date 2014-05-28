@@ -1,6 +1,6 @@
 /*
- -arreglar box del dove
- -agregar medidas del mapa y tile actual
+-mover bichos y muve puntso
+- lo pajro actacan invisible
  -editar comportamiento de los enemigos y animaciones
  -corregir fuente
  -poner score
@@ -11,7 +11,11 @@
  --plataformas verticales andan mal colisiones
  --cuando salta y se choca choca mal
  */
+import ddf.minim.*;
 
+Minim minim;
+
+AudioSample mouse_squeak, vulture_screech;
 boolean pausa, cargar;
 Boton2 editar;
 Camara camara;
@@ -31,38 +35,10 @@ PImage[][] img_tiles;
 
 void setup() {
   size(800, 600);
-  noStroke();
-  sprites = loadImage("img/sprites.png");
-  sprites_cobra = recortarImagen(loadImage("img/sprites_cobra.png"), 100, 50, 1);
-  sprites_dove = recortarImagen(loadImage("img/sprites_dove.png"), 16, 16, 1);
-  sprites_hawk = recortarImagen(loadImage("img/sprites_hawk.png"), 60, 50, 1);
-  sprites_leon = recortarImagen(loadImage("img/sprites_leon.png"), 35, 35, 1);
-  sprites_mouse = recortarImagen(loadImage("img/sprites_mouse.png"), 21, 11, 1);
-  sprites_serpent = recortarImagen(loadImage("img/sprites_serpent.png"), 32, 6, 1);
-  sprites_plants = recortarImagen(loadImage("img/sprites_plants.png"), 32, 32, 1);
-  sprites_powerups = recortarImagen(loadImage("img/sprites_powerups.png"), 32, 17, 1);
-  sprites_rat = recortarImagen(loadImage("img/sprites_rat.png"), 33, 33, 1);
-  sprites_viper = recortarImagen(loadImage("img/sprites_viper.png"), 101, 18, 1);
-  sprites_vulture = recortarImagen(loadImage("img/sprites_vulture.png"), 93, 70, 1); 
-  sprites_wolf = recortarImagen(loadImage("img/sprites_wolf.png"), 114, 57, 1);
+  minim = new Minim(this);
+  cargarImagenes();
+  cargarSonidos();
   font_chiqui = loadFont("Silkscreen-14.vlw");
-  img_fondo = new PImage[4];
-  for (int i = 0; i < 4; i++) {
-    img_fondo[i] = loadImage("img/fondo_"+(i+1)+".png");
-  }
-  img_arbol = new PImage[5];
-  for (int i = 0; i < 5; i++) {
-    img_arbol[i] = loadImage("img/arbol"+(i+1)+".png");
-  }
-  fondo_menu = loadImage("img/fondo_menu.png");
-  boton_start = recortar(sprites, 0, 352, 201, 50);
-  boton_sound = recortar(sprites, 0, 402, 130, 30);
-  boton_music = recortar(sprites, 0, 432, 130, 30);
-  boton_pause = recortar(sprites, 201, 352, 130, 45);
-  img_pauseMenu = loadImage("img/pMenu.png");
-  img_barra = recortar(sprites, 0, 462, 253, 13);
-  img_bbarra = recortar(sprites, 130, 402, 34, 34);
-  img_tiles = recortarImagen(loadImage("img/sprites_tiles.png"), 16, 16, 1);
   vol_music = new Scroll(374, 500, img_barra.width-img_barra.height, img_barra.height/2, 0, 1, 1);
   vol_sound = new Scroll(374, 560, img_barra.width-img_barra.height, img_barra.height/2, 0, 1, 0);
   input = new Input();
@@ -164,7 +140,43 @@ void mousePressed() {
 void mouseReleased() {
   input.mreleased();
 }
+void cargarImagenes(){
+  sprites = loadImage("img/sprites.png");
+  sprites_cobra = recortarImagen(loadImage("img/sprites_cobra.png"), 100, 50, 1);
+  sprites_dove = recortarImagen(loadImage("img/sprites_dove.png"), 16, 16, 1);
+  sprites_hawk = recortarImagen(loadImage("img/sprites_hawk.png"), 60, 50, 1);
+  sprites_leon = recortarImagen(loadImage("img/sprites_leon.png"), 35, 35, 1);
+  sprites_mouse = recortarImagen(loadImage("img/sprites_mouse.png"), 21, 11, 1);
+  sprites_serpent = recortarImagen(loadImage("img/sprites_serpent.png"), 32, 6, 1);
+  sprites_plants = recortarImagen(loadImage("img/sprites_plants.png"), 32, 32, 1);
+  sprites_powerups = recortarImagen(loadImage("img/sprites_powerups.png"), 32, 17, 1);
+  sprites_rat = recortarImagen(loadImage("img/sprites_rat.png"), 33, 33, 1);
+  sprites_viper = recortarImagen(loadImage("img/sprites_viper.png"), 101, 18, 1);
+  sprites_vulture = recortarImagen(loadImage("img/sprites_vulture.png"), 93, 70, 1); 
+  sprites_wolf = recortarImagen(loadImage("img/sprites_wolf.png"), 114, 57, 1);
+    img_fondo = new PImage[4];
+  for (int i = 0; i < 4; i++) {
+    img_fondo[i] = loadImage("img/fondo_"+(i+1)+".png");
+  }
+  img_arbol = new PImage[5];
+  for (int i = 0; i < 5; i++) {
+    img_arbol[i] = loadImage("img/arbol"+(i+1)+".png");
+  }
+  fondo_menu = loadImage("img/fondo_menu.png");
+  boton_start = recortar(sprites, 0, 352, 201, 50);
+  boton_sound = recortar(sprites, 0, 402, 130, 30);
+  boton_music = recortar(sprites, 0, 432, 130, 30);
+  boton_pause = recortar(sprites, 201, 352, 130, 45);
+  img_pauseMenu = loadImage("img/pMenu.png");
+  img_barra = recortar(sprites, 0, 462, 253, 13);
+  img_bbarra = recortar(sprites, 130, 402, 34, 34);
+  img_tiles = recortarImagen(loadImage("img/sprites_tiles.png"), 16, 16, 1);
+}
 
+void cargarSonidos(){
+  mouse_squeak = minim.loadSample( "sound/mouse_squeak.wav", 512);
+  vulture_screech = minim.loadSample( "sound/vulture_screech.wav", 512);
+}
 PImage recortar(PImage ori, int x, int y, int w, int h) {
   PImage aux = createImage(w, h, ARGB);
   aux.copy(ori, x, y, w, h, 0, 0, w, h);
