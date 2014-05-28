@@ -1,5 +1,5 @@
 class Elemento {
-  boolean eliminar, estatico, mover, sel;
+  boolean eliminar, mover, sel, puntos;
   float x, y, w, h;
   Punto p1, p2, obj;
   void act() {
@@ -11,7 +11,7 @@ class Elemento {
     noFill();
     stroke(0, 255, 0);
     rect(x-w/2, y-h/2, w, h);
-    if (!estatico && p1 != null &&  p2 != null) {
+    if (puntos && p1 != null &&  p2 != null) {
       line(p1.x, p1.y, p2.x, p2.y);
       ellipse(p1.x, p1.y, 6, 6); 
       ellipse(p2.x, p2.y, 6, 6);
@@ -24,7 +24,7 @@ class Elemento {
     if (cx >= x-w/2 && cx < x+w/2 && cy >= y-h/2 && cy < y+h/2) {
       return true;
     }
-    if (!estatico && p1 != null && p2 != null) {
+    if (puntos && p1 != null && p2 != null) {
       if (dist(p1.x, p1.y, cx, cy) <= 3) {
         return true;
       }
@@ -63,7 +63,7 @@ class Elemento {
   void mover(int x, int y) {
     float mx = mouseX-camara.x;
     float my = mouseY-camara.y;
-    if (!estatico && p1 != null && p2 != null) {
+    if (!puntos && p1 != null && p2 != null) {
       if (dist(p1.x, p1.y, mx, my) <= 4 || dist(p1.x+x, p1.y+y, mx, my) <= 4) {
         p1.x += x;
         p1.y += y;

@@ -141,8 +141,8 @@ class Editor { //<>//
             Elemento aux = selecionados.get(i);
             if (aux.sobre(mx, my)) {
               if (aux instanceof Plataforma) {
-                aux.estatico = !aux.estatico;
-                if (aux.estatico) {
+                aux.puntos = !aux.puntos;
+                if (!aux.puntos) {
                   aux.p1 = aux.p2 = aux.obj = null;
                 }
                 else {
@@ -476,7 +476,7 @@ class Editor { //<>//
     resetMatrix();
     fill(0,220);
     String text = "w:"+nivel.w+" h:"+nivel.h+"  x:"+px+" y:"+py;
-    rect(8, height-30, 100, 16);
+    rect(8, height-30, textWidth(text)+4, 16);
     fill(255, 200);
     text(text, 10, height-20);
     for (int i = 0; i < ventanas.size(); i++) {
@@ -513,7 +513,7 @@ class Editor { //<>//
         int mt = tam/2;
         aux.x = (int(aux.x+mt/2)/mt)*mt;
         aux.y = (int(aux.y+mt/2)/mt)*mt;
-        if (!aux.estatico) {
+        if (aux.puntos) {
           aux.p1.x = (int(aux.p1.x+mt/2)/mt)*mt;
           aux.p1.y = (int(aux.p1.y+mt/2)/mt)*mt;
           aux.p2.x = (int(aux.p2.x+mt/2)/mt)*mt;

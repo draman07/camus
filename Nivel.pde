@@ -389,7 +389,7 @@ class Nivel { //<>//
       a2.append(p.y);
       a2.append(p.w);
       a2.append(p.h);
-      if (!p.estatico) {
+      if (p.puntos) {
         a2.append(p.p1.x);
         a2.append(p.p1.y);
         a2.append(p.p2.x);
@@ -701,7 +701,7 @@ class Portal extends Elemento {
     this.src = src;
     w = 30; 
     h = 50;
-    estatico = true;
+    puntos = false;
     eliminar = false;
   }
   void act() {

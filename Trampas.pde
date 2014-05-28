@@ -7,7 +7,7 @@ class Spike extends Trampa {
     this.x = x; 
     this.y = y; 
     w = h = 16;
-    estatico = true;
+    puntos = false;
   }
   void act() {
     if (frameCount%5 == 0) {
@@ -28,7 +28,7 @@ class Plant extends Trampa {
     this.y = y;
     w = h = 32;
     vel = 0.5; 
-    estatico = false;
+    puntos = true;
     p1 = new Punto(x, y);
     p2 = new Punto(x, y-100);
     obj = new Punto(p2.x, p2.y);
@@ -38,7 +38,7 @@ class Plant extends Trampa {
     this.y = y;
     w = h = 32;
     vel = 0.5; 
-    estatico = false;
+    puntos = true;
     p1 = new Punto(p1x, p1y);
     p2 = new Punto(p2x, p2y);
     obj = new Punto(p2.x, p2.y);

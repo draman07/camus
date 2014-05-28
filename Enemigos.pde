@@ -21,7 +21,7 @@ class Mouse extends Enemigo {
     vel = 1;
     velx = vel;
     vely = 0;
-    estatico = true;
+    puntos = false;
   }
   void act() {
     if (frameCount%6 == 0) frame++;
@@ -74,7 +74,7 @@ class Dove extends Enemigo {
     vel = 1;
     velx = cos(ang)*vel;
     vely = sin(ang)*vel;
-    estatico = false;
+    puntos = true;
   }
   void act() {
     if (posarse) {
@@ -147,7 +147,7 @@ class Serpent extends Enemigo {
     vel = 1;
     velx = cos(ang)*vel;
     vely = sin(ang)*vel;
-    estatico = false;
+    puntos = true;
   }
   void act() {
     if (frameCount%6 == 0) frame++;
@@ -201,7 +201,7 @@ class Rat extends Enemigo {
     vely = sin(ang)*vel;
     max_dis = 250;
     seguir = false;
-    estatico = false;
+    puntos = false;
     tiempo_reposo = 0;
   }
   void act() {
@@ -296,7 +296,7 @@ class Hawk extends Enemigo {
     vel = 1;
     velx = cos(ang)*vel;
     vely = sin(ang)*vel;
-    estatico = false;
+    puntos = true;
     estado = "normal";
     tataque = int(random(300, 600));
   }
@@ -375,7 +375,7 @@ class Viper extends Enemigo {
     velx = cos(ang)*vel;
     vely = sin(ang)*vel;
     max_dis = 200;
-    estatico = false;
+    puntos = false;
     estado = "normal";
   }
   void act() {
@@ -451,7 +451,7 @@ class Wolf extends Enemigo {
     vely = sin(ang)*vel;
     max_dis = 250;
     seguir = false;
-    estatico = false;
+    puntos = false;
     tiempo_reposo = 0;
   }
   void act() {
@@ -537,7 +537,7 @@ class Vulture extends Enemigo {
     vel = 1;
     velx = cos(ang)*vel;
     vely = sin(ang)*vel;
-    estatico = false;
+    puntos = false;
   }
   void act() {
     if (frameCount%6 == 0) frame++;
@@ -587,7 +587,7 @@ class Cobra extends Enemigo {
     vely = sin(ang)*vel;
     max_dis = 250;
     seguir = false;
-    estatico = true;
+    puntos = false;
     tiempo_reposo = 0;
   }
   void act() {

@@ -8,11 +8,11 @@ class Plataforma extends Elemento {
     this.h = h;
     traspasable = false;
     p1 = p2 = obj = null;
-    estatico = true;
+    puntos = true;
   }
   Plataforma(int x, int y, int w, int h, int px1, int py1, int px2, int py2) {
     this(x, y, w, h);
-    estatico = false;
+    puntos = true;
     traspasable = false;
     p1 = new Punto(px1, py1);
     p2 = new Punto(px2, py2);
@@ -20,7 +20,7 @@ class Plataforma extends Elemento {
     vel = 1;
   }
   void act() {
-    if (!estatico) {
+    if (puntos) {
       float ang = atan2(obj.y-y, obj.x-x);
       velx = cos(ang)*vel;
       vely = sin(ang)*vel;

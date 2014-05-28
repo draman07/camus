@@ -8,7 +8,7 @@ class PowerUp extends Elemento {
     w = 32;
     h = 17;
     eliminar = false;
-    estatico = true;
+    puntos = false;
   }
   void act() {
     if (frameCount%15 == 0) frame++;
