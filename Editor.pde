@@ -25,7 +25,7 @@ class Editor { //<>//
   }
   void act() {
     menu.act();
-    for (int i = 0; i < ventanas.size(); i++) {
+    for (int i = 0; i < ventanas.size (); i++) {
       Ventana v = ventanas.get(i);
       v.act();
     }
@@ -66,7 +66,7 @@ class Editor { //<>//
         }
       }
       if (selecionados.size() > 0) {
-        for (int i = 0; i < selecionados.size(); i++) {
+        for (int i = 0; i < selecionados.size (); i++) {
           Elemento aux = selecionados.get(i);
           nivel.eliminar(aux);
         }
@@ -78,7 +78,7 @@ class Editor { //<>//
     her = int(menu.herramientas.val);
     val = int(menu.elementos.val);
     boolean sobre = false;
-    for (int i = 0; i < ventanas.size(); i++) {
+    for (int i = 0; i < ventanas.size (); i++) {
       Ventana v = ventanas.get(i);
       if (v.sobre) sobre = true;
     }
@@ -137,15 +137,14 @@ class Editor { //<>//
       py = floor((my)/tam);
       if (her == 0) {
         if (input.dclick) {
-          for (int i = 0; i < selecionados.size(); i++) {
+          for (int i = 0; i < selecionados.size (); i++) {
             Elemento aux = selecionados.get(i);
             if (aux.sobre(mx, my)) {
               if (aux instanceof Plataforma) {
                 aux.puntos = !aux.puntos;
                 if (!aux.puntos) {
                   aux.p1 = aux.p2 = aux.obj = null;
-                }
-                else {
+                } else {
                   aux.p1 = new Punto(aux.x, aux.y);
                   aux.p2 = new Punto(aux.x, aux.y);
                   aux.obj = new Punto(aux.x, aux.y);
@@ -158,27 +157,26 @@ class Editor { //<>//
           mx1 = mx;
           my1 = my;
           sel_obj = true;
-          for (int i = 0; i < selecionados.size(); i++) {
+          for (int i = 0; i < selecionados.size (); i++) {
             Elemento aux = selecionados.get(i);
             if (aux.sobre(mx, my)) {
               aux.mover = true;
               sel_obj = false;
-            }
-            else {
+            } else {
               aux.mover = false;
             }
           }
           if (sel_obj) deseleccionar();
         }
         if (input.press) {
-          for (int i = 0; i < selecionados.size(); i++) {
+          for (int i = 0; i < selecionados.size (); i++) {
             Elemento aux = selecionados.get(i);
             aux.mover(mouseX-pmouseX, mouseY-pmouseY);
           }
         }
         if (input.released) {
           deseleccionar();
-          for (int i = nivel.elementos.size()-1; i >= 0; i--) {
+          for (int i = nivel.elementos.size ()-1; i >= 0; i--) {
             Elemento aux = nivel.elementos.get(i);
             if (mouseX == input.amouseX && mouseY == input.amouseY) {
               aux.seleccionar(mx, my);
@@ -186,15 +184,13 @@ class Editor { //<>//
                 selecionados.add(aux);
                 break;
               }
-            }
-            else if (sel_obj) {
+            } else if (sel_obj) {
               aux.seleccionar(mx, my, int(input.amouseX-camara.x), int(input.amouseY-camara.y));
             }
             if (aux.sel) {
               if (sel) {
                 if (aux.seleccionar(sx1, sy1, sx2, sy2)) selecionados.add(aux);
-              }
-              else selecionados.add(aux);
+              } else selecionados.add(aux);
             }
           }
           sel_obj = false;
@@ -214,18 +210,15 @@ class Editor { //<>//
           if (dibujar && mouseButton == RIGHT) {
             setTile(px, py, 0);
           }
-        }
-        else if (val == 2 && input.click) {
+        } else if (val == 2 && input.click) {
           PowerUp aux = new PowerUp(mx, my, int(opciones.powerups.val));
           nivel.powerups.add(aux);
           nivel.elementos.add(aux);
-        }
-        else if (val == 3 && input.click) {
+        } else if (val == 3 && input.click) {
           Plataforma aux = new Plataforma(mx, my, 64, 16);
           nivel.plataformas.add(aux);
           nivel.elementos.add(aux);
-        }
-        else if (val == 4 && input.click) {
+        } else if (val == 4 && input.click) {
           Enemigo aux = null;
           switch(int(opciones.enemigos.val)) {
           case 0:
@@ -260,8 +253,7 @@ class Editor { //<>//
             nivel.enemigos.add(aux);
             nivel.elementos.add(aux);
           }
-        }
-        else if (val == 5 && input.click) {
+        } else if (val == 5 && input.click) {
           Trampa aux = null;
           switch(int(opciones.trampas.val)) {
           case 0:
@@ -300,7 +292,7 @@ class Editor { //<>//
           if (sx1 == sx2 || sy1 == sy2) {
             sx1 = sy1 = sx2 = sy2 = 0;
             sel = false;
-            for (int i = 0; i < selecionados.size(); i++) {
+            for (int i = 0; i < selecionados.size (); i++) {
               Elemento aux = selecionados.get(i);
               aux.sel = false;
             }
@@ -308,7 +300,7 @@ class Editor { //<>//
           }
           if (sel) {
             selecionados = new ArrayList<Elemento>();
-            for (int i = 0; i < nivel.elementos.size(); i++) {
+            for (int i = 0; i < nivel.elementos.size (); i++) {
               Elemento aux = nivel.elementos.get(i);
               aux.seleccionar(sx1, sy1, sx2, sy2);
               if (aux.sel) {
@@ -383,8 +375,7 @@ class Editor { //<>//
         if (opciones.puntos.val == 0) {
           nivel.ix = mx;
           nivel.iy = my;
-        }
-        else {
+        } else {
           nivel.portal.x = mx;
           nivel.portal.y = my;
         }
@@ -393,6 +384,7 @@ class Editor { //<>//
     dibujar();
   }
   void dibujar() {
+    background(10);
     noStroke();
     fill(40);
     rect(0, 0, nivel.w*tam, nivel.h*tam);
@@ -402,8 +394,7 @@ class Editor { //<>//
         int w = abs(sx2-sx1)/tam;
         int h = abs(sy2-sy1)/tam;
         moviendo = nivel.dibujarTiles(sx1/tam, sy1/tam, w, h);
-      }
-      else {
+      } else {
         fill(40);
         int mx = int(mouseX-mx1-camara.x);
         int my = int(mouseY-my1-camara.y);
@@ -413,22 +404,22 @@ class Editor { //<>//
         noTint();
       }
     }
-    for (int i = 0; i < nivel.trampas.size(); i++) {
+    for (int i = 0; i < nivel.trampas.size (); i++) {
       Trampa t = nivel.trampas.get(i);
       t.dibujar();
       t.dibujarSeleccion();
     }
-    for (int i = 0; i < nivel.plataformas.size(); i++) {
+    for (int i = 0; i < nivel.plataformas.size (); i++) {
       Plataforma e = nivel.plataformas.get(i);
       e.dibujar();
       e.dibujarSeleccion();
     }
-    for (int i = 0; i < nivel.enemigos.size(); i++) {
+    for (int i = 0; i < nivel.enemigos.size (); i++) {
       Enemigo e = nivel.enemigos.get(i);
       e.dibujar();
       e.dibujarSeleccion();
     }
-    for (int i = 0; i < nivel.powerups.size(); i++) {
+    for (int i = 0; i < nivel.powerups.size (); i++) {
       PowerUp e = nivel.powerups.get(i);
       image(sprites_powerups[0+e.t*2][0], e.x-e.w/2, e.y-e.h/2);
       e.dibujarSeleccion();
@@ -440,13 +431,15 @@ class Editor { //<>//
     ellipse(nivel.portal.x, nivel.portal.y, nivel.portal.w, nivel.portal.h);
     pushMatrix();
     resetMatrix();
+
     stroke(255, 30);
-    for (float i = (int(camara.x)%tam); i < width; i+=tam) {
+    for (float i = (int (camara.x)%tam); i < width; i+=tam) {
       line(i, 0, i, height);
     }
-    for (float i = (int(camara.y)%tam); i < height; i+=tam) {
+    for (float i = (int (camara.y)%tam); i < height; i+=tam) {
       line(0, i, width, i);
     }
+
     popMatrix();
     if (her == 0 && input.press && sel_obj) {
       noFill();
@@ -461,8 +454,7 @@ class Editor { //<>//
       rectMode(CORNERS);
       if (her == 3 && !menu.sobre && input.press) {
         rect(mx, my, sx1, sy1);
-      }
-      else {
+      } else {
         int amx = 0; 
         int amy = 0;
         if (mover) {
@@ -474,12 +466,13 @@ class Editor { //<>//
       rectMode(CORNER);
     }
     resetMatrix();
-    fill(0,220);
     String text = "w:"+nivel.w+" h:"+nivel.h+"  x:"+px+" y:"+py;
+    noStroke();
+    fill(0, 220);
     rect(8, height-30, textWidth(text)+4, 16);
     fill(255, 200);
     text(text, 10, height-20);
-    for (int i = 0; i < ventanas.size(); i++) {
+    for (int i = 0; i < ventanas.size (); i++) {
       Ventana v = ventanas.get(i);
       v.dibujar();
     }
@@ -507,7 +500,7 @@ class Editor { //<>//
     }
   }
   void deseleccionar() {
-    for (int i = 0; i < selecionados.size(); i++) {
+    for (int i = 0; i < selecionados.size (); i++) {
       Elemento aux = selecionados.get(i);
       if (aux.mover && opciones.ajustar.press) {
         int mt = tam/2;
@@ -551,8 +544,7 @@ class Boton2 {
       if (input.click) {
         click = true;
       }
-    }
-    else {
+    } else {
       time = 0;
     }
   }
@@ -567,8 +559,7 @@ class Boton2 {
     if (sobre) {
       if (click) image(imgp, x, y);
       else image(imgs, x, y);
-    }
-    else image(imgf, x, y);
+    } else image(imgf, x, y);
 
     textAlign(CENTER);
     fill(255);
@@ -602,8 +593,7 @@ class Menu {
       sobre = true;
       //dy+=2;
       if (dy > 30) dy = 30;
-    }
-    else {
+    } else {
       sobre = false;
       //dy-=2;
       if (dy < 0) dy = 0;
@@ -645,8 +635,7 @@ class Menu {
 
 void cargarNvl(File f) {
   if (f == null) {
-  }
-  else {
+  } else {
     String ruta = f.toString();
     String extension = ruta.substring(ruta.lastIndexOf(".") + 1, ruta.length());
     if (extension.equals("json")) {
@@ -678,8 +667,7 @@ class Ventana {
     if (mostrar) {
       if (mouseX >= x && mouseX < x+w && mouseY >= y && mouseY < y+h && input.amouseX >= x && input.amouseX < x+w && input.amouseY >= y && input.amouseY < y+h) {
         sobre = true;
-      }
-      else sobre = false;
+      } else sobre = false;
       if (input.click && mouseButton == LEFT) {
         if (sobre && mouseY < y+20) {
           mover = true;
@@ -702,7 +690,7 @@ class Ventana {
   void dibujar() {
     noStroke();
     if (!mostrar) return;
-    fill(30, 200);
+    fill(30);
     rect(x, y+20, w, h-20);
     image(barra, x, y);
     stroke(200);
@@ -803,7 +791,7 @@ class Niveles extends Ventana {
   void act() {
     super.act();
     if (sobre && input.click) {
-      for (int i = 0; i < nombres.size(); i++) {
+      for (int i = 0; i < nombres.size (); i++) {
         if (mouseX >= x && mouseX < x+w && mouseY >= (y+20+20*i) && mouseY < (y+20+20*i)+20) {
           sel = i;
           nivel = niveles.get(i);
@@ -817,7 +805,7 @@ class Niveles extends Ventana {
     super.dibujar();
     noStroke();
     fill(255);
-    for (int i = 0; i < nombres.size(); i++) {
+    for (int i = 0; i < nombres.size (); i++) {
       if (i == sel)
         fill(50);
       else 
@@ -1011,8 +999,7 @@ class Selector {
     for (int i = 0; i < cant; i++) {
       if (val == i) {
         fill(150);
-      }
-      else {
+      } else {
         fill(120);
       }
       rect(x+(w)/cant*i, y, w/cant, h);

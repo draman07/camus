@@ -61,7 +61,7 @@ class Mouse extends Enemigo {
 class Dove extends Enemigo {
   boolean posarse;
   int frame, tposarse, alturaMax;
-  float vel, velx, vely, dy;
+  float vel, velx, vely;
   Dove(int x, int y, int px1, int py1, int px2, int py2) {
     this.x = x; 
     this.y = y;

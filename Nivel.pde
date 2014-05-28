@@ -38,8 +38,8 @@ class Nivel { //<>//
     resetMatrix();
     if (!jugador.invisible) {    
       //image(img_fondo[1], 0, 0);
-      fill(180, 180, 255);
-      rect(0, 0, width, height);
+      //fill(180, 180, 255);
+      //rect(0, 0, width, height);
       translate(int(camara.x)/2, int(camara.y)/2);
       image(arboles, 0, 0);
     }
@@ -726,6 +726,7 @@ PImage crearFondo() {
   println("Se a creado un nuevo arbol", w, h, cant);
   PGraphics aux = createGraphics(w, h);
   aux.beginDraw();
+  aux.background(180, 180, 255);
   for (int i = 0; i < cant; i++) {
     PImage arb = img_arbol[int(random(img_arbol.length))];
     aux.image(arb, random(-arb.width, w), random(h-arb.height*0.8, h));

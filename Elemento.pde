@@ -1,6 +1,6 @@
 class Elemento {
   boolean eliminar, mover, sel, puntos;
-  float x, y, w, h;
+  float x, y, w, h, dy;
   Punto p1, p2, obj;
   void act() {
   }
@@ -10,7 +10,7 @@ class Elemento {
     if (!sel) return;
     noFill();
     stroke(0, 255, 0);
-    rect(x-w/2, y-h/2, w, h);
+    rect(x-w/2, y-h/2+dy, w, h);
     if (puntos && p1 != null &&  p2 != null) {
       line(p1.x, p1.y, p2.x, p2.y);
       ellipse(p1.x, p1.y, 6, 6); 
@@ -21,7 +21,7 @@ class Elemento {
     }
   }
   boolean sobre(int cx, int cy) {
-    if (cx >= x-w/2 && cx < x+w/2 && cy >= y-h/2 && cy < y+h/2) {
+    if (cx >= x-w/2 && cx < x+w/2 && cy >= y-h/2+dy && cy < y+h/2+dy) {
       return true;
     }
     if (puntos && p1 != null && p2 != null) {
@@ -46,7 +46,7 @@ class Elemento {
     y2 = ay;
     int w2 = x2-x1;
     int h2 = y2-y1;
-    sel = colisionRect(x, y, w, h, x1+w2/2, y1+h2/2, w2, h2);
+    sel = colisionRect(x, y+dy, w, h, x1+w2/2, y1+h2/2, w2, h2);
     return sel;
   }
   boolean seleccionar(int cx, int cy) {

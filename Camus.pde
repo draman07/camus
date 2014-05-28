@@ -134,7 +134,6 @@ void draw() {
     }
   }
   else if (estado.equals("editor")) {
-    background(10);
     camara.act();
     editor.act();
   }
