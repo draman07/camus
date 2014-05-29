@@ -26,6 +26,7 @@ class Plant extends Trampa {
   Plant(int x, int y) {
     this.x = x; 
     this.y = y;
+    ini = new Punto(x, y);
     w = h = 32;
     vel = 0.5; 
     puntos = true;

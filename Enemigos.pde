@@ -1,6 +1,5 @@
 class Enemigo extends Elemento {
   float dano = 0.1;
-  Punto ini;
   void dano(Jugador j) {
     if (eliminar) return;
     if (colisiona(j) && !j.inmune && !j.invisible) {

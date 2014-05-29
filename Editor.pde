@@ -31,7 +31,11 @@ class Editor { //<>//
     }
     if (input.EDITAR.click || menu.jugar.click) {
       nivel.actualizarJson();
-      //nivel.iniciar();
+      float ax = nivel.jugador.x;
+      float ay = nivel.jugador.y;
+      nivel.iniciar();
+      nivel.jugador.x = ax;
+      nivel.jugador.y = ay;
       estado = "juego";
     }
     if (menu.nuevo.click) {

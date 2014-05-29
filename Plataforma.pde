@@ -3,7 +3,8 @@ class Plataforma extends Elemento {
   float vel, velx, vely;
   Plataforma(int x, int y, int w, int h) {
     this.x = x;//+w/2; 
-    this.y = y;//y+h/2; 
+    this.y = y;//y+h/2;
+    ini = new Punto(x, y);
     this.w = w;
     this.h = h;
     traspasable = false;

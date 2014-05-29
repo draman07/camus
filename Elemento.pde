@@ -1,7 +1,7 @@
 class Elemento {
   boolean eliminar, mover, sel, puntos;
   float x, y, w, h, dy;
-  Punto p1, p2, obj;
+  Punto p1, p2, obj, ini;
   void act() {
   }
   void dibujar() {
@@ -63,7 +63,7 @@ class Elemento {
   void mover(int x, int y) {
     float mx = mouseX-camara.x;
     float my = mouseY-camara.y;
-    if (!puntos && p1 != null && p2 != null) {
+    if (puntos && p1 != null && p2 != null && !input.CONTROL.press) {
       if (dist(p1.x, p1.y, mx, my) <= 4 || dist(p1.x+x, p1.y+y, mx, my) <= 4) {
         p1.x += x;
         p1.y += y;
@@ -81,5 +81,7 @@ class Elemento {
     }
     this.x += x;
     this.y += y;
+    this.ini.x = x;
+    this.ini.y = y;
   }
 }
