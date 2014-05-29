@@ -424,8 +424,8 @@ class Nivel { //<>//
       Enemigo e = enemigos.get(i);
       if(e instanceof Huevo) continue; 
       JSONArray a2 = new JSONArray();
-      a2.append(e.x);
-      a2.append(e.y);
+      a2.append(e.ini.x);
+      a2.append(e.ini.y);
       if (!(e instanceof Rat) && !(e instanceof Wolf) && !(e instanceof Cobra) && !(e instanceof Mouse)) {
         a2.append(e.p1.x);
         a2.append(e.p1.y);

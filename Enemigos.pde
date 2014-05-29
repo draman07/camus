@@ -1,8 +1,10 @@
 class Enemigo extends Elemento {
   float dano = 0.1;
+  Punto ini;
   void dano(Jugador j) {
-    if(eliminar) return;
+    if (eliminar) return;
     if (colisiona(j) && !j.inmune && !j.invisible) {
+      if (this instanceof Huevo) eliminar = true;
       j.dano(dano);
     }
   }
@@ -14,6 +16,7 @@ class Mouse extends Enemigo {
   Mouse(int x, int y) {
     this.x = x; 
     this.y = y;
+    ini = new Punto(x, y);
     w = 21;
     h = 11;
     p1 = null;
@@ -45,8 +48,7 @@ class Mouse extends Enemigo {
     if (velx < 0) dir = 1;
     if (dir == 0) {
       image(sprites_mouse[frame][0], x-w/2, y-h/2);
-    }
-    else {
+    } else {
       image(espejar(sprites_mouse[frame][0]), x-w/2, y-h/2);
     }
   }
@@ -65,6 +67,7 @@ class Dove extends Enemigo {
   Dove(int x, int y, int px1, int py1, int px2, int py2) {
     this.x = x; 
     this.y = y;
+    ini = new Punto(x, y);
     w = h = 16;
     alturaMax = tam*2;
     p1 = new Punto(px1, py1);
@@ -84,8 +87,7 @@ class Dove extends Enemigo {
       }
       tposarse--;
       if (tposarse <= 0) posarse = false;
-    }
-    else {
+    } else {
       if (frameCount%6 == 0) frame++;
       frame %= 3;
       float ang = atan2(obj.y-y, obj.x-x);
@@ -97,8 +99,7 @@ class Dove extends Enemigo {
     float dis = min(dist(x, y, p1.x, p1.y), dist(x, y, p2.x, p2.y));
     if (dis < alturaMax) {
       dy = -dis*cos(map(dis, alturaMax, 0, 0, PI/2));
-    }
-    else {
+    } else {
       dy = -alturaMax;
     }
     if (dist(x, y, obj.x, obj.y) < vel) {
@@ -107,8 +108,7 @@ class Dove extends Enemigo {
       if (dist(p1.x, p1.y, obj.x, obj.y) < vel) {
         obj.x = p2.x;
         obj.y = p2.y;
-      }
-      else if (dist(p2.x, p2.y, obj.x, obj.y) < vel) {
+      } else if (dist(p2.x, p2.y, obj.x, obj.y) < vel) {
         obj.x = p1.x;
         obj.y = p1.y;
       }
@@ -138,6 +138,7 @@ class Serpent extends Enemigo {
   Serpent(int x, int y, int px1, int py1, int px2, int py2) {
     this.x = x; 
     this.y = y;
+    ini = new Punto(x, y);
     w = 32;
     h = 8;
     p1 = new Punto(px1, py1);
@@ -169,8 +170,7 @@ class Serpent extends Enemigo {
       if (dist(p1.x, p1.y, obj.x, obj.y) < vel) {
         obj.x = p2.x;
         obj.y = p2.y;
-      }
-      else if (dist(p2.x, p2.y, obj.x, obj.y) < vel) {
+      } else if (dist(p2.x, p2.y, obj.x, obj.y) < vel) {
         obj.x = p1.x;
         obj.y = p1.y;
       }
@@ -191,6 +191,7 @@ class Rat extends Enemigo {
   Rat(int x, int y) {
     this.x = x; 
     this.y = y;
+    ini = new Punto(x, y);
     w = h = 33;
     p1 = null;
     p2 = null;
@@ -211,26 +212,22 @@ class Rat extends Enemigo {
       if (!seguir && (dir == 0 && x-obj.x < 0) || (dir == 1 && x-obj.x > 0)) {
         seguir = true;
       }
-    }
-    else {
+    } else {
       seguir = false;
     }
     if (seguir) {
       float ang = atan2(obj.y-y, obj.x-x);
       if (cos(ang)*vel < 0) {
         velx = -vel;
-      }
-      else if (cos(ang)*vel > 0) {
+      } else if (cos(ang)*vel > 0) {
         velx = vel;
-      }
-      else {
+      } else {
         velx = 0;
       }
       seguir = true;
       dir = 0;
       if (velx < 0) dir = 1;
-    }
-    else {
+    } else {
       velx = 0;
       tiempo_reposo++;
       dir = (tiempo_reposo/180)%2;
@@ -264,8 +261,7 @@ class Rat extends Enemigo {
     if (seguir) {
       if (frameCount%3 == 0) frame++;
       frame %= 8;
-    }
-    else {
+    } else {
       if (frameCount%8 == 0) frame++;
       frame = frame%2 + 8;
     }
@@ -273,8 +269,7 @@ class Rat extends Enemigo {
   void dibujar() {
     if (dir == 0) {
       image(sprites_rat[frame][0], x-w/2, y-h/2);
-    }
-    else {
+    } else {
       image(espejar(sprites_rat[frame][0]), x-w/2, y-h/2);
     }
   }
@@ -287,6 +282,7 @@ class Hawk extends Enemigo {
   Hawk(int x, int y, int px1, int py1, int px2, int py2) {
     this.x = x; 
     this.y = y;
+    ini = new Punto(x, y);
     w = 60;
     h = 50;
     p1 = new Punto(px1, py1);
@@ -314,19 +310,17 @@ class Hawk extends Enemigo {
         if (dist(p1.x, p1.y, obj.x, obj.y) < vel) {
           obj.x = p2.x;
           obj.y = p2.y;
-        }
-        else if (dist(p2.x, p2.y, obj.x, obj.y) < vel) {
+        } else if (dist(p2.x, p2.y, obj.x, obj.y) < vel) {
           obj.x = p1.x;
           obj.y = p1.y;
         }
       }
       tataque--;
-      if (tataque < 0 && dist(x, y, nivel.jugador.x, nivel.jugador.y) < 420) {
+      if (tataque < 0 && dist(x, y, nivel.jugador.x, nivel.jugador.y) < 420 && !nivel.jugador.invisible) {
         estado = "atacar";
         obj = new Punto(nivel.jugador.x, nivel.jugador.y);
       }
-    }
-    else if (estado.equals("atacar")) {
+    } else if (estado.equals("atacar")) {
       vel = 6;
       if (frameCount%3 == 0) frame++;
       frame %= 10;
@@ -342,8 +336,7 @@ class Hawk extends Enemigo {
         if (dist(p1.x, p1.y, x, y) < dist(p2.x, p2.y, x, y)) { 
           obj.x = p1.x;
           obj.y = p1.y;
-        }
-        else {
+        } else {
           obj.x = p2.x;
           obj.y = p2.y;
         }
@@ -365,6 +358,7 @@ class Viper extends Enemigo {
   Viper(int x, int y, int px1, int py1, int px2, int py2) {
     this.x = x; 
     this.y = y;
+    ini = new Punto(x, y);
     w = 101;
     h = 18;
     p1 = new Punto(px1, py1);
@@ -375,7 +369,7 @@ class Viper extends Enemigo {
     velx = cos(ang)*vel;
     vely = sin(ang)*vel;
     max_dis = 200;
-    puntos = false;
+    puntos = true;
     estado = "normal";
   }
   void act() {
@@ -383,7 +377,10 @@ class Viper extends Enemigo {
       if (frameCount%6 == 0) frame+=3;
       frame %= 15;
     }
-    else if (estado.equals("atacar")) {
+    if (estado.equals("seguir")) {
+      if (frameCount%3 == 0) frame+=3;
+      frame %= 15;
+    } else if (estado.equals("atacar")) {
       if (frameCount%6 == 0) frame++;
       frame %= 5;
     }
@@ -391,44 +388,68 @@ class Viper extends Enemigo {
     float anty = y;
     float ang = atan2(obj.y-y, obj.x-x);
     if (estado.equals("normal")) {
+      vel = 1;
       velx = cos(ang)*vel;
       x += velx;
       dir = 0;
       if (velx < 0) dir = 1;
-      vely += 1;
-      y += vely;
+      //vely += 1;
+      //y += vely;
       if (nivel.colisiona(this)) {
         y = anty;
         vely = 0;
-      }
-      else {
+      } else {
         p1.y += vely;
         p2.y += vely;
       }
-
       if (dist(x, y, obj.x, obj.y) < vel) {
         if (dist(p1.x, p1.y, obj.x, obj.y) < vel) {
           obj.x = p2.x;
           obj.y = p2.y;
-        }
-        else if (dist(p2.x, p2.y, obj.x, obj.y) < vel) {
+        } else if (dist(p2.x, p2.y, obj.x, obj.y) < vel) {
           obj.x = p1.x;
           obj.y = p1.y;
         }
       }
+
+      Punto jug = new Punto(nivel.jugador.x, nivel.jugador.y);
+      float dis = dist(jug.x, jug.y, x, y);
+      if (dis < max_dis && !nivel.jugador.invisible) {
+        if ((dir == 0 && x-jug.x < 0) || (dir == 1 && x-jug.x > 0)) {
+          obj = jug;
+          estado = "seguir";
+        }
+      }
+    } else if (estado.equals("seguir")) {
+      vel = 4;
+      velx = cos(ang)*vel;
+      x += velx;
+      float dis = dist(obj.x, 0, x, 0);
+      if (dis <= vel) {
+        estado = "atacar";
+      }
+    } else if (estado.equals("atacar")) { 
+      float d1 = dist(p1.x, p1.y, x, y);
+      float d2 = dist(p2.x, p2.y, x, y);
+      if (d1 < d2) {
+        obj.x = p1.x;
+        obj.y = p1.y;
+      } else {
+        obj.x = p2.x;
+        obj.y = p2.y;
+      }
+      estado = "normal";
     }
   }
   void dibujar() {
-    if (estado.equals("normal")) {
+    if (estado.equals("normal") || estado.equals("seguir")) {
       if (dir == 0) image(sprites_viper[frame%3][frame/3], x-w/2, y-h/2);
       else image(espejar(sprites_viper[frame%3][frame/3]), x-w/2, y-h/2);
-    }
-    else if (estado.equals("atacar")) {
+    } else if (estado.equals("atacar")) {
       if (dir == 0 || true) {
         image(sprites_viper[frame%3][frame/6+5], x-w/2, y-h);
         image(sprites_viper[frame%3][frame/6+6], x-w/2, y);
-      }
-      else {
+      } else {
         image(espejar(sprites_viper[frame%3][frame/3]), x-w/2, y-h/2);
       }
     }
@@ -442,6 +463,7 @@ class Wolf extends Enemigo {
   Wolf(float x, float y) {
     this.x = x; 
     this.y = y;
+    ini = new Punto(x, y);
     w = 114;
     h = 57;
     obj = new Punto(x, y);
@@ -463,26 +485,22 @@ class Wolf extends Enemigo {
       if (!seguir && (dir == 0 && x-obj.x < 0) || (dir == 1 && x-obj.x > 0)) {
         seguir = true;
       }
-    }
-    else {
+    } else {
       seguir = false;
     }
     if (seguir) {
       float ang = atan2(obj.y-y, obj.x-x);
       if (cos(ang)*vel < 0) {
         velx = -vel;
-      }
-      else if (cos(ang)*vel > 0) {
+      } else if (cos(ang)*vel > 0) {
         velx = vel;
-      }
-      else {
+      } else {
         velx = 0;
       }
       seguir = true;
       dir = 0;
       if (velx < 0) dir = 1;
-    }
-    else {
+    } else {
       velx = 0;
       tiempo_reposo++;
       dir = (tiempo_reposo/180)%2;
@@ -528,6 +546,7 @@ class Vulture extends Enemigo {
   Vulture(int x, int y, int px1, int py1, int px2, int py2) {
     this.x = x; 
     this.y = y;
+    ini = new Punto(x, y);
     w = 93;
     h = 70;
     p1 = new Punto(px1, py1);
@@ -556,8 +575,7 @@ class Vulture extends Enemigo {
       if (dist(p1.x, p1.y, obj.x, obj.y) < vel) {
         obj.x = p2.x;
         obj.y = p2.y;
-      }
-      else if (dist(p2.x, p2.y, obj.x, obj.y) < vel) {
+      } else if (dist(p2.x, p2.y, obj.x, obj.y) < vel) {
         obj.x = p1.x;
         obj.y = p1.y;
       }
@@ -578,6 +596,7 @@ class Cobra extends Enemigo {
   Cobra(float x, float y) {
     this.x = x; 
     this.y = y;
+    ini = new Punto(x, y);
     w = 100;
     h = 50;
     obj = new Punto(x, y);
@@ -599,26 +618,22 @@ class Cobra extends Enemigo {
       if (!seguir && (dir == 0 && x-obj.x < 0) || (dir == 1 && x-obj.x > 0)) {
         seguir = true;
       }
-    }
-    else {
+    } else {
       seguir = false;
     }
     if (seguir) {
       float ang = atan2(obj.y-y, obj.x-x);
       if (cos(ang)*vel < 0) {
         velx = -vel;
-      }
-      else if (cos(ang)*vel > 0) {
+      } else if (cos(ang)*vel > 0) {
         velx = vel;
-      }
-      else {
+      } else {
         velx = 0;
       }
       seguir = true;
       dir = 0;
       if (velx < 0) dir = 1;
-    }
-    else {
+    } else {
       velx = 0;
       tiempo_reposo++;
       dir = (tiempo_reposo/180)%2;

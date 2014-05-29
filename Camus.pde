@@ -1,6 +1,6 @@
 /*
--mover bichos y muve puntso
-- lo pajro actacan invisible
+ -mover bichos y muve puntso
+ -lo pajaro actacan invisible
  -editar comportamiento de los enemigos y animaciones
  -corregir fuente
  -poner score
