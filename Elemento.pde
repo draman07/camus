@@ -21,7 +21,7 @@ class Elemento {
     }
   }
   boolean sobre(int cx, int cy) {
-    if (cx >= x-w/2 && cx < x+w/2 && cy >= y-h/2+dy && cy < y+h/2+dy) {
+    if (cx >= x-w/2 && cx < x+w/2 && cy >= y-h/2 && cy < y+h/2) {
       return true;
     }
     if (puntos && p1 != null && p2 != null) {

@@ -4,6 +4,7 @@ class PowerUp extends Elemento {
   PowerUp(int x, int y, int t) {
     this.x = x; 
     this.y = y;
+    ini = new Punto(x, y);
     this.t = t;
     w = 32;
     h = 17;

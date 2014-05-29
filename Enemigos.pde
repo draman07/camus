@@ -208,7 +208,7 @@ class Rat extends Enemigo {
     obj = new Punto(nivel.jugador.x, nivel.jugador.y);
     float dis = dist(obj.x, obj.y, x, y);
     if (dis < max_dis && !nivel.jugador.invisible) {
-      if (!seguir && (dir == 0 && x-obj.x < 0) || (dir == 1 && x-obj.x > 0)) {
+      if (!seguir && ((dir == 0 && x-obj.x < 0) || (dir == 1 && x-obj.x > 0) || dis < max_dis*0.25)) {
         seguir = true;
       }
     } else {
@@ -216,14 +216,11 @@ class Rat extends Enemigo {
     }
     if (seguir) {
       float ang = atan2(obj.y-y, obj.x-x);
-      if (cos(ang)*vel < 0) {
+      if (obj.x-(x-10) < 0) {
         velx = -vel;
-      } else if (cos(ang)*vel > 0) {
+      } else if (obj.x-(x+10) > 0) {
         velx = vel;
-      } else {
-        velx = 0;
       }
-      seguir = true;
       dir = 0;
       if (velx < 0) dir = 1;
     } else {

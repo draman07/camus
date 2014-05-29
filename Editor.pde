@@ -132,11 +132,7 @@ class Editor { //<>//
       }
       mx = int(mouseX-camara.x);
       my = int(mouseY-camara.y);
-      if (opciones.ajustar.press) {
-        int mt = tam/2;
-        mx = ((mx+mt/2)/mt)*mt;
-        my = ((my+mt/2)/mt)*mt;
-      }
+
       px = floor((mx)/tam);
       py = floor((my)/tam);
       if (her == 0) {
@@ -179,6 +175,7 @@ class Editor { //<>//
           }
         }
         if (input.released) {
+          ajustar();
           for (int i = nivel.elementos.size ()-1; i >= 0; i--) {
             Elemento aux = nivel.elementos.get(i);
             selecionados.remove(aux);
@@ -503,7 +500,7 @@ class Editor { //<>//
       balder(x, y+1, ov, nv);
     }
   }
-  void deseleccionar() {
+ void ajustar() {
     for (int i = 0; i < selecionados.size (); i++) {
       Elemento aux = selecionados.get(i);
       if (aux.mover && opciones.ajustar.press) {
@@ -517,6 +514,11 @@ class Editor { //<>//
           aux.p2.y = (int(aux.p2.y+mt/2)/mt)*mt;
         }
       }
+    }
+  }
+  void deseleccionar() {
+    for (int i = 0; i < selecionados.size (); i++) {
+      Elemento aux = selecionados.get(i);
       aux.sel = false;
     }
     selecionados = new ArrayList<Elemento>();
