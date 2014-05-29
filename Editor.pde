@@ -179,9 +179,9 @@ class Editor { //<>//
           }
         }
         if (input.released) {
-          deseleccionar();
           for (int i = nivel.elementos.size ()-1; i >= 0; i--) {
             Elemento aux = nivel.elementos.get(i);
+            selecionados.remove(aux);
             if (mouseX == input.amouseX && mouseY == input.amouseY) {
               aux.seleccionar(mx, my);
               if (aux.sel) {

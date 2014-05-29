@@ -25,10 +25,10 @@ class Elemento {
       return true;
     }
     if (puntos && p1 != null && p2 != null) {
-      if (dist(p1.x, p1.y, cx, cy) <= 3) {
+      if (dist(p1.x, p1.y, cx, cy) <= 5) {
         return true;
       }
-      if (dist(p2.x, p2.y, cx, cy) <= 3) {
+      if (dist(p2.x, p2.y, cx, cy) <= 5) {
         return true;
       }
     }
@@ -64,12 +64,12 @@ class Elemento {
     float mx = mouseX-camara.x;
     float my = mouseY-camara.y;
     if (puntos && p1 != null && p2 != null && !input.CONTROL.press) {
-      if (dist(p1.x, p1.y, mx, my) <= 4 || dist(p1.x+x, p1.y+y, mx, my) <= 4) {
+      if (dist(p1.x, p1.y, mx, my) <= 5 || dist(p1.x+x, p1.y+y, mx, my) <= 5) {
         p1.x += x;
         p1.y += y;
         return;
       }
-      if (dist(p2.x, p2.y, mx, my) <= 4  || dist(p2.x+x, p2.y+y, mx, my) <= 4) {
+      if (dist(p2.x, p2.y, mx, my) <= 5  || dist(p2.x+x, p2.y+y, mx, my) <= 5) {
         p2.x += x;
         p2.y += y;
         return;

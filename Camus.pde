@@ -1,6 +1,4 @@
 /*
- -mover bichos y muve puntso
- -lo pajaro actacan invisible
  -editar comportamiento de los enemigos y animaciones
  -corregir fuente
  -poner score
@@ -106,6 +104,11 @@ void draw() {
     }
     editar.act();
     if (input.EDITAR.click || editar.click) {
+      float ax = nivel.jugador.x;
+      float ay = nivel.jugador.y;
+      nivel.iniciar();
+      nivel.jugador.x = ax;
+      nivel.jugador.y = ay;
       estado = "editor";
     }
   }
