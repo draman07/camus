@@ -215,7 +215,6 @@ class Rat extends Enemigo {
       seguir = false;
     }
     if (seguir) {
-      float ang = atan2(obj.y-y, obj.x-x);
       if (obj.x-(x-10) < 0) {
         velx = -vel;
       } else if (obj.x-(x+10) > 0) {
@@ -348,7 +347,7 @@ class Hawk extends Enemigo {
 }
 
 class Viper extends Enemigo {
-  int dir, frame;
+  int dir, frame, ataquet;
   float vel, velx, vely, max_dis;
   String estado;
   Viper(int x, int y, int px1, int py1, int px2, int py2) {
@@ -385,19 +384,14 @@ class Viper extends Enemigo {
     float ang = atan2(obj.y-y, obj.x-x);
     if (estado.equals("normal")) {
       vel = 1;
-      velx = cos(ang)*vel;
+      if (obj.x-(x-10) < 0) {
+        velx = -vel;
+      } else if (obj.x-(x+10) > 0) {
+        velx = vel;
+      }
       x += velx;
       dir = 0;
       if (velx < 0) dir = 1;
-      //vely += 1;
-      //y += vely;
-      if (nivel.colisiona(this)) {
-        y = anty;
-        vely = 0;
-      } else {
-        p1.y += vely;
-        p2.y += vely;
-      }
       if (dist(x, y, obj.x, obj.y) < vel) {
         if (dist(p1.x, p1.y, obj.x, obj.y) < vel) {
           obj.x = p2.x;
@@ -418,23 +412,31 @@ class Viper extends Enemigo {
       }
     } else if (estado.equals("seguir")) {
       vel = 4;
-      velx = cos(ang)*vel;
+      if (obj.x-x < 0) {
+        velx = -vel;
+      } else if (obj.x-x > 0) {
+        velx = vel;
+      }
       x += velx;
       float dis = dist(obj.x, 0, x, 0);
       if (dis <= vel) {
+        ataquet = 120;
         estado = "atacar";
       }
     } else if (estado.equals("atacar")) { 
-      float d1 = dist(p1.x, p1.y, x, y);
-      float d2 = dist(p2.x, p2.y, x, y);
-      if (d1 < d2) {
-        obj.x = p1.x;
-        obj.y = p1.y;
-      } else {
-        obj.x = p2.x;
-        obj.y = p2.y;
+      ataquet--;
+      if (ataquet <= 0) {
+        float d1 = dist(p1.x, p1.y, x, y);
+        float d2 = dist(p2.x, p2.y, x, y);
+        if (d1 < d2) {
+          obj.x = p1.x;
+          obj.y = p1.y;
+        } else {
+          obj.x = p2.x;
+          obj.y = p2.y;
+        }
+        estado = "normal";
       }
-      estado = "normal";
     }
   }
   void dibujar() {
@@ -485,13 +487,10 @@ class Wolf extends Enemigo {
       seguir = false;
     }
     if (seguir) {
-      float ang = atan2(obj.y-y, obj.x-x);
-      if (cos(ang)*vel < 0) {
+      if (obj.x-(x-10) < 0) {
         velx = -vel;
-      } else if (cos(ang)*vel > 0) {
+      } else if (obj.x-(x+10) > 0) {
         velx = vel;
-      } else {
-        velx = 0;
       }
       seguir = true;
       dir = 0;
@@ -618,13 +617,10 @@ class Cobra extends Enemigo {
       seguir = false;
     }
     if (seguir) {
-      float ang = atan2(obj.y-y, obj.x-x);
-      if (cos(ang)*vel < 0) {
+      if (obj.x-(x-10) < 0) {
         velx = -vel;
-      } else if (cos(ang)*vel > 0) {
+      } else if (obj.x-(x+10) > 0) {
         velx = vel;
-      } else {
-        velx = 0;
       }
       seguir = true;
       dir = 0;

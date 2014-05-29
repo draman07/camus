@@ -81,7 +81,7 @@ class Elemento {
     }
     this.x += x;
     this.y += y;
-    this.ini.x = x;
-    this.ini.y = y;
+    this.ini.x = this.x;
+    this.ini.y = this.y;
   }
 }
