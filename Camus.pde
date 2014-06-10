@@ -1,4 +1,5 @@
 /*
+ -hacer que vallan para el costado
  -editar comportamiento de los enemigos y animaciones
  -corregir fuente
  -poner score
@@ -25,7 +26,7 @@ Nivel nivel;
 Scroll vol_music, vol_sound;
 String estado = "menu";
 PFont font_chiqui;
-PImage sprites, arboles;
+PImage sprites, arboles, img_portal;
 PImage fondo_menu, boton_start, boton_sound, boton_music, boton_pause, img_barra, img_bbarra, img_pauseMenu;
 PImage[] img_fondo, img_arbol;
 PImage[][] sprites_cobra, sprites_dove, sprites_hawk, sprites_leon, sprites_mouse, sprites_serpent, sprites_plants, sprites_powerups, sprites_rat, sprites_viper, sprites_vulture, sprites_wolf;
@@ -157,7 +158,8 @@ void cargarImagenes(){
   sprites_viper = recortarImagen(loadImage("img/sprites_viper.png"), 101, 18, 1);
   sprites_vulture = recortarImagen(loadImage("img/sprites_vulture.png"), 93, 70, 1); 
   sprites_wolf = recortarImagen(loadImage("img/sprites_wolf.png"), 114, 57, 1);
-    img_fondo = new PImage[4];
+  img_portal = loadImage("img/sprites_portal.png");
+  img_fondo = new PImage[4];
   for (int i = 0; i < 4; i++) {
     img_fondo[i] = loadImage("img/fondo_"+(i+1)+".png");
   }

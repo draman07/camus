@@ -9,7 +9,7 @@ class Plataforma extends Elemento {
     this.h = h;
     traspasable = false;
     p1 = p2 = obj = null;
-    puntos = true;
+    puntos = false;
   }
   Plataforma(int x, int y, int w, int h, int px1, int py1, int px2, int py2) {
     this(x, y, w, h);

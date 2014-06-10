@@ -158,13 +158,7 @@ class Serpent extends Enemigo {
     velx = cos(ang)*vel;
     vely = sin(ang)*vel;
     x += velx;
-
-    vely += 1;
-    y += vely;
-    if (nivel.colisiona(this)) {
-      y = anty;
-      vely = 0;
-    }
+    
     if (dist(x, y, obj.x, obj.y) < vel) {
       if (dist(p1.x, p1.y, obj.x, obj.y) < vel) {
         obj.x = p2.x;
@@ -379,9 +373,6 @@ class Viper extends Enemigo {
       if (frameCount%6 == 0) frame++;
       frame %= 5;
     }
-    float antx = x; 
-    float anty = y;
-    float ang = atan2(obj.y-y, obj.x-x);
     if (estado.equals("normal")) {
       vel = 1;
       if (obj.x-(x-10) < 0) {
@@ -444,11 +435,12 @@ class Viper extends Enemigo {
       if (dir == 0) image(sprites_viper[frame%3][frame/3], x-w/2, y-h/2);
       else image(espejar(sprites_viper[frame%3][frame/3]), x-w/2, y-h/2);
     } else if (estado.equals("atacar")) {
-      if (dir == 0 || true) {
-        image(sprites_viper[frame%3][frame/6+5], x-w/2, y-h);
-        image(sprites_viper[frame%3][frame/6+6], x-w/2, y);
+      if (dir == 0) {
+        image(sprites_viper[frame%3][frame/6+5], x-w/2, y-h*1.5);
+        image(sprites_viper[frame%3][frame/6+6], x-w/2, y-h*0.75);
       } else {
-        image(espejar(sprites_viper[frame%3][frame/3]), x-w/2, y-h/2);
+        image(espejar(sprites_viper[frame%3][frame/6+5]), x-w/2, y-h*1.5);
+        image(espejar(sprites_viper[frame%3][frame/6+6]), x-w/2, y-h*0.75);
       }
     }
   }

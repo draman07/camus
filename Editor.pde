@@ -1,4 +1,4 @@
-class Editor { //<>//
+class Editor { //<>// //<>// //<>//
   ArrayList<Elemento> selecionados;
   ArrayList<Ventana> ventanas;
   boolean dibujar, mover, sel, sel_obj;
@@ -132,7 +132,6 @@ class Editor { //<>//
       }
       mx = int(mouseX-camara.x);
       my = int(mouseY-camara.y);
-
       px = floor((mx)/tam);
       py = floor((my)/tam);
       if (her == 0) {
@@ -202,6 +201,11 @@ class Editor { //<>//
       }
       if (her == 1) {
         if (val < 2) {
+          if (opciones.ajustar.press) {
+            int mt = tam/2;
+            mx = ((mx+mt/2)/mt)*mt;
+            my = ((my+mt/2)/mt)*mt;
+          }
           if (input.click) {
             dibujar = true;
           }
@@ -255,12 +259,20 @@ class Editor { //<>//
             nivel.elementos.add(aux);
           }
         } else if (val == 5 && input.click) {
+           if (opciones.ajustar.press) {
+            int mt = tam/2;
+            mx = ((mx+mt/2)/mt)*mt;
+            my = ((my+mt/2)/mt)*mt;
+          }
           Trampa aux = null;
           switch(int(opciones.trampas.val)) {
           case 0:
-            aux = new Plant(mx, my);
+            aux = new Plant(mx, my, 0);
             break;
           case 1:
+            aux = new Plant(mx, my, 1);
+            break;
+          case 2:
             aux = new Spike(mx, my);
             break;
           }
@@ -429,7 +441,7 @@ class Editor { //<>//
     fill(#53FA05);
     ellipse(nivel.ix, nivel.iy, 32, 32);
     fill(250, 255, 20);
-    ellipse(nivel.portal.x, nivel.portal.y, nivel.portal.w, nivel.portal.h);
+    image(img_portal, nivel.portal.x-nivel.portal.w/2, nivel.portal.y-nivel.portal.h/2);
     pushMatrix();
     resetMatrix();
 
@@ -500,10 +512,10 @@ class Editor { //<>//
       balder(x, y+1, ov, nv);
     }
   }
- void ajustar() {
+  void ajustar() {
     for (int i = 0; i < selecionados.size (); i++) {
       Elemento aux = selecionados.get(i);
-      if (aux.mover && opciones.ajustar.press) {
+      if (opciones.ajustar.press) {
         int mt = tam/2;
         aux.x = (int(aux.x+mt/2)/mt)*mt;
         aux.y = (int(aux.y+mt/2)/mt)*mt;
@@ -720,7 +732,7 @@ class Opciones extends Ventana {
     tiles = new Selector(10, 30, 80, 20, 4, 0, "tiles");
     enemigos = new Selector(10, 90, 180, 20, 9, 0, "enemigos");
     powerups = new Selector(10, 120, 80, 20, 4, 0, "powerups");
-    trampas = new Selector(10, 150, 40, 20, 2, 0, "trampas");
+    trampas = new Selector(10, 150, 60, 20, 3, 0, "trampas");
     puntos = new Selector(10, 180, 40, 20, 2, 0, "puntos interes");
   }
   void act() {
@@ -757,13 +769,13 @@ class Opciones extends Ventana {
     super.dibujar();
     ajustar.dibujar(x, y);
     enemigos.dibujar(x, y);
-    image(recortar(sprites, 140, 196, 160, 20), x+enemigos.x, y+enemigos.y);
+    image(recortar(sprites, 140, 196, 180, 20), x+enemigos.x, y+enemigos.y);
     powerups.dibujar(x, y);
     image(recortar(sprites, 220, 176, 80, 20), x+powerups.x, y+powerups.y);
     tiles.dibujar(x, y);
     image(recortar(sprites, 140, 176, 80, 20), x+tiles.x, y+tiles.y);
     trampas.dibujar(x, y);
-    image(recortar(sprites, 300, 196, 40, 20), x+trampas.x, y+trampas.y);
+    image(recortar(sprites, 320, 196, 60, 20), x+trampas.x, y+trampas.y);
     puntos.dibujar(x, y);
   }
 }

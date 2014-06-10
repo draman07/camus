@@ -6,6 +6,7 @@ class Spike extends Trampa {
   Spike(int x, int y) {
     this.x = x; 
     this.y = y; 
+    ini = new Punto(x, y);
     w = h = 16;
     puntos = false;
   }
@@ -21,11 +22,12 @@ class Spike extends Trampa {
 }
 
 class Plant extends Trampa {
-  int frame;
+  int frame, t;
   float velx, vely, vel;
-  Plant(int x, int y) {
+  Plant(int x, int y, int t) {
     this.x = x; 
     this.y = y;
+    this.t = t;
     ini = new Punto(x, y);
     w = h = 32;
     vel = 0.5; 
@@ -34,9 +36,10 @@ class Plant extends Trampa {
     p2 = new Punto(x, y-100);
     obj = new Punto(p2.x, p2.y);
   }
-  Plant(int x, int y, int p1x, int p1y, int p2x, int p2y) {
+  Plant(int x, int y, int p1x, int p1y, int p2x, int p2y, int t) {
     this.x = x; 
     this.y = y;
+    this.t = t;
     ini = new Punto(x, y);
     w = h = 32;
     vel = 0.5; 
@@ -69,9 +72,9 @@ class Plant extends Trampa {
     float dis = abs(p1.y-y);
     if (p1.y < p2.y) {
       for (int i = 0; i < dis; i+=10) {
-        image(sprites_plants[10][0], p1.x-w/2, p1.y-h/2+i-11);
+        image(sprites_plants[10][0+t*2], p1.x-w/2, p1.y-h/2+i-11);
       }
-      image(voltear(sprites_plants[frame%10][frame/10]), x-w/2, y-h/2);
+      image(voltear(sprites_plants[frame%10][frame/10+t*2]), x-w/2, y-h/2);
       /*
       fill(255, 0, 0, 80);
       rectMode(CENTER);
@@ -81,9 +84,9 @@ class Plant extends Trampa {
     }
     else {
       for (int i = 0; i < dis; i+=10) {
-        image(sprites_plants[10][0], p1.x-w/2, p1.y-h/2-i+11);
+        image(sprites_plants[10][0+t*2], p1.x-w/2, p1.y-h/2-i+11);
       }
-      image(sprites_plants[frame%10][frame/10], x-w/2, y-h/2);
+      image(sprites_plants[frame%10][frame/10+t*2], x-w/2, y-h/2);
       /*
       fill(255, 0, 0, 80);
       rectMode(CENTER);

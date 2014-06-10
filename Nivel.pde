@@ -369,12 +369,14 @@ class Nivel { //<>//
         spikes.append(a2);
       }
       if (t instanceof Plant) {
-        a2.append(t.x);
-        a2.append(t.y);
-        a2.append(t.p1.x);
-        a2.append(t.p1.y);
-        a2.append(t.p2.x);
-        a2.append(t.p2.y);
+        Plant p = (Plant) t;
+        a2.append(p.x);
+        a2.append(p.y);
+        a2.append(p.p1.x);
+        a2.append(p.p1.y);
+        a2.append(p.p2.x);
+        a2.append(p.p2.y);
+        a2.append(p.t);
         plants.append(a2);
       }
     }
@@ -511,11 +513,13 @@ class Nivel { //<>//
     for (int i = 0; i < a1.size(); i++) {
       JSONArray a2 = a1.getJSONArray(i);
       if (a2.size() <= 2) {
-        trampas.add(new Plant(a2.getInt(0), a2.getInt(1)));
+        int t = 0; 
+        trampas.add(new Plant(a2.getInt(0), a2.getInt(1), t));
       }
       else {
-
-        trampas.add(new Plant(a2.getInt(0), a2.getInt(1), a2.getInt(2), a2.getInt(3), a2.getInt(4), a2.getInt(5)));
+        int t = 0; 
+         if (a2.size() == 7) t = a2.getInt(6);
+        trampas.add(new Plant(a2.getInt(0), a2.getInt(1), a2.getInt(2), a2.getInt(3), a2.getInt(4), a2.getInt(5), t));
       }
     } 
     a1 = json.getJSONArray("tiles"); 
@@ -697,9 +701,10 @@ class Portal extends Elemento {
   String src;
   Portal(float x, float y, String src) {
     this.x = x; 
-    this.y = y; 
+    this.y = y;
+    ini = new Punto(x, y);
     this.src = src;
-    w = 30; 
+    w = 50; 
     h = 50;
     puntos = false;
     eliminar = false;
@@ -714,8 +719,7 @@ class Portal extends Elemento {
   }
   void dibujar() {
     noStroke();
-    fill(250, 255, 20);
-    ellipse(x, y, w, h);
+    image(img_portal, x-w/2, y-h/2); //<>//
   }
 }
 
