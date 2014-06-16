@@ -305,7 +305,7 @@ class Hawk extends Enemigo {
         }
       }
       tataque--;
-      if (tataque < 0 && dist(x, y, nivel.jugador.x, nivel.jugador.y) < 420 && !nivel.jugador.invisible) {
+      if (tataque < 0 && dist(x, y, nivel.jugador.x, nivel.jugador.y) < 280 && !nivel.jugador.invisible) {
         estado = "atacar";
         obj = new Punto(nivel.jugador.x, nivel.jugador.y);
       }
