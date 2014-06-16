@@ -158,6 +158,7 @@ class Serpent extends Enemigo {
     velx = cos(ang)*vel;
     vely = sin(ang)*vel;
     x += velx;
+    y += vely;
     
     if (dist(x, y, obj.x, obj.y) < vel) {
       if (dist(p1.x, p1.y, obj.x, obj.y) < vel) {
