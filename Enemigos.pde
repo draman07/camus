@@ -159,7 +159,7 @@ class Serpent extends Enemigo {
     vely = sin(ang)*vel;
     x += velx;
     y += vely;
-    
+
     if (dist(x, y, obj.x, obj.y) < vel) {
       if (dist(p1.x, p1.y, obj.x, obj.y) < vel) {
         obj.x = p2.x;
@@ -350,7 +350,7 @@ class Viper extends Enemigo {
     this.y = y;
     ini = new Punto(x, y);
     w = 101;
-    h = 18;
+    h = 35;
     p1 = new Punto(px1, py1);
     p2 = new Punto(px2, py2);
     obj = new Punto(px1, py1);
@@ -364,15 +364,18 @@ class Viper extends Enemigo {
   }
   void act() {
     if (estado.equals("normal")) {
-      if (frameCount%6 == 0) frame+=3;
-      frame %= 15;
+      if (frameCount%6 == 0) frame++;
+      frame %= 8;
     }
     if (estado.equals("seguir")) {
-      if (frameCount%3 == 0) frame+=3;
-      frame %= 15;
+      if (frameCount%3 == 0) frame++;
+      frame %= 8;
     } else if (estado.equals("atacar")) {
+      frame -= 8;
+      if(frame < -1) frame = -1;
       if (frameCount%6 == 0) frame++;
       frame %= 5;
+      frame += 8;
     }
     if (estado.equals("normal")) {
       vel = 1;
@@ -432,18 +435,8 @@ class Viper extends Enemigo {
     }
   }
   void dibujar() {
-    if (estado.equals("normal") || estado.equals("seguir")) {
-      if (dir == 0) image(sprites_viper[frame%3][frame/3], x-w/2, y-h/2);
-      else image(espejar(sprites_viper[frame%3][frame/3]), x-w/2, y-h/2);
-    } else if (estado.equals("atacar")) {
-      if (dir == 0) {
-        image(sprites_viper[frame%3][frame/6+5], x-w/2, y-h*1.5);
-        image(sprites_viper[frame%3][frame/6+6], x-w/2, y-h*0.75);
-      } else {
-        image(espejar(sprites_viper[frame%3][frame/6+5]), x-w/2, y-h*1.5);
-        image(espejar(sprites_viper[frame%3][frame/6+6]), x-w/2, y-h*0.75);
-      }
-    }
+    if (dir == 0) image(sprites_viper[0][frame], x-w/2, y-h/2);
+    else image(espejar(sprites_viper[0][frame]), x-w/2, y-h/2);
   }
 }
 

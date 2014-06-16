@@ -155,7 +155,7 @@ void cargarImagenes(){
   sprites_plants = recortarImagen(loadImage("img/sprites_plants.png"), 32, 32, 1);
   sprites_powerups = recortarImagen(loadImage("img/sprites_powerups.png"), 32, 17, 1);
   sprites_rat = recortarImagen(loadImage("img/sprites_rat.png"), 33, 33, 1);
-  sprites_viper = recortarImagen(loadImage("img/sprites_viper.png"), 101, 18, 1);
+  sprites_viper = recortarImagen(loadImage("img/sprites_viper.png"), 91, 35, 1);
   sprites_vulture = recortarImagen(loadImage("img/sprites_vulture.png"), 93, 70, 1); 
   sprites_wolf = recortarImagen(loadImage("img/sprites_wolf.png"), 114, 57, 1);
   img_portal = loadImage("img/sprites_portal.png");
