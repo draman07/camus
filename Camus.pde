@@ -56,7 +56,7 @@ void draw() {
   if (estado.equals("menu")) {
     image(fondo_menu, 0, 0);
     image(boton_start, width/2-boton_start.width/2, 210);
-    if (input.click && mouseX >= width/2-boton_start.width/2 && mouseX < width/2+boton_start.width/2 && mouseY > 210 && mouseY < 210+boton_start.height) {
+    if (input.ENTER.click || (input.click && mouseX >= width/2-boton_start.width/2 && mouseX < width/2+boton_start.width/2 && mouseY > 210 && mouseY < 210+boton_start.height)) {
       estado = "juego";
       //fill(255, 0, 0);
       //rect(width/2-boton_start.width/2, 210, boton_start.width, boton_start.height);
