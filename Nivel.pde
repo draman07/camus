@@ -10,7 +10,6 @@ class Nivel { //<>//
   Jugador jugador;
   String src;
   Portal portal;
-  UI ui;
   Nivel() {
     src = "";
     nuevo();
@@ -487,6 +486,7 @@ class Nivel { //<>//
     else {
       tiempo = 60;
     }
+    ui.setTime(tiempo);
     jugador = new Jugador(ix, iy); 
     elementos = new ArrayList<Elemento>();
     plataformas = new ArrayList<Plataforma>();
@@ -625,7 +625,6 @@ class Nivel { //<>//
       editor.minimapa = new Minimapa(w, h);
       editor.ventanas.add(editor.minimapa);
     }
-    ui = new UI(tiempo);
   }
   boolean colisiona(Jugador ju) {
     int x0 = int((ju.x - ju.w)/tam); 

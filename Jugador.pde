@@ -40,7 +40,6 @@ class Jugador {
       }
     }
     if (input.ABAJO.release) {
-      println("se Paro");
       w = 32; 
       h = 32;
       if (agachadito) {
@@ -175,6 +174,7 @@ class Jugador {
       invisible = !invisible;
     }
     if (vida <= 0) {
+      ui.cant_vidas--;
       nivel.iniciar();
     }
   }

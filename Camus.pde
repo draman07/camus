@@ -31,6 +31,7 @@ PImage fondo_menu, boton_start, boton_sound, boton_music, boton_pause, img_barra
 PImage[] img_fondo, img_arbol;
 PImage[][] sprites_cobra, sprites_dove, sprites_hawk, sprites_leon, sprites_mouse, sprites_serpent, sprites_plants, sprites_powerups, sprites_rat, sprites_viper, sprites_vulture, sprites_wolf;
 PImage[][] img_tiles;
+UI ui;
 
 void setup() {
   size(800, 600);
@@ -41,12 +42,12 @@ void setup() {
   vol_music = new Scroll(374, 500, img_barra.width-img_barra.height, img_barra.height/2, 0, 1, 1);
   vol_sound = new Scroll(374, 560, img_barra.width-img_barra.height, img_barra.height/2, 0, 1, 0);
   input = new Input();
+  ui = new UI(0);
   nivel = new Nivel();
   arboles = crearFondo();
   editar = new Boton2(15, height-24, 60, 20, "EDITAR");
   editor = new Editor();
   camara = new Camara(0, 0);
-  
 }  
 
 void draw() {

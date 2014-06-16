@@ -33,7 +33,7 @@ class PowerUp extends Elemento {
         if (ju.invisibilidad > 1) ju.invisibilidad = 1;
         break;
       case 2:
-        nivel.ui.maScore(100);
+        ui.maScore(100);
         break;
       case 3:
         ju.inmuneTime += 60*5;

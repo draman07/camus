@@ -1,5 +1,6 @@
 class UI {
   int max_tem;
+  int cant_vidas;
   int tiempo, score;
   UI(int t) {
     max_tem = t;
@@ -7,12 +8,17 @@ class UI {
   }
   void iniciar() {
     score = 0; 
+    cant_vidas = 2;
     tiempo = max_tem;
   }
   void act() {
     if (!pausa && frameCount%60 == 0) tiempo = max_tem--;
     if (tiempo < 0) {
       tiempo = max_tem;
+    }
+    if (score >= 2500) {
+      cant_vidas++;
+      score -= 2500;
     }
   }
   void dibujar() {
@@ -28,12 +34,11 @@ class UI {
     if (desx > 0) {
       image(recortar(sprites, 160, 154, 5+desx, 10), cx+22, cy+26);
       image(recortar(sprites, 256, 154, 4, 10), cx+27+desx, cy+26);
-    }
-    int vida = (frameCount/120)%10; 
+    } 
     fill(#a60F00);
     textAlign(CENTER, CENTER);
     textFont(font_chiqui, 22);
-    text(vida, 179, 40);
+    text(cant_vidas, 179, 40);
     image(recortar(sprites, 340, 96, 138, 40), width/2-69, cy);
     textFont(font_chiqui, 13);
     textAlign(LEFT, DOWN);
@@ -50,5 +55,8 @@ class UI {
   }
   void maScore(int sco) {
     score += sco;
+  }
+  void setTime(int t) {
+    max_tem = tiempo = t;
   }
 }

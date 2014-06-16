@@ -4,6 +4,7 @@ class Enemigo extends Elemento {
     if (eliminar) return;
     if (colisiona(j) && !j.inmune && !j.invisible) {
       if (this instanceof Huevo) eliminar = true;
+      ui.score -= 250;
       j.dano(dano);
     }
   }
