@@ -523,7 +523,7 @@ class Wolf extends Enemigo {
 }
 
 class Vulture extends Enemigo {
-  int frame, cargarHuevo;
+  int dir, frame, cargarHuevo;
   float vel, velx, vely;
   Vulture(int x, int y, int px1, int py1, int px2, int py2) {
     this.x = x; 
@@ -545,15 +545,17 @@ class Vulture extends Enemigo {
     if (frameCount%6 == 0) frame++;
     frame %= 3;
     float ang = atan2(obj.y-y, obj.x-x); //<>//
+    dir = 0;
+    if (velx < 0) dir = 1;
     velx = cos(ang)*vel;
     vely = sin(ang)*vel;
     x += velx;
     y += vely;
     cargarHuevo++;
-    if (abs(nivel.jugador.x-x) < w/4 && cargarHuevo > 80 && random(10) < 1) {
-      Huevo h = new Huevo(x, y);
-      nivel.elementos.add(h); 
-      nivel.enemigos.add(h);
+    if (abs(nivel.jugador.x-x) < w/8 && cargarHuevo > 80 && random(10) < 1) {
+      Huevo h = new Huevo(x-6+12*dir, y+10);
+      nivel.elementos.add(0, h); 
+      nivel.enemigos.add(0, h);
       cargarHuevo = 0;
     }
     if (dist(x, y, obj.x, obj.y) < vel) {
@@ -567,8 +569,6 @@ class Vulture extends Enemigo {
     }
   }
   void dibujar() {
-    int dir = 0;
-    if (velx < 0) dir = 1;
     if (dir == 0) image(sprites_vulture[frame][0], x-w/2, y-h/2);
     else image(espejar(sprites_vulture[frame][0]), x-w/2, y-h/2);
   }

@@ -1,15 +1,4 @@
-/* //<>//
- -hacer que vallan para el costado
- -editar comportamiento de los enemigos y animaciones
- -corregir fuente
- -poner score
- -poner tiempo
- 
- BUG:
- --bug con las plataformas
- --plataformas verticales andan mal colisiones
- --cuando salta y se choca choca mal
- */
+ //<>//
 import ddf.minim.*;
 
 Minim minim;

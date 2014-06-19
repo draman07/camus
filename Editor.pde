@@ -1,4 +1,4 @@
-class Editor { //<>// //<>// //<>//
+class Editor { //<>//
   ArrayList<Elemento> selecionados;
   ArrayList<Ventana> ventanas;
   boolean dibujar, mover, sel, sel_obj;
