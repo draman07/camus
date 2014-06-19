@@ -61,8 +61,7 @@ class Plant extends Trampa {
       if (dist(p1.x, p1.y, obj.x, obj.y) < vel) {
         obj.x = p2.x;
         obj.y = p2.y;
-      }
-      else if (dist(p2.x, p2.y, obj.x, obj.y) < vel) {
+      } else if (dist(p2.x, p2.y, obj.x, obj.y) < vel) {
         obj.x = p1.x;
         obj.y = p1.y;
       }
@@ -77,22 +76,21 @@ class Plant extends Trampa {
       image(voltear(sprites_plants[frame%10][frame/10+t*2]), x-w/2, y-h/2);
       /*
       fill(255, 0, 0, 80);
-      rectMode(CENTER);
-      rect(x, y-dis/2-h/2, w/2-4, dis);
-      rect(x, y-5, w-6, h-10);
-      rectMode(CORNER);*/
-    }
-    else {
+       rectMode(CENTER);
+       rect(x, y-dis/2-h/2, w/2-4, dis);
+       rect(x, y-5, w-6, h-10);
+       rectMode(CORNER);*/
+    } else {
       for (int i = 0; i < dis; i+=10) {
         image(sprites_plants[10][0+t*2], p1.x-w/2, p1.y-h/2-i+11);
       }
       image(sprites_plants[frame%10][frame/10+t*2], x-w/2, y-h/2);
       /*
       fill(255, 0, 0, 80);
-      rectMode(CENTER);
-      rect(x, y+dis/2+h/2, w/2-4, dis);
-      rect(x, y+5, w-6, h-10);
-      rectMode(CORNER);*/
+       rectMode(CENTER);
+       rect(x, y+dis/2+h/2, w/2-4, dis);
+       rect(x, y+5, w-6, h-10);
+       rectMode(CORNER);*/
     }
   }
   boolean colisiona(Jugador ju) {
@@ -109,8 +107,7 @@ class Plant extends Trampa {
       if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y-5, w-6, h-10)) {
         return true;
       }
-    }
-    else {
+    } else {
       if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y+dis/2+h/2, w/2-4, dis)) {
         return true;
       }

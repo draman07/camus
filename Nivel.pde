@@ -1,9 +1,10 @@
-class Nivel { //<>//
+class Nivel { //<>// //<>//
   ArrayList<Elemento> elementos;
   ArrayList<Enemigo> enemigos;
   ArrayList<PowerUp> powerups;
   ArrayList<Plataforma> plataformas;
   ArrayList<Trampa> trampas;
+  boolean pasarNivel;
   int w, h, ix, iy, tiempo;
   int[][] tiles;
   JSONObject json;
@@ -12,19 +13,26 @@ class Nivel { //<>//
   Portal portal;
   Nivel() {
     src = "";
+    pasarNivel = false;
     nuevo();
+  }
+  Nivel(String src) {
+    this.src = src;
+    cargarNivel(src);
+    actualizarJson();
+    iniciar();
   }
   void act() {
     if (input.REINICIAR.click) { 
       iniciar();
     }
-    for (int i = 0; i < elementos.size(); i++) {
+    for (int i = 0; i < elementos.size (); i++) {
       Elemento aux = elementos.get(i);
       if (!aux.eliminar) aux.act();
     }
     jugador.act();
-    if (portal.toca) {
-      cargarNivel(portal.src);
+    if (portal.toca){
+      pasarNivel = true;
     }
     if (jugador.y >= nivel.h*tam+100) {
       jugador.vida = 0;
@@ -47,7 +55,7 @@ class Nivel { //<>//
     rect(0, 0, width, height);
     popMatrix();
     dibujarTiles();
-    for (int i = 0; i < elementos.size(); i++) {
+    for (int i = 0; i < elementos.size (); i++) {
       Elemento aux = elementos.get(i);
       if (!aux.eliminar) aux.dibujar();
     }
@@ -124,8 +132,7 @@ class Nivel { //<>//
           if (dx == -1 && dy == -1) {
             dy = -2;
             dx = 1;
-          } 
-          else {
+          } else {
             if (dx == -1) {
               switch(dy) {
               case 0:
@@ -141,8 +148,7 @@ class Nivel { //<>//
                 dy = -1;
                 break;
               }
-            }
-            else if ( dy == -1) {
+            } else if ( dy == -1) {
               switch(dx) {
               case 0:
                 dx = 0;
@@ -165,8 +171,7 @@ class Nivel { //<>//
           if (tiles[i][j] == 2) {
             image(img_tiles[3+dx][2+dy], i*16, j*16);
           }
-        }
-        else {
+        } else {
           if (i-1 >= 0 && tiles[i-1][j] <= 0) dx = 0;
           if (i+1 < w && tiles[i+1][j] <= 0) dx = 2;
           if (j-1 >= 0 && tiles[i][j-1] <= 0) dy = 0;
@@ -222,8 +227,7 @@ class Nivel { //<>//
           if (dx == -1 && dy == -1) {
             dy = -2;
             dx = 1;
-          } 
-          else {
+          } else {
             if (dx == -1) {
               switch(dy) {
               case 0:
@@ -239,8 +243,7 @@ class Nivel { //<>//
                 dy = -1;
                 break;
               }
-            }
-            else if ( dy == -1) {
+            } else if ( dy == -1) {
               switch(dx) {
               case 0:
                 dx = 0;
@@ -263,8 +266,7 @@ class Nivel { //<>//
           if (tiles[i][j] == 2) {
             aux.image(img_tiles[3+dx][2+dy], (i-xx)*16, (j-yy)*16);
           }
-        }
-        else {
+        } else {
           if (i-1 >= 0 && tiles[i-1][j] <= 0) dx = 0;
           if (i+1 < w && tiles[i+1][j] <= 0) dx = 2;
           if (j-1 >= 0 && tiles[i][j-1] <= 0) dy = 0;
@@ -288,7 +290,7 @@ class Nivel { //<>//
     w = 52;
     h = 40;
     tiles = new int[w][h];
-    portal = new Portal((w-4)*tam, (h-4)*tam, "");
+    portal = new Portal((w-4)*tam, (h-2.5)*tam, "");
     for (int j = 0; j < h; j++) {
       for (int i = 0; i < w; i++) {
         tiles[i][j] = 0;
@@ -325,8 +327,7 @@ class Nivel { //<>//
       this.src = src;
       json = loadJSONObject(src);
       iniciar();
-    }
-    else {
+    } else {
       iniciar();
     }
     cargar = false;
@@ -357,7 +358,7 @@ class Nivel { //<>//
 
     JSONArray plants = new JSONArray();
     JSONArray spikes = new JSONArray();
-    for (int i = 0; i < trampas.size(); i++) {
+    for (int i = 0; i < trampas.size (); i++) {
       Trampa t = trampas.get(i);
       JSONArray a2 = new JSONArray();
       if (t instanceof Spike) {
@@ -383,7 +384,7 @@ class Nivel { //<>//
     aux.setJSONArray("spikes", spikes);
 
     a1 = new JSONArray();
-    for (int i = 0; i < plataformas.size(); i++) {
+    for (int i = 0; i < plataformas.size (); i++) {
       Plataforma p = plataformas.get(i);
       JSONArray a2 = new JSONArray();
       a2.append(p.x);
@@ -401,7 +402,7 @@ class Nivel { //<>//
     aux.setJSONArray("plataformas", a1);
 
     a1 = new JSONArray();
-    for (int i = 0; i < powerups.size(); i++) {
+    for (int i = 0; i < powerups.size (); i++) {
       PowerUp e = powerups.get(i);
       JSONArray a2 = new JSONArray();
       a2.append(e.x);
@@ -421,9 +422,9 @@ class Nivel { //<>//
     JSONArray vultures = new JSONArray();
     JSONArray cobras = new JSONArray();
 
-    for (int i = 0; i < enemigos.size(); i++) {
+    for (int i = 0; i < enemigos.size (); i++) {
       Enemigo e = enemigos.get(i);
-      if(e instanceof Huevo) continue; 
+      if (e instanceof Huevo) continue; 
       JSONArray a2 = new JSONArray();
       a2.append(e.ini.x);
       a2.append(e.ini.y);
@@ -435,29 +436,21 @@ class Nivel { //<>//
       }
       if (e instanceof Mouse) {
         mouses.append(a2);
-      }
-      else if (e instanceof Dove) {
+      } else if (e instanceof Dove) {
         doves.append(a2);
-      }
-      else if (e instanceof Serpent) {
+      } else if (e instanceof Serpent) {
         serpents.append(a2);
-      }
-      else if (e instanceof Rat) {
+      } else if (e instanceof Rat) {
         rats.append(a2);
-      }
-      else if (e instanceof Hawk) {
+      } else if (e instanceof Hawk) {
         hawks.append(a2);
-      }
-      else if (e instanceof Viper) {
+      } else if (e instanceof Viper) {
         vipers.append(a2);
-      }
-      else if (e instanceof Wolf) {
+      } else if (e instanceof Wolf) {
         wolfs.append(a2);
-      }
-      else if (e instanceof Vulture) {
+      } else if (e instanceof Vulture) {
         vultures.append(a2);
-      }
-      else if (e instanceof Cobra) {
+      } else if (e instanceof Cobra) {
         cobras.append(a2);
       }
     }
@@ -478,12 +471,12 @@ class Nivel { //<>//
     saveJSONObject(json, src);
   }
   void iniciar() {
+    pasarNivel = false;
     ix = json.getInt("inicialx");
     iy = json.getInt("inicialy");
     if (json.hasKey("tiempo")) {
       tiempo = json.getInt("tiempo");
-    }
-    else {
+    } else {
       tiempo = 60;
     }
     ui.setTime(tiempo);
@@ -503,22 +496,20 @@ class Nivel { //<>//
     if (json.hasKey("portal")) {
       JSONArray p = json.getJSONArray("portal");
       portal = new Portal(p.getInt(0), p.getInt(1), p.getString(2));
-    }
-    else {
+    } else {
       portal = new Portal((w-3)*tam, (h-3)*tam, "");
     }
     elementos.add(portal);
 
     JSONArray a1 = json.getJSONArray("plants");
-    for (int i = 0; i < a1.size(); i++) {
+    for (int i = 0; i < a1.size (); i++) {
       JSONArray a2 = a1.getJSONArray(i);
       if (a2.size() <= 2) {
         int t = 0; 
         trampas.add(new Plant(a2.getInt(0), a2.getInt(1), t));
-      }
-      else {
+      } else {
         int t = 0; 
-         if (a2.size() == 7) t = a2.getInt(6);
+        if (a2.size() == 7) t = a2.getInt(6);
         trampas.add(new Plant(a2.getInt(0), a2.getInt(1), a2.getInt(2), a2.getInt(3), a2.getInt(4), a2.getInt(5), t));
       }
     } 
@@ -534,96 +525,97 @@ class Nivel { //<>//
       }
     }
     a1 = json.getJSONArray("plataformas");
-    for (int i = 0; i < a1.size(); i++) {
+    for (int i = 0; i < a1.size (); i++) {
       JSONArray a2 = a1.getJSONArray(i);
       if (a2.size() == 4) {
         plataformas.add(new Plataforma(a2.getInt(0), a2.getInt(1), a2.getInt(2), a2.getInt(3)));
-      }
-      else {
+      } else {
         plataformas.add(new Plataforma(a2.getInt(0), a2.getInt(1), a2.getInt(2), a2.getInt(3), a2.getInt(4), a2.getInt(5), a2.getInt(6), a2.getInt(7)));
       }
     }
     a1 = json.getJSONArray("powerups");
-    for (int i = 0; i < a1.size(); i++) {
+    for (int i = 0; i < a1.size (); i++) {
       JSONArray a2 = a1.getJSONArray(i);
       powerups.add(new PowerUp(a2.getInt(0), a2.getInt(1), a2.getInt(2)));
     }
     a1 = json.getJSONArray("mouses");
-    for (int i = 0; i < a1.size(); i++) {
+    for (int i = 0; i < a1.size (); i++) {
       JSONArray a2 = a1.getJSONArray(i);
       enemigos.add(new Mouse(a2.getInt(0), a2.getInt(1)));
     }
     a1 = json.getJSONArray("doves");
-    for (int i = 0; i < a1.size(); i++) {
+    for (int i = 0; i < a1.size (); i++) {
       JSONArray a2 = a1.getJSONArray(i);
       enemigos.add(new Dove(a2.getInt(0), a2.getInt(1), a2.getInt(2), a2.getInt(3), a2.getInt(4), a2.getInt(5)));
     }
     a1 = json.getJSONArray("serpents");
-    for (int i = 0; i < a1.size(); i++) {
+    for (int i = 0; i < a1.size (); i++) {
       JSONArray a2 = a1.getJSONArray(i);
       enemigos.add(new Serpent(a2.getInt(0), a2.getInt(1), a2.getInt(2), a2.getInt(3), a2.getInt(4), a2.getInt(5)));
     }
     a1 = json.getJSONArray("rats");
-    for (int i = 0; i < a1.size(); i++) {
+    for (int i = 0; i < a1.size (); i++) {
       JSONArray a2 = a1.getJSONArray(i);
       enemigos.add(new Rat(a2.getInt(0), a2.getInt(1)));
     }
     if (json.hasKey("hawks")) {   
       a1 = json.getJSONArray("hawks");
-      for (int i = 0; i < a1.size(); i++) {
+      for (int i = 0; i < a1.size (); i++) {
         JSONArray a2 = a1.getJSONArray(i);
         enemigos.add(new Hawk(a2.getInt(0), a2.getInt(1), a2.getInt(2), a2.getInt(3), a2.getInt(4), a2.getInt(5)));
       }
     }
     if (json.hasKey("vipers")) {   
       a1 = json.getJSONArray("vipers");
-      for (int i = 0; i < a1.size(); i++) {
+      for (int i = 0; i < a1.size (); i++) {
         JSONArray a2 = a1.getJSONArray(i);
         enemigos.add(new Viper(a2.getInt(0), a2.getInt(1), a2.getInt(2), a2.getInt(3), a2.getInt(4), a2.getInt(5)));
       }
     }
     if (json.hasKey("wolfs")) {   
       a1 = json.getJSONArray("wolfs");
-      for (int i = 0; i < a1.size(); i++) {
+      for (int i = 0; i < a1.size (); i++) {
         JSONArray a2 = a1.getJSONArray(i);
         enemigos.add(new Wolf(a2.getInt(0), a2.getInt(1)));
       }
     }
     if (json.hasKey("vultures")) {   
       a1 = json.getJSONArray("vultures");
-      for (int i = 0; i < a1.size(); i++) {
+      for (int i = 0; i < a1.size (); i++) {
         JSONArray a2 = a1.getJSONArray(i);
         enemigos.add(new Vulture(a2.getInt(0), a2.getInt(1), a2.getInt(2), a2.getInt(3), a2.getInt(4), a2.getInt(5)));
       }
     }
     if (json.hasKey("cobras")) {   
       a1 = json.getJSONArray("cobras");
-      for (int i = 0; i < a1.size(); i++) {
+      for (int i = 0; i < a1.size (); i++) {
         JSONArray a2 = a1.getJSONArray(i);
         enemigos.add(new Cobra(a2.getInt(0), a2.getInt(1)));
       }
     }
     a1 = json.getJSONArray("spikes");
-    for (int i = 0; i < a1.size(); i++) {
+    for (int i = 0; i < a1.size (); i++) {
       JSONArray a2 = a1.getJSONArray(i);
       trampas.add(new Spike(a2.getInt(0), a2.getInt(1)));
     }
-    for (int i = 0; i < plataformas.size(); i++) {
+    for (int i = 0; i < plataformas.size (); i++) {
       elementos.add(plataformas.get(i));
     }
-    for (int i = 0; i < enemigos.size(); i++) {
+    for (int i = 0; i < enemigos.size (); i++) {
       elementos.add(enemigos.get(i));
     }
-    for (int i = 0; i < powerups.size(); i++) {
+    for (int i = 0; i < powerups.size (); i++) {
       elementos.add(powerups.get(i));
     }
-    for (int i = 0; i < trampas.size(); i++) {
+    for (int i = 0; i < trampas.size (); i++) {
       elementos.add(trampas.get(i));
     }
     if (editor != null) {
+      /*
       editor.ventanas.remove(editor.minimapa);
-      editor.minimapa = new Minimapa(w, h);
+      //editor.minimapa = new Minimapa(w, h);
       editor.ventanas.add(editor.minimapa);
+      */
     }
   }
   boolean colisiona(Jugador ju) {
@@ -657,8 +649,7 @@ class Nivel { //<>//
         ju.alentizar = true;
         ju.vely = 0;
       }
-    }
-    else if (ju.acey != 1) { 
+    } else if (ju.acey != 1) { 
       ju.y = ju.y-(ju.y%ju.acey);
       ju.acey = 1;
       ju.alentizar = false;
@@ -678,7 +669,7 @@ class Nivel { //<>//
     return false;
   }
   Plataforma colisionPlataforma() {
-    for (int i = 0; i < plataformas.size(); i++) {
+    for (int i = 0; i < plataformas.size (); i++) {
       Plataforma aux = plataformas.get(i);
       if (aux.colisiona(jugador)) {
         return aux;
@@ -718,7 +709,7 @@ class Portal extends Elemento {
   }
   void dibujar() {
     noStroke();
-    image(img_portal, x-w/2, y-h/2); //<>//
+    image(sprites_portal[0][((frameCount%60) < 30)? 0 : 1], x-w/2, y-h/2);
   }
 }
 

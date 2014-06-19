@@ -1,4 +1,4 @@
-/*
+/* //<>//
  -hacer que vallan para el costado
  -editar comportamiento de los enemigos y animaciones
  -corregir fuente
@@ -25,11 +25,11 @@ int tam = 16;
 Nivel nivel;
 Scroll vol_music, vol_sound;
 String estado = "menu";
-PFont font_chiqui;
-PImage sprites, arboles, img_portal;
+PFont font_chiqui, font_chiqui22;
+PImage sprites, arboles;
 PImage fondo_menu, boton_start, boton_sound, boton_music, boton_pause, img_barra, img_bbarra, img_pauseMenu;
 PImage[] img_fondo, img_arbol;
-PImage[][] sprites_cobra, sprites_dove, sprites_hawk, sprites_leon, sprites_mouse, sprites_serpent, sprites_plants, sprites_powerups, sprites_rat, sprites_viper, sprites_vulture, sprites_wolf;
+PImage[][] sprites_cobra, sprites_dove, sprites_hawk, sprites_leon, sprites_mouse, sprites_serpent, sprites_plants, sprites_portal, sprites_powerups, sprites_rat, sprites_viper, sprites_vulture, sprites_wolf;
 PImage[][] img_tiles;
 UI ui;
 
@@ -39,6 +39,7 @@ void setup() {
   cargarImagenes();
   cargarSonidos();
   font_chiqui = loadFont("Silkscreen-14.vlw");
+  font_chiqui22 = loadFont("Silkscreen-22.vlw");
   vol_music = new Scroll(374, 500, img_barra.width-img_barra.height, img_barra.height/2, 0, 1, 1);
   vol_sound = new Scroll(374, 560, img_barra.width-img_barra.height, img_barra.height/2, 0, 1, 0);
   input = new Input();
@@ -52,7 +53,7 @@ void setup() {
 
 void draw() {
   if (frameCount%10 == 0) frame.setTitle("FPS:"+frameRate);
-  if(cargar) return;
+  if (cargar) return;
   //background(200);
   if (estado.equals("menu")) {
     image(fondo_menu, 0, 0);
@@ -66,8 +67,7 @@ void draw() {
     vol_sound.act();   
     image(boton_music, 172, 490);
     image(boton_sound, 172, 550);
-  }
-  else if (estado.equals("juego")) {
+  } else if (estado.equals("juego")) {
     if (input.PAUSA.click) {
       pausa = !pausa;
     }
@@ -90,8 +90,7 @@ void draw() {
       vol_sound.x = 480;
       vol_sound.y = int(689-130*av);
       vol_sound.act();
-    }
-    else {
+    } else {
       float camx = width/2-nivel.jugador.x;
       if (camx > -tam) camx = -tam;
       if (camx < width-tam*nivel.w+tam) camx = width-tam*nivel.w+tam;
@@ -103,6 +102,27 @@ void draw() {
       camara.ira(camx-1, camy-1);
       camara.act();
       nivel.act();
+      if (nivel.pasarNivel) {
+        String src = nivel.portal.src;
+        if (src.equals("")) {
+          nivel.iniciar();
+        } else {
+          editor.niveles.sel = -1;
+          ArrayList<Nivel> nivs = editor.niveles.niveles;
+          for (int i = 0; i < nivs.size (); i++) {
+            Nivel n = nivs.get(i);
+            if (src.equals(n.src)) {
+              editor.niveles.sel = i;
+              nivel = n; 
+              break;
+            }
+          }
+          if (editor.niveles.sel == -1) {
+            nivel = new Nivel(src);
+          }
+        }
+        nivel.iniciar();
+      }
     }
     editar.act();
     if (input.EDITAR.click || editar.click) {
@@ -113,12 +133,10 @@ void draw() {
       nivel.jugador.y = ay;
       estado = "editor";
     }
-  }
-  else if (estado.equals("editor")) {
+  } else if (estado.equals("editor")) {
     camara.act();
     editor.act();
-  }
-  else if (estado.equals("arboles")) {
+  } else if (estado.equals("arboles")) {
     if (input.kclick) {
       image(img_fondo[0], 0, 0);
       int w = int(random(40, 120));
@@ -145,7 +163,7 @@ void mousePressed() {
 void mouseReleased() {
   input.mreleased();
 }
-void cargarImagenes(){
+void cargarImagenes() {
   sprites = loadImage("img/sprites.png");
   sprites_cobra = recortarImagen(loadImage("img/sprites_cobra.png"), 100, 50, 1);
   sprites_dove = recortarImagen(loadImage("img/sprites_dove.png"), 16, 16, 1);
@@ -153,13 +171,13 @@ void cargarImagenes(){
   sprites_leon = recortarImagen(loadImage("img/sprites_leon.png"), 35, 35, 1);
   sprites_mouse = recortarImagen(loadImage("img/sprites_mouse.png"), 21, 11, 1);
   sprites_serpent = recortarImagen(loadImage("img/sprites_serpent.png"), 32, 6, 1);
-  sprites_plants = recortarImagen(loadImage("img/sprites_plants.png"), 32, 32, 1);
+  sprites_plants = recortarImagen(loadImage("img/sprites_plants.png"), 32, 32, 1);  
+  sprites_portal = recortarImagen(loadImage("img/sprites_portal.png"), 50, 50, 1);
   sprites_powerups = recortarImagen(loadImage("img/sprites_powerups.png"), 32, 17, 1);
   sprites_rat = recortarImagen(loadImage("img/sprites_rat.png"), 33, 33, 1);
   sprites_viper = recortarImagen(loadImage("img/sprites_viper.png"), 91, 35, 1);
   sprites_vulture = recortarImagen(loadImage("img/sprites_vulture.png"), 93, 70, 1); 
   sprites_wolf = recortarImagen(loadImage("img/sprites_wolf.png"), 114, 57, 1);
-  img_portal = loadImage("img/sprites_portal.png");
   img_fondo = new PImage[4];
   for (int i = 0; i < 4; i++) {
     img_fondo[i] = loadImage("img/fondo_"+(i+1)+".png");
@@ -179,7 +197,7 @@ void cargarImagenes(){
   img_tiles = recortarImagen(loadImage("img/sprites_tiles.png"), 16, 16, 1);
 }
 
-void cargarSonidos(){
+void cargarSonidos() {
   mouse_squeak = minim.loadSample( "sound/mouse_squeak.wav", 512);
   vulture_screech = minim.loadSample( "sound/vulture_screech.wav", 512);
 }

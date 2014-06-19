@@ -160,12 +160,14 @@ class Jugador {
       if (t instanceof Spike) {
         if (t.colisiona(this) && !inmune) {
           dano(0.2);
+          ui.score -= 250;
           break;
         }
       }
       if (t instanceof Plant) {
         if (t.colisiona(this) && !inmune) {
-          dano(0.2);
+          dano(0.2);        
+          ui.score -= 250;
           break;
         }
       }

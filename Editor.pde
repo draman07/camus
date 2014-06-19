@@ -441,7 +441,7 @@ class Editor { //<>// //<>// //<>//
     fill(#53FA05);
     ellipse(nivel.ix, nivel.iy, 32, 32);
     fill(250, 255, 20);
-    image(img_portal, nivel.portal.x-nivel.portal.w/2, nivel.portal.y-nivel.portal.h/2);
+    image(sprites_portal[0][0], nivel.portal.x-nivel.portal.w/2, nivel.portal.y-nivel.portal.h/2);
     pushMatrix();
     resetMatrix();
 
@@ -800,7 +800,7 @@ class Niveles extends Ventana {
       String extension = ruta.substring(ruta.lastIndexOf(".") + 1, ruta.length());
       if (extension.equals("json")) {
         Nivel aux = new Nivel();
-        aux.cargarNivel(ruta);
+        aux.cargarNivel(nombre+"."+extension);
         niveles.add(aux);
         nombres.add(nombre);
       }

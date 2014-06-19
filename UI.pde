@@ -16,10 +16,11 @@ class UI {
     if (tiempo < 0) {
       tiempo = max_tem;
     }
-    if (score >= 2500) {
+    if (score >= 4000 && cant_vidas < 9) {
       cant_vidas++;
-      score -= 2500;
+      score -= 4000;
     }
+    if(score < 0) score = 0;
   }
   void dibujar() {
     int cx = 20;
@@ -35,9 +36,10 @@ class UI {
       image(recortar(sprites, 160, 154, 5+desx, 10), cx+22, cy+26);
       image(recortar(sprites, 256, 154, 4, 10), cx+27+desx, cy+26);
     } 
-    fill(#a60F00);
+    //fill(#a60F00);
+    fill(#EDD9D7);
     textAlign(CENTER, CENTER);
-    textFont(font_chiqui, 22);
+    textFont(font_chiqui22);
     text(cant_vidas, 179, 40);
     image(recortar(sprites, 340, 96, 138, 40), width/2-69, cy);
     textFont(font_chiqui, 13);
