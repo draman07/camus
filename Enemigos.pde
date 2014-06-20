@@ -457,8 +457,8 @@ class Wolf extends Enemigo {
     vel = 1;
     velx = cos(ang)*vel;
     vely = sin(ang)*vel;
-    max_dis = 300;
-    dis_sal = 250;
+    max_dis = 400;
+    dis_sal = 200;
     puntos = false;
     tiempo_reposo = 0;
     estado = "normal";
@@ -476,6 +476,7 @@ class Wolf extends Enemigo {
     }
     float dis = dist(obj.x, obj.y, x, y);  
     tiempo_reposo--;
+    if(nivel.jugador.invisible) estado = "normal";
     if (!estado.equals("atacar") && !nivel.jugador.invisible) {
       obj = new Punto(nivel.jugador.x, nivel.jugador.y);
       if (dis < dis_sal && tiempo_reposo <= 0) {
@@ -485,6 +486,8 @@ class Wolf extends Enemigo {
       } else if (dis < max_dis) {
         vel = 1;
         estado = "seguir";
+      }else{
+        estado = "normal"; 
       }
       velx = vel;
       if (obj.x-x < 0) velx = -vel;
@@ -508,17 +511,15 @@ class Wolf extends Enemigo {
 
     float antx = x; 
     float anty = y;
-    if(estado.equals("normal")){
-      x += velx;
-      if (nivel.colisiona(this)) {
-        x = antx;
-        if (!salto) {
-          salto = true;
-          vely = -16;
-        }
-        if (estado.equals("atacar")) {
-          estado = "seguir";
-        }
+    if(!estado.equals("normal")) x += velx;
+    if (nivel.colisiona(this)) {
+      x = antx;
+      if (!salto) {
+        salto = true;
+        vely = -16;
+      }
+      if (estado.equals("atacar")) {
+        estado = "seguir";
       }
     }
 
@@ -593,7 +594,8 @@ class Vulture extends Enemigo {
 class Cobra extends Enemigo {
   boolean seguir, salto;
   int frame, dir, tiempo_reposo;
-  float vel, velx, vely, max_dis;
+  float vel, velx, vely, max_dis, dis_sal;
+  String estado;
   Cobra(float x, float y) {
     this.x = x; 
     this.y = y;
@@ -605,50 +607,63 @@ class Cobra extends Enemigo {
     vel = 1;
     velx = cos(ang)*vel;
     vely = sin(ang)*vel;
-    max_dis = 250;
+    max_dis = 400;
+    dis_sal = 150;
     seguir = false;
     puntos = false;
     tiempo_reposo = 0;
+    estado = "normal";
   }
   void act() {
-    if (frameCount%6 == 0) frame++;
+    if (frameCount%6 == 0 && !estado.equals("normal")) frame++;
     frame %= 9;
-    obj = new Punto(nivel.jugador.x, nivel.jugador.y);
-    float dis = dist(obj.x, obj.y, x, y);
-    if (dis < max_dis && !nivel.jugador.invisible) {
-      if (!seguir && (dir == 0 && x-obj.x < 0) || (dir == 1 && x-obj.x > 0)) {
-        seguir = true;
-      }
-    } else {
-      seguir = false;
+    
+    float dis = dist(obj.x, obj.y, x, y);  
+    tiempo_reposo--;
+    if(nivel.jugador.invisible){
+       estado = "normal"; 
     }
-    if (seguir) {
+    if (!estado.equals("atacar") && !nivel.jugador.invisible) {
+      obj = new Punto(nivel.jugador.x, nivel.jugador.y);
+      if (dis < dis_sal && tiempo_reposo <= 0) {
+        vel = 4;
+        tiempo_reposo = 180;
+        estado = "atacar";
+        vely = -20;
+      } else if (dis < max_dis) {
+        vel = 2;
+        estado = "seguir";
+      }else{
+        estado = "normal"; 
+      }
+      velx = vel;
+      if (obj.x-x < 0) velx = -vel;
+    }
+    if (estado.equals("seguir")) {
+      dir = 0;
+      if (velx < 0) dir = 1;
       if (obj.x-(x-10) < 0) {
         velx = -vel;
       } else if (obj.x-(x+10) > 0) {
         velx = vel;
       }
-      seguir = true;
-      dir = 0;
-      if (velx < 0) dir = 1;
-    } else {
-      velx = 0;
-      tiempo_reposo++;
-      dir = (tiempo_reposo/180)%2;
-      if (seguir) { 
-        tiempo_reposo = 0;
-        seguir = false;
+    } else if (estado.equals("atacar")) {
+      if (abs(obj.x-x) < vel) {
+        estado = "normal";
       }
     }
 
     float antx = x; 
     float anty = y;
-    x += velx;
+    if(!estado.equals("normal")) x += velx;
     if (nivel.colisiona(this)) {
       x = antx;
       if (!salto) {
         salto = true;
         vely = -16;
+      }
+      if (estado.equals("atacar")) {
+        estado = "seguir";
       }
     }
 
@@ -657,9 +672,6 @@ class Cobra extends Enemigo {
     if (nivel.colisiona(this)) {
       y = anty;
       salto = false;
-      if (vely > 0) {
-        //cant_sal = 0;
-      }
       vely = 0;
     }
   }
