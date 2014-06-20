@@ -13,11 +13,11 @@ int pause_time;
 int tam = 16;
 Nivel nivel;
 Scroll vol_music, vol_sound;
-String estado = "menu";
+String estado = "splash";
 PFont font_chiqui, font_chiqui22;
 PImage sprites, arboles;
-PImage fondo_menu, boton_start, boton_sound, boton_music, boton_pause, img_barra, img_bbarra, img_pauseMenu;
-PImage[] img_fondo, img_arbol;
+PImage boton_start, boton_sound, boton_music, boton_pause, img_barra, img_bbarra, img_pauseMenu;
+PImage[] fondo_menu, img_fondo, img_arbol;
 PImage[][] sprites_cobra, sprites_dove, sprites_hawk, sprites_leon, sprites_mouse, sprites_serpent, sprites_plants, sprites_portal, sprites_powerups, sprites_rat, sprites_viper, sprites_vulture, sprites_wolf;
 PImage[][] img_tiles;
 UI ui;
@@ -44,18 +44,56 @@ void draw() {
   if (frameCount%10 == 0) frame.setTitle("FPS:"+frameRate);
   if (cargar) return;
   //background(200);
-  if (estado.equals("menu")) {
-    image(fondo_menu, 0, 0);
+  if (estado.equals("splash")) {
+    image(fondo_menu[0], 0, 0);
     image(boton_start, width/2-boton_start.width/2, 210);
     if (input.ENTER.click || (input.click && mouseX >= width/2-boton_start.width/2 && mouseX < width/2+boton_start.width/2 && mouseY > 210 && mouseY < 210+boton_start.height)) {
-      estado = "juego";
-      //fill(255, 0, 0);
-      //rect(width/2-boton_start.width/2, 210, boton_start.width, boton_start.height);
+      estado = "main";
     } 
     vol_music.act();
     vol_sound.act();   
     image(boton_music, 172, 490);
     image(boton_sound, 172, 550);
+  } else if (estado.equals("main")) {
+    image(fondo_menu[1], 0, 0);
+    if (input.click && mouseX >= 300 && mouseX < 500) {
+      if (mouseY >= 190 && mouseY < 240) {
+        estado = "juego";
+      }
+      if (mouseY >= 270 && mouseY < 315) {
+        estado = "level";
+      }
+      if (mouseY >= 340 && mouseY < 395) {
+        estado = "score";
+      }
+      if (mouseY >= 420 && mouseY < 470) {
+        estado = "options";
+      }
+      if (mouseY >= 495 && mouseY < 550) {
+        estado = "editor";
+      }
+    }
+  } else if (estado.equals("score")) {
+    image(fondo_menu[2], 0, 0);
+    if (input.click && mouseX > 15 && mouseX < 70 &&  mouseY >= 10 && mouseY < 68) {
+      estado = "main";
+    }
+  } else if (estado.equals("level")) {
+    image(fondo_menu[3], 0, 0);
+    if (input.click && mouseX > 15 && mouseX < 70 &&  mouseY >= 10 && mouseY < 68) {
+      estado = "main";
+    }
+  } else if (estado.equals("options")) {
+    image(fondo_menu[4], 0, 0);
+    vol_music.x = 360;
+    vol_music.y = 160;
+    vol_music.act();
+    vol_sound.x = 360;
+    vol_sound.y = 220;
+    vol_sound.act();
+    if (input.click && mouseX > 15 && mouseX < 70 &&  mouseY >= 10 && mouseY < 68) {
+      estado = "main";
+    }
   } else if (estado.equals("juego")) {
     if (input.PAUSA.click) {
       pausa = !pausa;
@@ -175,7 +213,10 @@ void cargarImagenes() {
   for (int i = 0; i < 5; i++) {
     img_arbol[i] = loadImage("img/arbol"+(i+1)+".png");
   }
-  fondo_menu = loadImage("img/fondo_menu.png");
+  fondo_menu = new PImage[5];
+  for (int i = 0; i < 5; i++) {
+    fondo_menu[i] = loadImage("img/fondomenu"+i+".png");
+  }
   boton_start = recortar(sprites, 0, 352, 201, 50);
   boton_sound = recortar(sprites, 0, 402, 130, 30);
   boton_music = recortar(sprites, 0, 432, 130, 30);
