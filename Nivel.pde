@@ -717,7 +717,7 @@ PImage crearFondo() {
   int w = width+(nivel.w*tam-width)/2;
   int h = height+(nivel.h*tam-height)/2;
   int cant = w/180;
-  println("Se a creado un nuevo arbol", w, h, cant);
+  //println("Se a creado un nuevo arbol", w, h, cant);
   PGraphics aux = createGraphics(w, h);
   aux.beginDraw();
   aux.background(180, 180, 255);

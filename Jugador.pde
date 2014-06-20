@@ -43,7 +43,7 @@ class Jugador {
       w = 32; 
       h = 32;
       if (agachadito) {
-        y -= 8;
+        y -= 8; //<>//
         velx = 4;
         x = int(x)-int(x%4);
         agachadito = false;
@@ -184,12 +184,12 @@ class Jugador {
     if (inmune && inmuneTime%12 < 6) return;
     if (agachadito) {
       if (dir == 0) {
-        image(sprites_leon[frame%4][frame/4], x-35, y-h/2-12);
-        image(sprites_leon[frame%4+1][frame/4], x, y-h/2-12);
+        image(sprites_leon[frame%4][frame/4], x-35, y-h/2-11);
+        image(sprites_leon[frame%4+1][frame/4], x, y-h/2-11);
       }
       else {
-        image(espejar(sprites_leon[frame%4+1][frame/4]), x-35, y-h/2-10); 
-        image(espejar(sprites_leon[frame%4][frame/4]), x, y-h/2-10);
+        image(espejar(sprites_leon[frame%4+1][frame/4]), x-35, y-h/2-11); 
+        image(espejar(sprites_leon[frame%4][frame/4]), x, y-h/2-11);
       }
     }
     else {

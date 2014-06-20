@@ -1,4 +1,4 @@
-class Enemigo extends Elemento {
+class Enemigo extends Elemento { //<>// //<>// //<>//
   float dano = 0.1;
   void dano(Jugador j) {
     if (eliminar) return;
@@ -373,7 +373,7 @@ class Viper extends Enemigo {
       frame %= 8;
     } else if (estado.equals("atacar")) {
       frame -= 8;
-      if(frame < -1) frame = -1;
+      if (frame < -1) frame = -1;
       if (frameCount%6 == 0) frame++;
       frame %= 5;
       frame += 8;
@@ -442,64 +442,83 @@ class Viper extends Enemigo {
 }
 
 class Wolf extends Enemigo {
-  boolean seguir, salto;
+  boolean salto;
   int frame, dir, tiempo_reposo;
-  float vel, velx, vely, max_dis;
+  float vel, velx, vely, max_dis, dis_sal;
+  String estado;
   Wolf(float x, float y) {
     this.x = x; 
     this.y = y;
     ini = new Punto(x, y);
     w = 114;
     h = 57;
-    obj = new Punto(x, y);
+    obj = new Punto(nivel.jugador.x, nivel.jugador.y);
     float ang = atan2(obj.y-y, obj.x-x);
     vel = 1;
     velx = cos(ang)*vel;
     vely = sin(ang)*vel;
-    max_dis = 250;
-    seguir = false;
+    max_dis = 300;
+    dis_sal = 250;
     puntos = false;
     tiempo_reposo = 0;
+    estado = "normal";
   }
   void act() {
-    if (frameCount%6 == 0) frame++;
-    frame %= 9;
-    obj = new Punto(nivel.jugador.x, nivel.jugador.y);
-    float dis = dist(obj.x, obj.y, x, y);
-    if (dis < max_dis && !nivel.jugador.invisible) {
-      if (!seguir && (dir == 0 && x-obj.x < 0) || (dir == 1 && x-obj.x > 0)) {
-        seguir = true;
-      }
-    } else {
-      seguir = false;
+    if (estado.equals("normal")) {
+      frame = 0;
+    } else if (estado.equals("seguir")) {
+      if (frameCount%4 == 0) frame++;
+      frame %= 12;
+      if (frame > 0 && frame < 5) frame = 5;
+    } else if (estado.equals("atacar")) {
+      if (frameCount%4 == 0 && frame != 4) frame++;
+      if (frame <= 0 || frame > 4) frame = 1;
     }
-    if (seguir) {
+    float dis = dist(obj.x, obj.y, x, y);  
+    tiempo_reposo--;
+    if (!estado.equals("atacar") && !nivel.jugador.invisible) {
+      obj = new Punto(nivel.jugador.x, nivel.jugador.y);
+      if (dis < dis_sal && tiempo_reposo <= 0) {
+        vel = 4;
+        tiempo_reposo = 180;
+        estado = "atacar";
+      } else if (dis < max_dis) {
+        vel = 1;
+        estado = "seguir";
+      }
+      velx = vel;
+      if (obj.x-x < 0) velx = -vel;
+    }
+    if (estado.equals("seguir")) {
+      dir = 0;
+      if (velx < 0) dir = 1;
       if (obj.x-(x-10) < 0) {
         velx = -vel;
       } else if (obj.x-(x+10) > 0) {
         velx = vel;
       }
-      seguir = true;
-      dir = 0;
-      if (velx < 0) dir = 1;
-    } else {
-      velx = 0;
-      tiempo_reposo++;
-      dir = (tiempo_reposo/180)%2;
-      if (seguir) { 
-        tiempo_reposo = 0;
-        seguir = false;
+    } else if (estado.equals("atacar")) {
+      if (abs(obj.x-x) < vel) {
+        estado = "normal";
+      }
+      if (frame == 3) {
+        vely = -14;
       }
     }
 
     float antx = x; 
     float anty = y;
-    x += velx;
-    if (nivel.colisiona(this)) {
-      x = antx;
-      if (!salto) {
-        salto = true;
-        vely = -16;
+    if(estado.equals("normal")){
+      x += velx;
+      if (nivel.colisiona(this)) {
+        x = antx;
+        if (!salto) {
+          salto = true;
+          vely = -16;
+        }
+        if (estado.equals("atacar")) {
+          estado = "seguir";
+        }
       }
     }
 
@@ -508,9 +527,6 @@ class Wolf extends Enemigo {
     if (nivel.colisiona(this)) {
       y = anty;
       salto = false;
-      if (vely > 0) {
-        //cant_sal = 0;
-      }
       vely = 0;
     }
   }
@@ -544,7 +560,7 @@ class Vulture extends Enemigo {
   void act() {
     if (frameCount%6 == 0) frame++;
     frame %= 3;
-    float ang = atan2(obj.y-y, obj.x-x); //<>//
+    float ang = atan2(obj.y-y, obj.x-x);
     dir = 0;
     if (velx < 0) dir = 1;
     velx = cos(ang)*vel;
