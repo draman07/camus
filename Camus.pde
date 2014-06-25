@@ -16,8 +16,8 @@ Scroll vol_music, vol_sound;
 String estado = "splash";
 PFont font_chiqui, font_chiqui22;
 PImage sprites, arboles;
-PImage boton_start, boton_sound, boton_music, boton_pause, img_barra, img_bbarra, img_pauseMenu;
-PImage[] fondo_menu, img_fondo, img_arbol;
+PImage boton_start, boton_sound, boton_level, boton_music, boton_pause, img_barra, img_bbarra, img_pauseMenu;
+PImage[] fondo_menu, img_arbol;
 PImage[][] sprites_cobra, sprites_dove, sprites_hawk, sprites_leon, sprites_mouse, sprites_serpent, sprites_plants, sprites_portal, sprites_powerups, sprites_rat, sprites_viper, sprites_vulture, sprites_wolf;
 PImage[][] img_tiles;
 UI ui;
@@ -80,6 +80,17 @@ void draw() {
     }
   } else if (estado.equals("level")) {
     image(fondo_menu[3], 0, 0);
+    ArrayList<Nivel> niveles = editor.niveles.niveles;
+    float borde = boton_level.width/4;
+    float desx = boton_level.width+borde;
+    float desy = boton_level.height+borde;
+    float inix = (width-(desx*4-borde))/2;
+    float iniy = 160;
+    for (int i = 0; i < niveles.size (); i++) {
+      float x = inix + desx*(i%4);
+      float y = iniy + desy*(i/4);
+      image(boton_level, x, y);
+    }
     if (input.click && mouseX > 15 && mouseX < 70 &&  mouseY >= 10 && mouseY < 68) {
       estado = "main";
     }
@@ -205,10 +216,6 @@ void cargarImagenes() {
   sprites_viper = recortarImagen(loadImage("img/sprites_viper.png"), 91, 35, 1);
   sprites_vulture = recortarImagen(loadImage("img/sprites_vulture.png"), 93, 70, 1); 
   sprites_wolf = recortarImagen(loadImage("img/sprites_wolf.png"), 114, 57, 1);
-  img_fondo = new PImage[4];
-  for (int i = 0; i < 4; i++) {
-    img_fondo[i] = loadImage("img/fondo_"+(i+1)+".png");
-  }
   img_arbol = new PImage[5];
   for (int i = 0; i < 5; i++) {
     img_arbol[i] = loadImage("img/arbol"+(i+1)+".png");
@@ -219,6 +226,7 @@ void cargarImagenes() {
   }
   boton_start = recortar(sprites, 0, 352, 201, 50);
   boton_sound = recortar(sprites, 0, 402, 130, 30);
+  boton_level = loadImage("img/levelboton1.png");
   boton_music = recortar(sprites, 0, 432, 130, 30);
   boton_pause = recortar(sprites, 201, 352, 130, 45);
   img_pauseMenu = loadImage("img/pMenu.png");
