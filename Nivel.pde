@@ -98,8 +98,8 @@ class Nivel { //<>// //<>//
     int tam = 16;
     int x0 = floor(int(-camara.x)/tam);
     int y0 = floor(int(-camara.y)/tam);
-    int x1 = x0+width/tam+3;
-    int y1 = y0+height/tam+3;
+    int x1 = x0+width/tam+1;
+    int y1 = y0+height/tam+2;
     if (x0 < 0) x0 = 0;
     if (x0 > w) x0 = w;
     if (y0 < 0) y0 = 0;

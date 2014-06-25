@@ -1,4 +1,4 @@
- //<>//
+ //<>// //<>//
 import ddf.minim.*;
 
 Minim minim;
@@ -78,6 +78,9 @@ void draw() {
     if (input.click && mouseX > 15 && mouseX < 70 &&  mouseY >= 10 && mouseY < 68) {
       estado = "main";
     }
+    if (input.PAUSA.click) {
+      estado = "main";
+    }
   } else if (estado.equals("level")) {
     image(fondo_menu[3], 0, 0);
     ArrayList<Nivel> niveles = editor.niveles.niveles;
@@ -94,15 +97,21 @@ void draw() {
     if (input.click && mouseX > 15 && mouseX < 70 &&  mouseY >= 10 && mouseY < 68) {
       estado = "main";
     }
+    if (input.PAUSA.click) {
+      estado = "main";
+    }
   } else if (estado.equals("options")) {
     image(fondo_menu[4], 0, 0);
-    vol_music.x = 360;
-    vol_music.y = 160;
+    vol_music.x = 385;
+    vol_music.y = 195;
     vol_music.act();
-    vol_sound.x = 360;
-    vol_sound.y = 220;
+    vol_sound.x = 385;
+    vol_sound.y = 255;
     vol_sound.act();
     if (input.click && mouseX > 15 && mouseX < 70 &&  mouseY >= 10 && mouseY < 68) {
+      estado = "main";
+    }
+    if (input.PAUSA.click) {
       estado = "main";
     }
   } else if (estado.equals("juego")) {
@@ -174,9 +183,11 @@ void draw() {
   } else if (estado.equals("editor")) {
     camara.act();
     editor.act();
+    if (input.PAUSA.click) {
+      estado = "main";
+    }
   } else if (estado.equals("arboles")) {
     if (input.kclick) {
-      image(img_fondo[0], 0, 0);
       int w = int(random(40, 120));
       arboles = crearFondo();
       image(arboles, 0, 0, width, height);
