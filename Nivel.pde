@@ -1,4 +1,4 @@
-class Nivel { //<>// //<>//
+class Nivel { //<>//
   ArrayList<Elemento> elementos;
   ArrayList<Enemigo> enemigos;
   ArrayList<PowerUp> powerups;
@@ -31,7 +31,7 @@ class Nivel { //<>// //<>//
       if (!aux.eliminar) aux.act();
     }
     jugador.act();
-    if (portal.toca){
+    if (portal.toca) {
       pasarNivel = true;
     }
     if (jugador.y >= nivel.h*tam+100) {
@@ -41,14 +41,12 @@ class Nivel { //<>// //<>//
     dibujar();
   }
   void dibujar() {
+    if(estado.equals("gameover")) return;
     pushMatrix();
     resetMatrix();
     if (!jugador.invisible) {    
-      //image(img_fondo[1], 0, 0);
-      //fill(180, 180, 255);
-      //rect(0, 0, width, height);
       translate(int(camara.x)/2, int(camara.y)/2);
-      image(arboles, 0, 0);
+      //image(arboles, 0, 0);
     }
     resetMatrix();
     fill(0, 40+jugador.invisibilidad*40);
@@ -57,7 +55,9 @@ class Nivel { //<>// //<>//
     dibujarTiles();
     for (int i = 0; i < elementos.size (); i++) {
       Elemento aux = elementos.get(i);
-      if (!aux.eliminar) aux.dibujar();
+      if (dist(aux.x, aux.y, jugador.x, jugador.y) < width) {
+        if (!aux.eliminar) aux.dibujar();
+      }
     }
     jugador.dibujar();
     if (jugador.invisible) {
@@ -488,7 +488,7 @@ class Nivel { //<>// //<>//
     trampas = new ArrayList<Trampa>();
     w = json.getInt("width");
     h = json.getInt("height");
-    if (frameCount > 0) { 
+    if (frameCount > 0 ) { 
       arboles = crearFondo();
     }
     //println((w*tam*2)-width, (h*tam*2)-height);
@@ -613,9 +613,9 @@ class Nivel { //<>// //<>//
     if (editor != null) {
       /*
       editor.ventanas.remove(editor.minimapa);
-      //editor.minimapa = new Minimapa(w, h);
-      editor.ventanas.add(editor.minimapa);
-      */
+       //editor.minimapa = new Minimapa(w, h);
+       editor.ventanas.add(editor.minimapa);
+       */
     }
   }
   boolean colisiona(Jugador ju) {

@@ -16,9 +16,14 @@ class UI {
     if (tiempo < 0) {
       tiempo = max_tem;
     }
-    if (score >= 4000 && cant_vidas < 9) {
+    if (score >= 4000) {
       cant_vidas++;
       score -= 4000;
+    }
+    if(cant_vidas <= 0){
+       estado = "gameover"; 
+       resetMatrix();
+       image(fondo_menu[6], 0, 0);
     }
     if(score < 0) score = 0;
   }
