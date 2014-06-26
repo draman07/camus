@@ -28,7 +28,7 @@ class Input {
   int amouseX, amouseY;
   int pressCount, mouseWheel, timepress;
   Key SALTAR, IZQUIERDA, DERECHA, ABAJO, REINICIAR, INVISIBLE, EDITAR, ELIMINAR, PAUSA;
-  Key CONTROL, ENTER; 
+  Key CONTROL, ENTER, BACKSPACE; 
   Input() {
     click = dclick = released = press = false;
     kclick = kreleased = kpress = false;
@@ -45,6 +45,7 @@ class Input {
     PAUSA = new Key();
     CONTROL = new Key();
     ENTER = new Key();
+    BACKSPACE = new Key();
   }
   void act() {
     mouseWheel = 0;
@@ -64,6 +65,8 @@ class Input {
     ELIMINAR.act();
     PAUSA.act();
     CONTROL.act();
+    ENTER.act();
+    BACKSPACE.act();
   }
   void mpress() {
     amouseX = mouseX;
@@ -98,6 +101,7 @@ class Input {
     if (key == ESC) PAUSA.event(estado);
     if (keyCode == 17) CONTROL.event(estado);
     if (keyCode == 10) ENTER.event(estado);
+    if (keyCode == 8) BACKSPACE.event(estado);
   }
 }
 

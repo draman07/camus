@@ -602,13 +602,12 @@ class Nivel { //<>//
     for (int i = 0; i < trampas.size (); i++) {
       elementos.add(trampas.get(i));
     }
+    /*
     if (editor != null) {
-      /*
       editor.ventanas.remove(editor.minimapa);
        //editor.minimapa = new Minimapa(w, h);
        editor.ventanas.add(editor.minimapa);
-       */
-    }
+    }*/
   }
   boolean colisiona(Jugador ju) {
     int x0 = int((ju.x - ju.w)/tam); 

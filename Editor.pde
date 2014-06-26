@@ -15,7 +15,7 @@ class Editor { //<>//
     tam = 16;
     menu = new Menu(0, -30, width, 38);
     minimapa = new Minimapa(nivel.w, nivel.h); 
-    opciones = new Opciones(width-220, 50, 200, 280);
+    opciones = new Opciones(width-220, 50, 200, 310);
     niveles = new Niveles(10, 48, 140, 260);
     ventanas = new ArrayList<Ventana>();
     ventanas.add(minimapa);
@@ -259,7 +259,7 @@ class Editor { //<>//
             nivel.elementos.add(aux);
           }
         } else if (val == 5 && input.click) {
-           if (opciones.ajustar.press) {
+          if (opciones.ajustar.press) {
             int mt = tam/2;
             mx = ((mx+mt/2)/mt)*mt;
             my = ((my+mt/2)/mt)*mt;
@@ -677,9 +677,11 @@ class Ventana {
   boolean mover, mostrar, sobre;  
   int x, y, w, h;
   PImage barra; 
-  Ventana(int x, int y, int w, int h) {
+  String nombre;
+  Ventana(int x, int y, int w, int h, String nombre) {
     this.x = x; 
     this.y = y; 
+    this.nombre = nombre;
     mostrar = true;
     resize(w, h);
   }
@@ -716,6 +718,9 @@ class Ventana {
     stroke(200);
     line(x+w-14, y+3, x+w-3, y+14);
     line(x+w-14, y+14, x+w-3, y+3);
+
+    fill(255);
+    text(nombre, x+6, y+10);
   }
   void resize(int nw, int nh) {
     this.w = nw; 
@@ -727,8 +732,9 @@ class Ventana {
 class Opciones extends Ventana {
   Check ajustar;
   Selector enemigos, powerups, trampas, tiles, puntos;
+  Slider widthMap, heightMap, timeMap;
   Opciones(int x, int y, int w, int h) {
-    super(x, y, w, h);
+    super(x, y, w, h, "Opciones");
     ajustar = new Check(10, 60, 20, 20, "ajustar");
     ajustar.press = true;
     tiles = new Selector(10, 30, 80, 20, 4, 0, "tiles");
@@ -736,6 +742,10 @@ class Opciones extends Ventana {
     powerups = new Selector(10, 120, 80, 20, 4, 0, "powerups");
     trampas = new Selector(10, 150, 60, 20, 3, 0, "trampas");
     puntos = new Selector(10, 180, 40, 20, 2, 0, "puntos interes");
+
+    widthMap = new Slider("widthMap", 10, 210, 180, 20, 0, 100, 50);
+    heightMap = new Slider("heightMap", 10, 250, 180, 20, 0, 100, 50);
+    timeMap = new Slider("timeMap", 10, 290, 180, 20, 0, 100, 50);
   }
   void act() {
     super.act();
@@ -765,6 +775,9 @@ class Opciones extends Ventana {
       editor.menu.herramientas.val = 6;
       editor.menu.elementos.val = 5;
     }
+    widthMap.act(x, y);
+    heightMap.act(x, y);
+    timeMap.act(x, y);
   }
   void dibujar() {
     if (!mostrar) return;
@@ -779,6 +792,10 @@ class Opciones extends Ventana {
     trampas.dibujar(x, y);
     image(recortar(sprites, 320, 196, 60, 20), x+trampas.x, y+trampas.y);
     puntos.dibujar(x, y);
+
+    widthMap.dibujar(x, y);
+    heightMap.dibujar(x, y);
+    timeMap.dibujar(x, y);
   }
 }
 
@@ -786,7 +803,7 @@ class Niveles extends Ventana {
   ArrayList<Nivel> niveles;
   int sel;
   Niveles(int x, int y, int w, int h) {
-    super(x, y, w, h);
+    super(x, y, w, h, "Niveles");
     niveles = new ArrayList<Nivel>();
     sel = -1;
     File file = new File(sketchPath+"/niveles/");
@@ -812,6 +829,7 @@ class Niveles extends Ventana {
           sel = i;
           nivel = niveles.get(i);
           nivel.iniciar();
+          editor.minimapa.iniciar(nivel.w, nivel.h);
         }
       }
     }
@@ -839,7 +857,7 @@ class Minimapa extends Ventana {
   int mw, mh, es;
   PImage img;
   Minimapa(int mw, int mh) {
-    super(580, 360, 100, 100);
+    super(580, 390, 100, 100, "Minimapa");
     iniciar(mw, mh);
   }
   void iniciar(int mw, int mh) {
@@ -1027,6 +1045,80 @@ class Selector {
     text(nombre, x+w+4, y+9);
   }
 }
+
+
+class Slider {
+  boolean sobre, mover;
+  float val, min_val, max_val;
+  int x, y, w, h;
+  String name;
+  Slider(String name, int x, int y, int w, int h, float min_val, float max_val, float val) { 
+    this.name = name;
+    this.x = x; 
+    this.y = y; 
+    this.w = w; 
+    this.h = h;
+    this.min_val = min_val;
+    this.max_val = max_val;
+    this.val = val;
+  }
+  void act(int cx, int cy) {
+    int x = this.x + cx;
+    int y = this.y + cy;
+    if (mouseX >= x && mouseX < x + w && mouseY >= y && mouseY < y + h) {
+      sobre = true;
+    } else
+      sobre = false;
+    if (sobre && input.click) {
+      mover = true;
+    }
+    if (input.released) {
+      mover = false;
+    }
+
+    if (mover) {
+      float posX = mouseX;
+      if (posX < x) {
+        posX = x;
+      } else if (posX > x + w) {
+        posX = x + w;
+      }
+      val = (min_val + (max_val - min_val)
+        * ((posX - h / 2 - x) / (w - h)));
+      if (val < min_val) {
+        val = min_val;
+      } else if (val > max_val) {
+        val = max_val;
+      }
+    }
+  }
+
+  void dibujar(int cx, int cy) {
+    int x = this.x + cx;
+    int y = this.y + cy;
+    fill(120);
+    rect(x, y, w, h);
+    fill(150);
+    float pos = x + ((w - h) * ((val - min_val) / (max_val - min_val)));
+    rect(pos, y, h, h);
+    fill(255);
+    if (abs(max_val - min_val) >= 20) {
+      text(name + " " + (int) val, x + 2, y + 6+ h);
+    } else {
+      text(name + " " + val, x + 2, y + 6 + h);
+    }
+  }
+  float getFloat() {
+    return val;
+  }
+  int getInt() {
+    return round(val);
+  }
+  void set(float val) {
+    this.val = val;
+  }
+}
+
 
 PImage crearDegrade(int w, int h, color c1, color c2) {
   PImage aux = createImage(w, h, RGB);
