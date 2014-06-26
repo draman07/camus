@@ -14,6 +14,9 @@ class Datos {
       cantidadMuertes = jdatos.getInt("cantidadMuertes");
       totalPuntos = jdatos.getInt("totalPuntos");
     } else {
+      tiempoJugado = 0;
+      cantidadMuertes = 0;
+      totalPuntos = 0;
       jdatos =  new JSONObject();
     }
     guardar();

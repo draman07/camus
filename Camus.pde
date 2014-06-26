@@ -1,4 +1,4 @@
-import ddf.minim.*; //<>//
+import ddf.minim.*; //<>// //<>//
 
 Minim minim;
 
@@ -16,7 +16,7 @@ Scroll vol_music, vol_sound;
 String estado = "splash";
 PFont font_chiqui, font_chiqui22;
 PImage sprites, arboles;
-PImage boton_start, boton_sound, boton_level, boton_music, boton_pause, img_barra, img_bbarra, img_pauseMenu;
+PImage boton_start, boton_sound, boton_level, boton_music, boton_pause, img_barra, img_bbarra, img_pauseMenu, tileMenu;
 PImage[] fondo_menu, img_arbol;
 PImage[][] sprites_cobra, sprites_dove, sprites_hawk, sprites_leon, sprites_mouse, sprites_serpent, sprites_plants, sprites_portal, sprites_powerups, sprites_rat, sprites_viper, sprites_vulture, sprites_wolf;
 PImage[][] img_tiles;
@@ -27,9 +27,9 @@ void setup() {
   minim = new Minim(this);
   cargarImagenes();
   cargarSonidos();
-  //datos = new Datos();
-  font_chiqui = loadFont("Silkscreen-14.vlw");
-  font_chiqui22 = loadFont("Silkscreen-22.vlw");
+  datos = new Datos();
+  font_chiqui = createFont("slkscr.ttf", 14, true);//loadFont("Silkscreen-14.vlw");
+  font_chiqui22 = createFont("slkscr.ttf", 22, true);//loadFont("Silkscreen-22.vlw");
   vol_music = new Scroll(374, 500, img_barra.width-img_barra.height, img_barra.height/2, 0, 1, 1);
   vol_sound = new Scroll(374, 560, img_barra.width-img_barra.height, img_barra.height/2, 0, 1, 0);
   input = new Input();
@@ -62,7 +62,7 @@ void draw() {
       fill(#1E0826, 255*0.2*av);
       rect(0, 0, width, height);
       image(img_pauseMenu, 0, height-130*av);
-      image(recortar(sprites,202,402,55,55),30,30);
+      image(recortar(sprites, 202, 402, 55, 55), 30, 30);
       if (input.click && mouseX > 30 && mouseX < 85&&  mouseY >= 30 && mouseY < 85) {
         estado = "main";
       }
@@ -123,11 +123,14 @@ void draw() {
       estado = "main";
     }
   }
-  //datos.act();
+  datos.act();
   input.act();
 }
 
-
+void dispose() {
+  datos.guardar();
+  println("Se cerro el juego!");
+}
 
 void keyPressed() {
   input.event(true);
@@ -144,17 +147,25 @@ void mouseReleased() {
   input.mreleased();
 }
 
-void dibujarPantallasInicio(){
+void dibujarPantallasInicio() {
+  if(estado.equals("juego")) frameRate(60);
+  else frameRate(30);
+  if (estado.equals("juego") || estado.equals("editor")) return;
+  //dibujar fondo
+  int tt = tileMenu.width;
+  int dd = (frameCount)%tt;
+  for (int j = -1; j < height/tt; j++) {
+    for (int i = -1; i < width/tt; i++) {
+      image(tileMenu, i*tt+dd, j*tt+dd);
+    }
+  }
   if (estado.equals("splash")) {
     image(fondo_menu[0], 0, 0);
     image(boton_start, width/2-boton_start.width/2, 210);
     if (input.ENTER.click || (input.click && mouseX >= width/2-boton_start.width/2 && mouseX < width/2+boton_start.width/2 && mouseY > 210 && mouseY < 210+boton_start.height)) {
       estado = "main";
-    } 
-    vol_music.act();
-    vol_sound.act();   
-    image(boton_music, 172, 490);
-    image(boton_sound, 172, 550);
+    }
+    if(input.PAUSA.click) exit();
   } else if (estado.equals("main")) {
     image(fondo_menu[1], 0, 0);
     if (input.click && mouseX >= 300 && mouseX < 500) {
@@ -174,16 +185,18 @@ void dibujarPantallasInicio(){
         estado = "editor";
       }
     }
-  } else if(estado.equals("scoreboard") || estado.equals("level") || estado.equals("options") || estado.equals("gameover")){  //<>//
+    if(input.PAUSA.click) exit();
+  } else if (estado.equals("scoreboard") || estado.equals("level") || estado.equals("options") || estado.equals("gameover")) { 
     if (input.click && mouseX > 30 && mouseX < 85&&  mouseY >= 30 && mouseY < 85) {
       estado = "main";
     }
     if (input.PAUSA.click) {
       estado = "main";
-    } 
+    }
   }
   if (estado.equals("scoreboard")) {
     image(fondo_menu[2], 0, 0);
+    
   } else if (estado.equals("level")) {
     image(fondo_menu[3], 0, 0);
     ArrayList<Nivel> niveles = editor.niveles.niveles;
@@ -205,8 +218,7 @@ void dibujarPantallasInicio(){
     vol_sound.x = 385;
     vol_sound.y = 255;
     vol_sound.act();
-  } else if(estado.equals("gameover")){
-    
+  } else if (estado.equals("gameover")) {
   }
 }
 void cargarImagenes() {
@@ -241,6 +253,7 @@ void cargarImagenes() {
   img_barra = recortar(sprites, 0, 462, 253, 13);
   img_bbarra = recortar(sprites, 130, 402, 34, 34);
   img_tiles = recortarImagen(loadImage("img/sprites_tiles.png"), 16, 16, 1);
+  tileMenu = loadImage("img/tileMenu.png");
 }
 
 void cargarSonidos() {
