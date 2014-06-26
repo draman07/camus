@@ -657,8 +657,9 @@ void cargarNvl(File f) {
     String ruta = f.toString();
     String extension = ruta.substring(ruta.lastIndexOf(".") + 1, ruta.length());
     if (extension.equals("json")) {
+      println(ruta);
       nivel = new Nivel();
-      nivel.cargarNivel(f.toString());
+      nivel.cargarNivel(ruta);
     }
   }
 }
@@ -789,7 +790,7 @@ class Niveles extends Ventana {
     niveles = new ArrayList<Nivel>();
     nombres = new ArrayList<String>();
     sel = -1;
-    File file = new File(sketchPath);
+    File file = new File(sketchPath+"/niveles/");
     File[] files = null;
     if (file.isDirectory()) {
       files = file.listFiles();
@@ -800,7 +801,7 @@ class Niveles extends Ventana {
       String extension = ruta.substring(ruta.lastIndexOf(".") + 1, ruta.length());
       if (extension.equals("json")) {
         Nivel aux = new Nivel();
-        aux.cargarNivel(nombre+"."+extension);
+        aux.cargarNivel(ruta);
         niveles.add(aux);
         nombres.add(nombre);
       }

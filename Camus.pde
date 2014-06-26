@@ -6,7 +6,7 @@ AudioSample mouse_squeak, vulture_screech;
 boolean pausa, cargar;
 Boton2 editar;
 Camara camara;
-//Datos datos;
+Datos datos;
 Editor editor;
 Input input;
 int pause_time;
@@ -123,7 +123,7 @@ void draw() {
       estado = "main";
     }
   }
-  datos.act();
+  //datos.act();
   input.act();
 }
 

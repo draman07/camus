@@ -13,7 +13,6 @@ class Nivel { //<>//
   Portal portal;
   Nivel() {
     src = "";
-    pasarNivel = false;
     nuevo();
   }
   Nivel(String src) {
@@ -284,6 +283,7 @@ class Nivel { //<>//
     return aux;
   }
   void nuevo() {  
+    pasarNivel = false;
     src = "";
     ix = 80;
     iy = 80; 
@@ -294,21 +294,6 @@ class Nivel { //<>//
     for (int j = 0; j < h; j++) {
       for (int i = 0; i < w; i++) {
         tiles[i][j] = 0;
-        /*
-        switch ((i+j)%4) {
-         case 0:
-         tiles[i][j] = 1;
-         break;
-         case 1:
-         tiles[i][j] = 3;
-         break;
-         case 2:
-         tiles[i][j] = 4;
-         break;
-         case 3:
-         tiles[i][j] = 5;
-         break;
-         }*/
         if ( i == 0 || i == w-1 || j == 0 || j == h-1) tiles[i][j] = 1;
       }
     }
