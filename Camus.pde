@@ -14,9 +14,9 @@ int tam = 16;
 Nivel nivel;
 Scroll vol_music, vol_sound;
 String estado = "splash";
-PFont font_chiqui, font_chiqui22;
+PFont font_chiqui, font_chiqui22, font_chiqui24;
 PImage sprites, arboles;
-PImage boton_start, boton_sound, boton_level, boton_music, boton_pause, img_barra, img_bbarra, img_pauseMenu, tileMenu;
+PImage boton_start, boton_sound, boton_music, boton_pause, img_barra, img_bbarra, img_pauseMenu, tileMenu;
 PImage[] fondo_menu, img_arbol;
 PImage[][] sprites_cobra, sprites_dove, sprites_hawk, sprites_leon, sprites_mouse, sprites_serpent, sprites_plants, sprites_portal, sprites_powerups, sprites_rat, sprites_viper, sprites_vulture, sprites_wolf;
 PImage[][] img_tiles;
@@ -30,6 +30,7 @@ void setup() {
   datos = new Datos();
   font_chiqui = createFont("slkscr.ttf", 14, true);//loadFont("Silkscreen-14.vlw");
   font_chiqui22 = createFont("slkscr.ttf", 22, true);//loadFont("Silkscreen-22.vlw");
+  font_chiqui24 = createFont("slkscr.ttf", 24, true);//loadFont("Silkscreen-22.vlw");
   vol_music = new Scroll(374, 500, img_barra.width-img_barra.height, img_barra.height/2, 0, 1, 1);
   vol_sound = new Scroll(374, 560, img_barra.width-img_barra.height, img_barra.height/2, 0, 1, 0);
   input = new Input();
@@ -148,15 +149,20 @@ void mouseReleased() {
 }
 
 void dibujarPantallasInicio() {
-  if(estado.equals("juego")) frameRate(60);
-  else frameRate(30);
+  if (estado.equals("juego")) frameRate(60);
+  else {
+    frameRate(30);
+    pausa = false;
+  }
   if (estado.equals("juego") || estado.equals("editor")) return;
   //dibujar fondo
-  int tt = tileMenu.width;
-  int dd = (frameCount)%tt;
-  for (int j = -1; j < height/tt; j++) {
-    for (int i = -1; i < width/tt; i++) {
-      image(tileMenu, i*tt+dd, j*tt+dd);
+  if (!estado.equals("gameover")) {
+    int tt = tileMenu.width;
+    int dd = (frameCount)%tt;
+    for (int j = -1; j < height/tt; j++) {
+      for (int i = -1; i < width/tt; i++) {
+        image(tileMenu, i*tt+dd, j*tt+dd);
+      }
     }
   }
   if (estado.equals("splash")) {
@@ -165,7 +171,7 @@ void dibujarPantallasInicio() {
     if (input.ENTER.click || (input.click && mouseX >= width/2-boton_start.width/2 && mouseX < width/2+boton_start.width/2 && mouseY > 210 && mouseY < 210+boton_start.height)) {
       estado = "main";
     }
-    if(input.PAUSA.click) exit();
+    if (input.PAUSA.click) exit();
   } else if (estado.equals("main")) {
     image(fondo_menu[1], 0, 0);
     if (input.click && mouseX >= 300 && mouseX < 500) {
@@ -185,30 +191,43 @@ void dibujarPantallasInicio() {
         estado = "editor";
       }
     }
-    if(input.PAUSA.click) exit();
-  } else if (estado.equals("scoreboard") || estado.equals("level") || estado.equals("options") || estado.equals("gameover")) { 
-    if (input.click && mouseX > 30 && mouseX < 85&&  mouseY >= 30 && mouseY < 85) {
-      estado = "main";
-    }
-    if (input.PAUSA.click) {
-      estado = "main";
-    }
-  }
-  if (estado.equals("scoreboard")) {
+    if (input.PAUSA.click) exit();
+  } else if (estado.equals("scoreboard")) {
     image(fondo_menu[2], 0, 0);
-    
+    fill(#00592b);
+    textFont(font_chiqui24);
+    textAlign(CENTER, CENTER);
+    text(datos.totalPuntos, 590, 262);
+    text(datos.tiempoJugado, 590, 340);
+    text(datos.cantidadMuertes, 590, 416);
+    text(editor.niveles.niveles.size(), 590, 494);
   } else if (estado.equals("level")) {
-    image(fondo_menu[3], 0, 0);
+    //image(fondo_menu[3], 0, 0);
     ArrayList<Nivel> niveles = editor.niveles.niveles;
-    float borde = boton_level.width/4;
-    float desx = boton_level.width+borde;
-    float desy = boton_level.height+borde;
+    float wb = 104;
+    float hb = 104;
+    float borde = wb/4;
+    float desx = wb+borde;
+    float desy = hb+borde;
     float inix = (width-(desx*4-borde))/2;
     float iniy = 160;
+    textFont(font_chiqui);
+    textAlign(CENTER, CENTER);
+    strokeWeight(4);
     for (int i = 0; i < niveles.size (); i++) {
       float x = inix + desx*(i%4);
       float y = iniy + desy*(i/4);
-      image(boton_level, x, y);
+      stroke(#00592b);
+      fill(#18f283);
+      rect(x, y, wb, hb, 24);
+      String nombre = niveles.get(i).nombre;
+      if (nombre.length() > 9) nombre = nombre.substring(0, 9);
+      fill(#00592b);
+      text(nombre, x+wb/2, y+20);
+      if (input.click && mouseX >= x && mouseX < x+wb && mouseY >= y && mouseY < y+hb) {
+        nivel = niveles.get(i);
+        estado = "juego";
+      }
     }
   } else if (estado.equals("options")) {
     image(fondo_menu[4], 0, 0);
@@ -219,6 +238,14 @@ void dibujarPantallasInicio() {
     vol_sound.y = 255;
     vol_sound.act();
   } else if (estado.equals("gameover")) {
+  }
+  if (estado.equals("scoreboard") || estado.equals("level") || estado.equals("options") || estado.equals("gameover")) { 
+    if (input.click && mouseX > 30 && mouseX < 85&&  mouseY >= 30 && mouseY < 85) {
+      estado = "main";
+    }
+    if (input.PAUSA.click) {
+      estado = "main";
+    }
   }
 }
 void cargarImagenes() {
@@ -246,7 +273,6 @@ void cargarImagenes() {
   }
   boton_start = recortar(sprites, 0, 352, 201, 50);
   boton_sound = recortar(sprites, 0, 402, 130, 30);
-  boton_level = loadImage("img/levelboton1.png");
   boton_music = recortar(sprites, 0, 432, 130, 30);
   boton_pause = recortar(sprites, 201, 352, 130, 45);
   img_pauseMenu = loadImage("img/pMenu.png");

@@ -399,6 +399,7 @@ class Editor { //<>//
   void dibujar() {
     background(10);
     noStroke();
+    strokeWeight(1);
     fill(40);
     rect(0, 0, nivel.w*tam, nivel.h*tam);
     nivel.dibujarTiles();
@@ -484,7 +485,7 @@ class Editor { //<>//
     fill(0, 220);
     rect(8, height-30, textWidth(text)+4, 16);
     fill(255, 200);
-    text(text, 10, height-20);
+    text(text, 10, height-24);
     for (int i = 0; i < ventanas.size (); i++) {
       Ventana v = ventanas.get(i);
       v.dibujar();
@@ -783,12 +784,10 @@ class Opciones extends Ventana {
 
 class Niveles extends Ventana {
   ArrayList<Nivel> niveles;
-  ArrayList<String> nombres;
   int sel;
   Niveles(int x, int y, int w, int h) {
     super(x, y, w, h);
     niveles = new ArrayList<Nivel>();
-    nombres = new ArrayList<String>();
     sel = -1;
     File file = new File(sketchPath+"/niveles/");
     File[] files = null;
@@ -797,20 +796,18 @@ class Niveles extends Ventana {
     } 
     for (int i = 0; i < files.length; i++) {
       String ruta = files[i].toString();
-      String nombre = split(files[i].getName(), ".")[0];
       String extension = ruta.substring(ruta.lastIndexOf(".") + 1, ruta.length());
       if (extension.equals("json")) {
         Nivel aux = new Nivel();
         aux.cargarNivel(ruta);
         niveles.add(aux);
-        nombres.add(nombre);
       }
     }
   }
   void act() {
     super.act();
     if (sobre && input.click) {
-      for (int i = 0; i < nombres.size (); i++) {
+      for (int i = 0; i < niveles.size (); i++) {
         if (mouseX >= x && mouseX < x+w && mouseY >= (y+20+20*i) && mouseY < (y+20+20*i)+20) {
           sel = i;
           nivel = niveles.get(i);
@@ -821,17 +818,18 @@ class Niveles extends Ventana {
   }
   void dibujar() {
     if (!mostrar) return;
+    textFont(font_chiqui);
     super.dibujar();
     noStroke();
     fill(255);
-    for (int i = 0; i < nombres.size (); i++) {
+    for (int i = 0; i < niveles.size (); i++) {
       if (i == sel)
         fill(50);
       else 
         fill(26);
       rect(x, y+20+20*i, w, 20);
       fill(255);
-      text(nombres.get(i), x+10, y+30+i*20);
+      text(niveles.get(i).nombre, x+6, y+30+i*20);
     }
   }
 }

@@ -9,7 +9,7 @@ class Nivel { //<>//
   int[][] tiles;
   JSONObject json;
   Jugador jugador;
-  String src;
+  String src, nombre;
   Portal portal;
   Nivel() {
     src = "";
@@ -319,6 +319,7 @@ class Nivel { //<>//
   }
   void actualizarJson() {
     JSONObject aux = new JSONObject();
+    aux.setString("nombre", nombre);
     aux.setInt("width", w);
     aux.setInt("height", h);
     aux.setInt("inicialx", ix);
@@ -457,6 +458,12 @@ class Nivel { //<>//
   }
   void iniciar() {
     pasarNivel = false;
+    if(json.hasKey("nombre")){
+        nombre = json.getString("nombre");
+    }else{
+      String aux[] = split(src, "/");
+      nombre = split(aux[aux.length-1], ".")[0];
+    }
     ix = json.getInt("inicialx");
     iy = json.getInt("inicialy");
     if (json.hasKey("tiempo")) {
