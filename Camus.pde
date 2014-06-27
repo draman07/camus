@@ -177,6 +177,7 @@ void dibujarPantallasInicio() {
     if (input.click && mouseX >= 300 && mouseX < 500) {
       if (mouseY >= 190 && mouseY < 240) {
         estado = "juego";
+        ui.iniciar();
       }
       if (mouseY >= 270 && mouseY < 315) {
         estado = "level";
@@ -227,6 +228,7 @@ void dibujarPantallasInicio() {
       if (input.click && mouseX >= x && mouseX < x+wb && mouseY >= y && mouseY < y+hb) {
         nivel = niveles.get(i);
         estado = "juego";
+        ui.iniciar();
       }
     }
   } else if (estado.equals("options")) {

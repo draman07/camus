@@ -823,6 +823,7 @@ class Niveles extends Ventana {
         niveles.add(aux);
       }
     }
+    if((niveles.size()+1)*20 < h) h = (niveles.size()+1)*20;
   }
   void act() {
     super.act();
