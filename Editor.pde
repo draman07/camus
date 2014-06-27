@@ -399,6 +399,8 @@ class Editor { //<>//
   void dibujar() {
     background(10);
     noStroke();
+    textFont(font_chiqui);
+    textAlign(LEFT, CENTER);
     strokeWeight(1);
     fill(40);
     rect(0, 0, nivel.w*tam, nivel.h*tam);
@@ -817,6 +819,7 @@ class Niveles extends Ventana {
       if (extension.equals("json")) {
         Nivel aux = new Nivel();
         aux.cargarNivel(ruta);
+        aux.nombre = split(files[i].getName(), ".")[0];
         niveles.add(aux);
       }
     }

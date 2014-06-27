@@ -462,7 +462,7 @@ class Nivel { //<>//
         nombre = json.getString("nombre");
     }else{
       String aux[] = split(src, "/");
-      nombre = split(aux[aux.length-1], ".")[0];
+      //nombre = split(aux[aux.length-1], ".")[0];
     }
     ix = json.getInt("inicialx");
     iy = json.getInt("inicialy");

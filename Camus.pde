@@ -238,6 +238,11 @@ void dibujarPantallasInicio() {
     vol_sound.y = 255;
     vol_sound.act();
   } else if (estado.equals("gameover")) {
+    if(input.click && mouseX >= 318 && mouseX < 484 && mouseY >= 462 && mouseY < 520) { 
+      nivel.iniciar(); 
+      ui.iniciar();
+      estado = "juego";
+    }
   }
   if (estado.equals("scoreboard") || estado.equals("level") || estado.equals("options") || estado.equals("gameover")) { 
     if (input.click && mouseX > 30 && mouseX < 85&&  mouseY >= 30 && mouseY < 85) {
