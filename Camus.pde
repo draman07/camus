@@ -14,7 +14,7 @@ int tam = 16;
 Nivel nivel;
 Scroll vol_music, vol_sound;
 String estado = "splash";
-PFont font_chiqui, font_chiqui22, font_chiqui24;
+PFont font_chiqui, font_chiqui22, font_chiqui24, font_chiqui54;
 PImage sprites, arboles;
 PImage boton_start, boton_sound, boton_music, boton_pause, img_barra, img_bbarra, img_pauseMenu, tileMenu;
 PImage[] fondo_menu, img_arbol;
@@ -31,6 +31,7 @@ void setup() {
   font_chiqui = createFont("slkscr.ttf", 14, true);//loadFont("Silkscreen-14.vlw");
   font_chiqui22 = createFont("slkscr.ttf", 22, true);//loadFont("Silkscreen-22.vlw");
   font_chiqui24 = createFont("slkscr.ttf", 24, true);//loadFont("Silkscreen-22.vlw");
+  font_chiqui54 = createFont("slkscr.ttf", 54, true);
   vol_music = new Scroll(374, 500, img_barra.width-img_barra.height, img_barra.height/2, 0, 1, 1);
   vol_sound = new Scroll(374, 560, img_barra.width-img_barra.height, img_barra.height/2, 0, 1, 0);
   input = new Input();
@@ -87,25 +88,7 @@ void draw() {
       camara.act();
       nivel.act();
       if (nivel.pasarNivel) {
-        String src = nivel.portal.src;
-        if (src.equals("")) {
-          nivel.iniciar();
-        } else {
-          editor.niveles.sel = -1;
-          ArrayList<Nivel> nivs = editor.niveles.niveles;
-          for (int i = 0; i < nivs.size (); i++) {
-            Nivel n = nivs.get(i);
-            if (src.equals(n.src)) {
-              editor.niveles.sel = i;
-              nivel = n; 
-              break;
-            }
-          }
-          if (editor.niveles.sel == -1) {
-            nivel = new Nivel(src);
-          }
-        }
-        nivel.iniciar();
+        estado = "score";
       }
     }
     editar.act();
@@ -130,7 +113,6 @@ void draw() {
 
 void dispose() {
   datos.guardar();
-  println("Se cerro el juego!");
 }
 
 void keyPressed() {
@@ -239,14 +221,48 @@ void dibujarPantallasInicio() {
     vol_sound.x = 385;
     vol_sound.y = 255;
     vol_sound.act();
+  } else if (estado.equals("score")) {
+    image(fondo_menu[5], 0, 0);
+    textAlign(CENTER, CENTER);
+    textFont(font_chiqui54);
+    text(ui.score, width/2, 138); //<>//
+    textFont(font_chiqui24);
+    text(stringTime(ui.max_tem-ui.tiempo), width/2, 226);
+    int puntosPower = int(ui.powers*100);
+    text(ui.powers, width/2, 292);
+    int puntosTiempo = int(3.*(ui.tiempo*1./ui.max_tem)*4000);
+    int puntosBonus = puntosPower+puntosTiempo; 
+    text(puntosBonus, width/2, 358);
+    int puntosTotal = puntosBonus+ui.score;
+    text(puntosTotal, width/2, 456);
+    image(recortar(sprites, 254, 397, 166, 58), width/2-83, 512);  
+    if (input.click && mouseX >= 318 && mouseX < 484 && mouseY >= 512 && mouseY < 570) { 
+      String src = nivel.portal.src;
+      if (!src.equals("")) {
+        editor.niveles.sel = -1;
+        ArrayList<Nivel> nivs = editor.niveles.niveles;
+        for (int i = 0; i < nivs.size (); i++) {
+          Nivel n = nivs.get(i);
+          if (src.equals(n.src)) {
+            editor.niveles.sel = i;
+            nivel = n; 
+            break;
+          }
+        }
+      }
+      nivel.iniciar();
+      nivel.iniciar(); 
+      ui.iniciar();
+      estado = "juego";
+    }
   } else if (estado.equals("gameover")) {
-    if(input.click && mouseX >= 318 && mouseX < 484 && mouseY >= 462 && mouseY < 520) { 
+    if (input.click && mouseX >= 318 && mouseX < 484 && mouseY >= 462 && mouseY < 520) { 
       nivel.iniciar(); 
       ui.iniciar();
       estado = "juego";
     }
   }
-  if (estado.equals("scoreboard") || estado.equals("level") || estado.equals("options") || estado.equals("gameover")) { 
+  if (estado.equals("scoreboard") || estado.equals("level") || estado.equals("options") || estado.equals("score") || estado.equals("gameover")) { 
     if (input.click && mouseX > 30 && mouseX < 85&&  mouseY >= 30 && mouseY < 85) {
       estado = "main";
     }

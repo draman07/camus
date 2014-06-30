@@ -1,7 +1,7 @@
 class UI {
   int max_tem;
   int cant_vidas;
-  int tiempo, score;
+  int tiempo, score, powers;
   UI(int t) {
     max_tem = t;
     iniciar();
@@ -9,10 +9,11 @@ class UI {
   void iniciar() {
     score = 0; 
     cant_vidas = 2;
+    powers = 0;
     tiempo = max_tem;
   }
   void act() {
-    if (!pausa && frameCount%60 == 0) tiempo = max_tem--;
+    if (!pausa && frameCount%60 == 0) tiempo--;
     if (tiempo < 0) {
       tiempo = max_tem;
     }
@@ -50,14 +51,7 @@ class UI {
     textFont(font_chiqui, 13);
     textAlign(LEFT, DOWN);
     fill(#00592B);
-    int minuto = tiempo/60;
-    int segundo = tiempo%60;
-    //if(frameCount%60 == 0) println(tiempo, minuto, segundo);
-    String msn = "Time ";
-    msn += minuto+":";
-    if (segundo < 10) msn += "0";
-    msn += segundo;
-    text(msn, width/2-31, 36);
+    text("Time "+stringTime(tiempo), width/2-31, 36);
     text("Score: "+score, width/2-46, 54);
   }
   void maScore(int sco) {
@@ -66,4 +60,14 @@ class UI {
   void setTime(int t) {
     max_tem = tiempo = t;
   }
+}
+
+String stringTime(int tiempo){
+    int minuto = tiempo/60;
+    int segundo = tiempo%60;
+    String t = "";
+    t += minuto+":";
+    if (segundo < 10) t += "0";
+    t += segundo;
+    return t;
 }

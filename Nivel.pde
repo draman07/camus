@@ -481,7 +481,7 @@ class Nivel { //<>//
     w = json.getInt("width");
     h = json.getInt("height");
     if (frameCount > 0 ) { 
-      arboles = crearFondo();
+      //arboles = crearFondo();
     }
     //println((w*tam*2)-width, (h*tam*2)-height);
     tiles = new int[w][h];

@@ -40,6 +40,7 @@ class PowerUp extends Elemento {
         ju.inmune = true;
         break;
       }
+      ui.powers++;
       eliminar = true;
       return true;
     }
