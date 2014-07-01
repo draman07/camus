@@ -7,6 +7,7 @@ class UI {
     iniciar();
   }
   void iniciar() {
+    if(score != 0) datos.totalPuntos += score;
     score = 0; 
     cant_vidas = 2;
     powers = 0;

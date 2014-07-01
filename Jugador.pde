@@ -177,6 +177,7 @@ class Jugador {
     }
     if (vida <= 0) {
       ui.cant_vidas--;
+      datos.cantidadMuertes++;
       nivel.iniciar();
     }
   }
