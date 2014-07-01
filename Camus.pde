@@ -1,4 +1,4 @@
-import ddf.minim.*; //<>// //<>//
+import ddf.minim.*; //<>//
 
 Minim minim;
 
@@ -209,12 +209,6 @@ void dibujarPantallasInicio() {
       textAlign(CENTER, CENTER);
       text(valores[i], 590, 262+77*i);
     }
-    /*
-    text(, 590, 262);
-    text(, 590, 340);
-    text(, 590, 416);
-    text(, 590, 494);
-    */
   } else if (estado.equals("levels")) {
     titulo = "levels";
     //image(fondo_menu[3], 0, 0);
@@ -292,9 +286,8 @@ void dibujarPantallasInicio() {
     text(puntosTotal, width/2, 456);
     image(recortar(sprites, 254, 397, 166, 58), width/2-83, 512);  
     if (input.click && mouseX >= 318 && mouseX < 484 && mouseY >= 512 && mouseY < 570) { 
-      String src = nivel.portal.src;
+      String src = sketchPath("niveles/"+nivel.portal.src);
       if (!src.equals("")) {
-        editor.niveles.sel = -1;
         ArrayList<Nivel> nivs = editor.niveles.niveles;
         for (int i = 0; i < nivs.size (); i++) {
           Nivel n = nivs.get(i);
@@ -306,7 +299,6 @@ void dibujarPantallasInicio() {
         }
       }
       nivel.iniciar();
-      nivel.iniciar(); 
       ui.iniciar();
       cambiarEstado("juego");
     }
