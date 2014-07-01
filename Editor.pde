@@ -36,7 +36,7 @@ class Editor { //<>//
       nivel.iniciar();
       nivel.jugador.x = ax;
       nivel.jugador.y = ay;
-      estado = "juego";
+      cambiarEstado("juego");
     }
     if (menu.nuevo.click) {
       nivel = new Nivel();
@@ -747,7 +747,7 @@ class Opciones extends Ventana {
 
     widthMap = new Slider("widthMap", 10, 210, 180, 20, 0, 100, 50);
     heightMap = new Slider("heightMap", 10, 250, 180, 20, 0, 100, 50);
-    timeMap = new Slider("timeMap", 10, 290, 180, 20, 0, 100, 50);
+    timeMap = new Slider("timeMap", 10, 290, 180, 20, 10, 180, 50);
   }
   void act() {
     super.act();

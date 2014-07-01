@@ -9,12 +9,14 @@ Camara camara;
 Datos datos;
 Editor editor;
 Input input;
+int tiempoEstado;
 int pause_time;
 int tam = 16;
 Nivel nivel;
 Scroll vol_music, vol_sound;
+ScrollV scrollNivs;
 String estado = "splash";
-PFont font_chiqui, font_chiqui22, font_chiqui24, font_chiqui54;
+PFont font_chiqui, font_chiqui22, font_chiqui24, font_chiqui54, font_chiqui100;
 PImage sprites, arboles;
 PImage boton_start, boton_sound, boton_music, boton_pause, img_barra, img_bbarra, img_pauseMenu, tileMenu;
 PImage[] fondo_menu, img_arbol;
@@ -28,12 +30,14 @@ void setup() {
   cargarImagenes();
   cargarSonidos();
   datos = new Datos();
-  font_chiqui = createFont("slkscr.ttf", 14, true);//loadFont("Silkscreen-14.vlw");
-  font_chiqui22 = createFont("slkscr.ttf", 22, true);//loadFont("Silkscreen-22.vlw");
-  font_chiqui24 = createFont("slkscr.ttf", 24, true);//loadFont("Silkscreen-22.vlw");
-  font_chiqui54 = createFont("slkscr.ttf", 54, true);
+  font_chiqui = createFont("slkscr.ttf", 14, false);//loadFont("Silkscreen-14.vlw");
+  font_chiqui22 = createFont("slkscr.ttf", 22, false);//loadFont("Silkscreen-22.vlw");
+  font_chiqui24 = createFont("slkscr.ttf", 24, false);//loadFont("Silkscreen-22.vlw");
+  font_chiqui54 = createFont("slkscr.ttf", 54, false);
+  font_chiqui100 = createFont("slkscr.ttf", 100, false);
   vol_music = new Scroll(374, 500, img_barra.width-img_barra.height, img_barra.height/2, 0, 1, 1);
   vol_sound = new Scroll(374, 560, img_barra.width-img_barra.height, img_barra.height/2, 0, 1, 0);
+  scrollNivs = new ScrollV(690, 160, 10, 370, 0, 1, 0);
   input = new Input();
   ui = new UI(0);
   nivel = new Nivel();
@@ -64,9 +68,9 @@ void draw() {
       fill(#1E0826, 255*0.2*av);
       rect(0, 0, width, height);
       image(img_pauseMenu, 0, height-130*av);
-      image(recortar(sprites, 202, 402, 55, 55), 30, 30);
+      image(recortar(sprites, 202, 402, 53, 54), 30, 30);
       if (input.click && mouseX > 30 && mouseX < 85&&  mouseY >= 30 && mouseY < 85) {
-        estado = "main";
+        cambiarEstado("main");
       }
       if (frameCount%80 < 50) image(boton_pause, width/2-boton_pause.width/2, height/2-boton_pause.height/2-60);
       vol_music.x = 480;
@@ -88,7 +92,7 @@ void draw() {
       camara.act();
       nivel.act();
       if (nivel.pasarNivel) {
-        estado = "score";
+        cambiarEstado("score");
       }
     }
     editar.act();
@@ -98,13 +102,13 @@ void draw() {
       nivel.iniciar();
       nivel.jugador.x = ax;
       nivel.jugador.y = ay;
-      estado = "editor";
+      cambiarEstado("editor");
     }
   } else if (estado.equals("editor")) {
     camara.act();
     editor.act();
     if (input.PAUSA.click) {
-      estado = "main";
+      cambiarEstado("main");
     }
   }
   datos.act();
@@ -136,6 +140,7 @@ void dibujarPantallasInicio() {
     frameRate(30);
     pausa = false;
   }
+  String titulo = "";
   if (estado.equals("juego") || estado.equals("editor")) return;
   //dibujar fondo
   if (!estado.equals("gameover")) {
@@ -151,40 +156,67 @@ void dibujarPantallasInicio() {
     image(fondo_menu[0], 0, 0);
     image(boton_start, width/2-boton_start.width/2, 210);
     if (input.ENTER.click || (input.click && mouseX >= width/2-boton_start.width/2 && mouseX < width/2+boton_start.width/2 && mouseY > 210 && mouseY < 210+boton_start.height)) {
-      estado = "main";
+      cambiarEstado("main");
     }
     if (input.PAUSA.click) exit();
   } else if (estado.equals("main")) {
-    image(fondo_menu[1], 0, 0);
+    titulo = "main menu";
+    //image(fondo_menu[1], 0, 0);
+    String campos[] = {"start game", "select level", "scoreboard", "options", "editor"};
+    textFont(font_chiqui24);
+    stroke(#00592b);
+    strokeWeight(3);
+    for(int i = 0; i < campos.length; i++){
+      fill(#18f283);
+      rect(300, 186+77*i, 200, 50, 8);
+      fill(#00592b);
+      textAlign(CENTER, TOP);
+      text(campos[i], width/2, 200+77*i);
+    }
     if (input.click && mouseX >= 300 && mouseX < 500) {
       if (mouseY >= 190 && mouseY < 240) {
-        estado = "juego";
+        cambiarEstado("juego");
         ui.iniciar();
       }
       if (mouseY >= 270 && mouseY < 315) {
-        estado = "level";
+        cambiarEstado("levels");
       }
       if (mouseY >= 340 && mouseY < 395) {
-        estado = "scoreboard";
+        cambiarEstado("scoreboard");
       }
       if (mouseY >= 420 && mouseY < 470) {
-        estado = "options";
+        cambiarEstado("options");
       }
       if (mouseY >= 495 && mouseY < 550) {
-        estado = "editor";
+        cambiarEstado("editor");
       }
     }
     if (input.PAUSA.click) exit();
   } else if (estado.equals("scoreboard")) {
-    image(fondo_menu[2], 0, 0);
-    fill(#00592b);
+    titulo = "high\nscores";
+    //image(fondo_menu[2], 0, 0);
+    String campos[] = {"total points", "total time played", "total deaths", "levels"};
+    int valores[] = {datos.totalPuntos, datos.tiempoJugado, datos.cantidadMuertes, editor.niveles.niveles.size()};
     textFont(font_chiqui24);
-    textAlign(CENTER, CENTER);
-    text(datos.totalPuntos, 590, 262);
-    text(datos.tiempoJugado, 590, 340);
-    text(datos.cantidadMuertes, 590, 416);
-    text(editor.niveles.niveles.size(), 590, 494);
-  } else if (estado.equals("level")) {
+    stroke(#00592b);
+    strokeWeight(3);
+    for(int i = 0; i < campos.length; i++){
+      fill(#18f283);
+      textAlign(LEFT, TOP);
+      text(campos[i], 150, 252+77*i);
+      rect(485, 238+77*i, 204, 53, 8);
+      fill(#00592b);
+      textAlign(CENTER, CENTER);
+      text(valores[i], 590, 262+77*i);
+    }
+    /*
+    text(, 590, 262);
+    text(, 590, 340);
+    text(, 590, 416);
+    text(, 590, 494);
+    */
+  } else if (estado.equals("levels")) {
+    titulo = "levels";
     //image(fondo_menu[3], 0, 0);
     ArrayList<Nivel> niveles = editor.niveles.niveles;
     float wb = 104;
@@ -196,25 +228,46 @@ void dibujarPantallasInicio() {
     float iniy = 160;
     textFont(font_chiqui);
     textAlign(CENTER, CENTER);
-    strokeWeight(4);
-    for (int i = 0; i < niveles.size (); i++) {
-      float x = inix + desx*(i%4);
-      float y = iniy + desy*(i/4);
+    strokeWeight(3);
+    int cant = niveles.size();
+    int des = 0;
+    int max = cant;
+    if(cant > 12){
+      scrollNivs.max_val = (cant-12)/4+1.95;
+      scrollNivs.act();
+      des = int(scrollNivs.val)*4;
+      max = des+12;
+      if(max > cant) max = cant;
+    }
+    for (int i = des; i < max; i++) {
+      float x = inix + desx*((i-des)%4);
+      float y = iniy + desy*((i-des)/4);
       stroke(#00592b);
       fill(#18f283);
-      rect(x, y, wb, hb, 24);
+      rect(x, y, wb, hb, 18);
       String nombre = niveles.get(i).nombre;
       if (nombre.length() > 9) nombre = nombre.substring(0, 9);
       fill(#00592b);
-      text(nombre, x+wb/2, y+20);
+      text(nombre, x+wb/2, y+16);
       if (input.click && mouseX >= x && mouseX < x+wb && mouseY >= y && mouseY < y+hb) {
         nivel = niveles.get(i);
-        estado = "juego";
+        cambiarEstado("juego");
         ui.iniciar();
       }
     }
   } else if (estado.equals("options")) {
-    image(fondo_menu[4], 0, 0);
+    titulo = "options";
+    //image(fondo_menu[4], 0, 0);
+    textFont(font_chiqui24);
+    textAlign(CENTER, CENTER);
+    strokeWeight(3);
+    stroke(#00592b);
+    fill(#18f283);
+    rect(88, 186, 130, 30, 6);
+    rect(88, 244, 130, 30, 6);
+    fill(#00592b);
+    text("sound", 88, 242, 130, 30);
+    text("music", 88, 184, 130, 30);
     vol_music.x = 385;
     vol_music.y = 195;
     vol_music.act();
@@ -222,10 +275,12 @@ void dibujarPantallasInicio() {
     vol_sound.y = 255;
     vol_sound.act();
   } else if (estado.equals("score")) {
+    titulo = "score";
+    fill(#00592B);
     image(fondo_menu[5], 0, 0);
     textAlign(CENTER, CENTER);
     textFont(font_chiqui54);
-    text(ui.score, width/2, 138); //<>//
+    text(ui.score, width/2, 138);
     textFont(font_chiqui24);
     text(stringTime(ui.max_tem-ui.tiempo), width/2, 226);
     int puntosPower = int(ui.powers*100);
@@ -253,23 +308,41 @@ void dibujarPantallasInicio() {
       nivel.iniciar();
       nivel.iniciar(); 
       ui.iniciar();
-      estado = "juego";
+      cambiarEstado("juego");
     }
   } else if (estado.equals("gameover")) {
     if (input.click && mouseX >= 318 && mouseX < 484 && mouseY >= 462 && mouseY < 520) { 
       nivel.iniciar(); 
       ui.iniciar();
-      estado = "juego";
+      cambiarEstado("juego");
     }
   }
-  if (estado.equals("scoreboard") || estado.equals("level") || estado.equals("options") || estado.equals("score") || estado.equals("gameover")) { 
-    if (input.click && mouseX > 30 && mouseX < 85&&  mouseY >= 30 && mouseY < 85) {
-      estado = "main";
+  
+  if (!estado.equals("gameover") && !estado.equals("splash")) {
+    float des = 1;
+    if(tiempoEstado < 8) des = sin(map(tiempoEstado, 0, 8, 0, PI/2));
+    //if(des > 1) des = 1;
+    textFont(font_chiqui100);
+    textAlign(CENTER,TOP);
+    fill(#18f283);
+    textLeading(94);
+    text(titulo, width/2, 16-200+200*des);
+  }
+  
+  if (estado.equals("scoreboard") || estado.equals("levels") || estado.equals("options") || estado.equals("score") || estado.equals("gameover")) { 
+    image(recortar(sprites, 201, 402, 53, 54), 30, 30);
+    if (input.click && mouseX > 30 && mouseX < 83&&  mouseY >= 30 && mouseY < 84) {
+      cambiarEstado("main");
     }
     if (input.PAUSA.click) {
-      estado = "main";
+      cambiarEstado("main");
     }
   }
+  tiempoEstado++;
+}
+void cambiarEstado(String nestado) {
+  tiempoEstado = 0;
+  estado = nestado;
 }
 void cargarImagenes() {
   sprites = loadImage("img/sprites.png");

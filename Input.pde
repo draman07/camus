@@ -147,3 +147,49 @@ class Scroll {
     //ellipse(x+map(val, min_val, max_val, 0, w)+h/2, y+h/2, 40, 40);
   }
 }
+
+class ScrollV{
+  boolean sobre, mover;
+  float val, min_val, max_val, bor;
+  int x, y, w, h;
+  ScrollV(int x, int y, int w, int h, float min_val, float max_val, float val) {
+    this.x = x; 
+    this.y = y; 
+    this.w = w;
+    this.h = h; 
+    this.val = val;
+    this.min_val = min_val;
+    this.max_val = max_val;
+    bor = 10;
+  }
+  void act() {
+    if (dist(mouseX, mouseY, x+w/2, y+map(val, min_val, max_val, 0, h)) < 20 || (mouseY >= y+bor && mouseY < y+h+bor && mouseX >= x && mouseX < x+w)) {
+      sobre = true;
+    }
+    else {
+      sobre = false;
+    }  
+    if (input.click && sobre) {
+      mover = true;
+    }
+    if (input.released) {
+      mover = false;
+    }
+    if (mover) {
+      val = map(mouseY, y, y+h, min_val, max_val);
+      val = constrain(val, min_val, max_val);
+    }
+    dibujar();
+  }
+  void dibujar() {
+    float dy= map(val, min_val, max_val, 0, h)-bor*2;
+    float dx = w/2-img_bbarra.width/2;
+    fill(255, 0, 0);
+    stroke(#00592b);
+    fill(#18f283);
+    rect(x, y, w, h, 8);
+    image(img_bbarra, x+dx, y+dy);
+    fill(255,0,0, 80);
+    //ellipse(x+map(val, min_val, max_val, 0, w)+h/2, y+h/2, 40, 40);
+  }
+}
