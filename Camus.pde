@@ -170,12 +170,18 @@ void dibujarPantallasInicio() {
     textFont(font_chiqui24);
     stroke(#00592b);
     strokeWeight(3);
-    for(int i = 0; i < campos.length; i++){
+    int cant = campos.length;
+    for(int i = 0; i < cant; i++){
+      int vv = i*3;
+      float des = map(tiempoEstado, 0+vv, 5+vv, 0, PI/2);
+      if(des > PI/2) des = PI/2;
+      if(des <= 0) des = PI;
+      if(0 < des) des = cos(des)*-500;
       fill(#18f283);
-      rect(300, 186+77*i, 200, 50, 8);
+      rect(300+des, 186+77*i, 200, 50, 8);
       fill(#00592b);
       textAlign(CENTER, TOP);
-      text(campos[i], width/2, 200+77*i);
+      text(campos[i], width/2+des, 200+77*i);
     }
     if (input.click && mouseX >= 300 && mouseX < 500) {
       if (mouseY >= 190 && mouseY < 240) {
@@ -282,6 +288,13 @@ void dibujarPantallasInicio() {
     rect(300, 268, 200, 53, 6);
     rect(300, 334, 200, 53, 6);
     rect(300, 430, 200, 53, 6);
+    String campos[] = {"time", "power ups", "bonus", "reward"};
+    textAlign(LEFT, TOP);
+    textFont(font_chiqui24);
+    text(campos[0], 84, 217);
+    text(campos[1], 84, 283);
+    text(campos[2], 84, 350);
+    text(campos[3], 84, 448);
     fill(#00592B);
     textAlign(CENTER, CENTER);
     textFont(font_chiqui54);
