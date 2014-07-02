@@ -25,17 +25,21 @@ class PowerUp extends Elemento {
     if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y, w, h)) {
       switch(t) {
       case 0:
+        sonido.ladybug.trigger();
         ju.vida += 0.2;
         if (ju.vida > 1) ju.vida = 1;
         break;
       case 1:
+        sonido.spider.trigger();
         ju.invisibilidad += 0.2;
         if (ju.invisibilidad > 1) ju.invisibilidad = 1;
         break;
       case 2:
+        sonido.beatle.trigger();
         ui.maScore(100);
         break;
       case 3:
+        sonido.firefly.trigger();
         ju.inmuneTime += 60*5;
         ju.inmune = true;
         break;

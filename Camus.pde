@@ -411,7 +411,7 @@ void cargarImagenes() {
 
 void cargarSonidos() {
   vol_music = new Scroll(374, 500, img_barra.width-img_barra.height, img_barra.height/2, 0, 1, datos.volMusic);
-  vol_sound = new Scroll(374, 560, img_barra.width-img_barra.height, img_barra.height/2, 0, 1, datos.volSound);
+  vol_sound = new Scroll(374, 560, img_barra.width-img_barra.height, img_barra.height/2, 0, 0.9, datos.volSound);
   sonido = new Sonido();
 }
 PImage recortar(PImage ori, int x, int y, int w, int h) {
