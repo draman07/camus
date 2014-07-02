@@ -77,7 +77,7 @@ class Nivel { //<>//
     float ye = y + h;
     float xm = x + w / 2;
     float ym = y + h / 2;
-    fill(0, 30);
+    fill(0, 20);
     beginShape();
     vertex(-camara.x, ym);
     vertex(-camara.x, -camara.y+height);

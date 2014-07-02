@@ -1,4 +1,4 @@
-class Enemigo extends Elemento { //<>// //<>// //<>//
+class Enemigo extends Elemento { //<>//
   float dano = 0.1;
   void dano(Jugador j) {
     if (eliminar) return;
@@ -476,7 +476,7 @@ class Wolf extends Enemigo {
     }
     float dis = dist(obj.x, obj.y, x, y);  
     tiempo_reposo--;
-    if(nivel.jugador.invisible) estado = "normal";
+    if (nivel.jugador.invisible) estado = "normal";
     if (!estado.equals("atacar") && !nivel.jugador.invisible) {
       obj = new Punto(nivel.jugador.x, nivel.jugador.y);
       if (dis < dis_sal && tiempo_reposo <= 0) {
@@ -486,18 +486,16 @@ class Wolf extends Enemigo {
       } else if (dis < max_dis) {
         vel = 1;
         estado = "seguir";
-      }else{
-        estado = "normal"; 
+      } else {
+        estado = "normal";
       }
       velx = vel;
       if (obj.x-x < 0) velx = -vel;
     }
     if (estado.equals("seguir")) {
-      dir = 0;
-      if (velx < 0) dir = 1;
-      if (obj.x-(x-10) < 0) {
+      if (obj.x-(x-30) < 0) {
         velx = -vel;
-      } else if (obj.x-(x+10) > 0) {
+      } else if (obj.x-(x+30) > 0) {
         velx = vel;
       }
     } else if (estado.equals("atacar")) {
@@ -511,7 +509,7 @@ class Wolf extends Enemigo {
 
     float antx = x; 
     float anty = y;
-    if(!estado.equals("normal")) x += velx;
+    if (!estado.equals("normal")) x += velx;
     if (nivel.colisiona(this)) {
       x = antx;
       if (!salto) {
@@ -530,6 +528,8 @@ class Wolf extends Enemigo {
       salto = false;
       vely = 0;
     }
+    dir = 0;
+    if (velx < 0) dir = 1;
   }
   void dibujar() {
     if (dir == 0)
@@ -617,11 +617,11 @@ class Cobra extends Enemigo {
   void act() {
     if (frameCount%6 == 0 && !estado.equals("normal")) frame++;
     frame %= 9;
-    
+
     float dis = dist(obj.x, obj.y, x, y);  
     tiempo_reposo--;
-    if(nivel.jugador.invisible){
-       estado = "normal"; 
+    if (nivel.jugador.invisible) {
+      estado = "normal";
     }
     if (!estado.equals("atacar") && !nivel.jugador.invisible) {
       obj = new Punto(nivel.jugador.x, nivel.jugador.y);
@@ -633,18 +633,19 @@ class Cobra extends Enemigo {
       } else if (dis < max_dis) {
         vel = 2;
         estado = "seguir";
-      }else{
-        estado = "normal"; 
+      } else {
+        estado = "normal";
       }
-      velx = vel;
-      if (obj.x-x < 0) velx = -vel;
-    }
-    if (estado.equals("seguir")) {
-      dir = 0;
-      if (velx < 0) dir = 1;
       if (obj.x-(x-10) < 0) {
         velx = -vel;
       } else if (obj.x-(x+10) > 0) {
+        velx = vel;
+      }
+    }
+    if (estado.equals("seguir")) {
+      if (obj.x-(x-30) < 0) {
+        velx = -vel;
+      } else if (obj.x-(x+30) > 0) {
         velx = vel;
       }
     } else if (estado.equals("atacar")) {
@@ -655,7 +656,7 @@ class Cobra extends Enemigo {
 
     float antx = x; 
     float anty = y;
-    if(!estado.equals("normal")) x += velx;
+    if (!estado.equals("normal")) x += velx;
     if (nivel.colisiona(this)) {
       x = antx;
       if (!salto) {
@@ -674,6 +675,8 @@ class Cobra extends Enemigo {
       salto = false;
       vely = 0;
     }
+    dir = 0;
+    if (velx < 0) dir = 1;
   }
   void dibujar() {
     if (dir == 0)
