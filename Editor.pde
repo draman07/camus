@@ -600,11 +600,11 @@ class Menu {
     this.w = w;
     this.h = h;
     dy = 30;
-    jugar = new Boton2(15, 8, 60, 20, "JUGAR");
-    nuevo = new Boton2(85, 8, 60, 20, "NUEVO");
-    cargar = new Boton2(155, 8, 60, 20, "CARGAR");
-    guardar = new Boton2(225, 8, 60, 20, "GUARDAR");
-    guardarComo = new Boton2(295, 8, 60, 20, "SAVE AS");
+    jugar = new Boton2(15, 8, 80, 20, "JUGAR");
+    nuevo = new Boton2(105, 8, 80, 20, "NUEVO");
+    cargar = new Boton2(195, 8, 80, 20, "CARGAR");
+    guardar = new Boton2(285, 8, 80, 20, "GUARDAR");
+    guardarComo = new Boton2(375, 8, 80, 20, "SAVE AS");
     herramientas = new Selector(width-150, 8, 140, 20, 7, 0, "");
     elementos = new Selector(width-300, 8, 140, 20, 7, 0, "");
     fondo = crearDegrade(w, h, color(88), color(72));
@@ -631,7 +631,7 @@ class Menu {
     guardarComo.y = yy;
     guardarComo.act();
     elementos.y = yy;
-    elementos.act();
+    //elementos.act();
     if (elementos.click) {
       herramientas.val = 1;
     }
@@ -647,8 +647,8 @@ class Menu {
     cargar.dibujar();
     guardar.dibujar();
     guardarComo.dibujar();
-    elementos.dibujar();
-    image(recortar(sprites, 0, 196, 140, 20), elementos.x, elementos.y);
+    //elementos.dibujar();
+    //image(recortar(sprites, 0, 196, 140, 20), elementos.x, elementos.y);
     herramientas.dibujar();
     image(recortar(sprites, 0, 176, 140, 20), herramientas.x, herramientas.y);
   }
@@ -737,17 +737,17 @@ class Opciones extends Ventana {
   Slider widthMap, heightMap, timeMap;
   Opciones(int x, int y, int w, int h) {
     super(x, y, w, h, "Opciones");
-    ajustar = new Check(10, 60, 20, 20, "ajustar");
+    ajustar = new Check(100, 30, 20, 20, "ajustar");
     ajustar.press = true;
     tiles = new Selector(10, 30, 80, 20, 4, 0, "tiles");
-    enemigos = new Selector(10, 90, 180, 20, 9, 0, "enemigos");
-    powerups = new Selector(10, 120, 80, 20, 4, 0, "powerups");
-    trampas = new Selector(10, 150, 60, 20, 3, 0, "trampas");
-    puntos = new Selector(10, 180, 40, 20, 2, 0, "puntos interes");
+    enemigos = new Selector(10, 70, 180, 20, 9, 0, "enemigos");
+    powerups = new Selector(10, 110, 80, 20, 4, 0, "powerups");
+    trampas = new Selector(100, 110, 60, 20, 3, 0, "trampas");
+    puntos = new Selector(10, 150, 40, 20, 2, 0, "puntos interes");
 
-    widthMap = new Slider("widthMap", 10, 210, 180, 20, 0, 100, 50);
-    heightMap = new Slider("heightMap", 10, 250, 180, 20, 0, 100, 50);
-    timeMap = new Slider("timeMap", 10, 290, 180, 20, 10, 180, 50);
+    widthMap = new Slider("widthMap", 10, 190, 180, 20, 0, 100, 50);
+    heightMap = new Slider("heightMap", 10, 230, 180, 20, 0, 100, 50);
+    timeMap = new Slider("timeMap", 10, 270, 180, 20, 10, 240, 50);
   }
   void act() {
     super.act();
@@ -780,6 +780,9 @@ class Opciones extends Ventana {
     widthMap.act(x, y);
     heightMap.act(x, y);
     timeMap.act(x, y);
+    if(timeMap.mover){
+       nivel.tiempo = int(timeMap.val); 
+    }
   }
   void dibujar() {
     if (!mostrar) return;
@@ -1046,7 +1049,8 @@ class Selector {
     fill(255);
 
     textAlign(LEFT, CENTER);
-    text(nombre, x+w+4, y+9);
+    //text(nombre, x+w+4, y+9);
+    text(nombre, x + 2, y + 6+ h);
   }
 }
 
