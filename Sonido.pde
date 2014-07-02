@@ -1,6 +1,7 @@
 class Sonido {
   ArrayList<AudioSample> sounds;
   AudioSample beatle, firefly, ladybug, spider;
+  AudioSample jump, invi;
   AudioPlayer musica_menu, musica_juego;
   int tiempoMusica;
   float volMusic, volSound;
@@ -68,6 +69,10 @@ class Sonido {
     sounds.add(firefly);
     sounds.add(ladybug);
     sounds.add(spider);
+    jump = minim.loadSample( "sound/leonJump.wav", 512);
+    invi = minim.loadSample( "sound/leonInvis.wav", 512);
+    sounds.add(jump);
+    sounds.add(invi);
     volSound = (float)(log(vol_sound.val)/log(10.0)*20.0);
     for (int i = 0; i < sounds.size (); i++) {
       sounds.get(i).setGain(volSound);

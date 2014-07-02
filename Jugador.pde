@@ -79,6 +79,7 @@ class Jugador {
     if (input.SALTAR.click && cant_sal < max_sal) {
       salto = true;
       cant_sal++;
+      sonido.jump.trigger();
       vely = -18;
     }
     if (alentizar) acey = 0.05;
@@ -174,6 +175,7 @@ class Jugador {
     }
     if (input.INVISIBLE.click) {
       invisible = !invisible;
+      if(invisible) sonido.invi.trigger();
     }
     if (vida <= 0) {
       ui.cant_vidas--;
