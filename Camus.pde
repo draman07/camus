@@ -1,4 +1,5 @@
 /* //<>//
+ -guardar del tiempo
   -borrar placas viejas
 */
 
@@ -6,7 +7,6 @@ import ddf.minim.*;
 
 Minim minim;
 
-AudioSample mouse_squeak, vulture_screech;
 boolean pausa, cargar;
 Boton2 editar;
 Camara camara;
@@ -20,6 +20,7 @@ Nivel nivel;
 Scroll vol_music, vol_sound;
 ScrollV scrollNivs;
 String estado = "splash";
+Sonido sonido;
 PFont font_chiqui, font_chiqui22, font_chiqui24, font_chiqui54, font_chiqui100;
 PImage sprites, arboles;
 PImage boton_start, boton_sound, boton_music, boton_pause, img_barra, img_bbarra, img_pauseMenu, tileMenu;
@@ -32,7 +33,7 @@ void setup() {
   size(800, 600);
   minim = new Minim(this);
   cargarImagenes();
-  cargarSonidos();
+  //cargarSonidos();
   datos = new Datos();
   font_chiqui = createFont("slkscr.ttf", 14, false);//loadFont("Silkscreen-14.vlw");
   font_chiqui22 = createFont("slkscr.ttf", 22, false);//loadFont("Silkscreen-22.vlw");
@@ -115,6 +116,7 @@ void draw() {
       cambiarEstado("main");
     }
   }
+  //sonido.act();
   datos.act();
   input.act();
 }
@@ -396,8 +398,7 @@ void cargarImagenes() {
 }
 
 void cargarSonidos() {
-  mouse_squeak = minim.loadSample( "sound/mouse_squeak.wav", 512);
-  vulture_screech = minim.loadSample( "sound/vulture_screech.wav", 512);
+  sonido = new Sonido();
 }
 PImage recortar(PImage ori, int x, int y, int w, int h) {
   PImage aux = createImage(w, h, ARGB);

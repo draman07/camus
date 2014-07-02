@@ -5,6 +5,7 @@ class Editor { //<>//
   int tam, her, val;
   int px, py, mx, my;
   int sx1, sy1, sx2, sy2, mx1, my1;
+  Herramientas herramientas;
   Menu menu;
   Minimapa minimapa;
   Niveles niveles;
@@ -14,13 +15,15 @@ class Editor { //<>//
     selecionados = new ArrayList<Elemento>();
     tam = 16;
     menu = new Menu(0, -30, width, 38);
+    herramientas = new Herramientas();
     minimapa = new Minimapa(nivel.w, nivel.h); 
     opciones = new Opciones(width-220, 50, 200, 310);
-    niveles = new Niveles(10, 48, 140, 260);
+    niveles = new Niveles(10, 240, 140, 260);
     ventanas = new ArrayList<Ventana>();
     ventanas.add(minimapa);
     ventanas.add(opciones);
     ventanas.add(niveles);
+    ventanas.add(herramientas);
     dibujar = sel = false;
   }
   void act() {
@@ -77,9 +80,9 @@ class Editor { //<>//
       }
     }
     if (keyPressed && key >= '1' && key <= '7') {
-      menu.herramientas.val = int(key-49);
+      herramientas.herramientas.val = int(key-49);
     }
-    her = int(menu.herramientas.val);
+    her = int(herramientas.herramientas.val);
     val = int(menu.elementos.val);
     boolean sobre = false;
     for (int i = 0; i < ventanas.size (); i++) {
@@ -592,7 +595,7 @@ class Menu {
   boolean sobre;
   Boton2 jugar, nuevo, cargar, guardar, guardarComo;
   int x, y, w, h, dy;
-  Selector elementos, herramientas; 
+  Selector elementos; 
   PImage fondo;
   Menu(int x, int y, int w, int h) {
     this.x = x; 
@@ -605,18 +608,17 @@ class Menu {
     cargar = new Boton2(195, 8, 80, 20, "CARGAR");
     guardar = new Boton2(285, 8, 80, 20, "GUARDAR");
     guardarComo = new Boton2(375, 8, 80, 20, "SAVE AS");
-    herramientas = new Selector(width-150, 8, 140, 20, 7, 0, "");
     elementos = new Selector(width-300, 8, 140, 20, 7, 0, "");
     fondo = crearDegrade(w, h, color(88), color(72));
   }
   void act() {
     if (mouseX >= x && mouseX < x+w && mouseY >= y+dy && mouseY < y+dy+h) {
       sobre = true;
-      //dy+=2;
+      dy+=5;
       if (dy > 30) dy = 30;
     } else {
       sobre = false;
-      //dy-=2;
+      dy-=5;
       if (dy < 0) dy = 0;
     }
     int yy = y+dy+8;
@@ -632,11 +634,6 @@ class Menu {
     guardarComo.act();
     elementos.y = yy;
     //elementos.act();
-    if (elementos.click) {
-      herramientas.val = 1;
-    }
-    herramientas.y = yy;
-    herramientas.act();
   }
   void dibujar() {
     //fill(80);
@@ -649,8 +646,7 @@ class Menu {
     guardarComo.dibujar();
     //elementos.dibujar();
     //image(recortar(sprites, 0, 196, 140, 20), elementos.x, elementos.y);
-    herramientas.dibujar();
-    image(recortar(sprites, 0, 176, 140, 20), herramientas.x, herramientas.y);
+    
   }
 }
 
@@ -676,7 +672,7 @@ void guardarSelecionar(File sel) {
 }
 
 class Ventana {
-  boolean mover, mostrar, sobre;  
+  boolean mover, mostrar, sobre, desplegar;  
   int x, y, w, h;
   PImage barra; 
   String nombre;
@@ -685,6 +681,7 @@ class Ventana {
     this.y = y; 
     this.nombre = nombre;
     mostrar = true;
+    desplegar = true;
     resize(w, h);
   }
   void act() {
@@ -692,14 +689,12 @@ class Ventana {
       if (mouseX >= x && mouseX < x+w && mouseY >= y && mouseY < y+h && input.amouseX >= x && input.amouseX < x+w && input.amouseY >= y && input.amouseY < y+h) {
         sobre = true;
       } else sobre = false;
-      if (input.click && mouseButton == LEFT) {
+      if (sobre &&  input.dclick && mouseButton == LEFT) {
+        desplegar = !desplegar;
+      }
+      if (input.click && mouseY < y+20 && mouseButton == LEFT) {
         if (sobre && mouseY < y+20) {
           mover = true;
-          if (mouseX >= x+w-20) { 
-            mover = false;
-            sobre = false;
-            mostrar = false;
-          }
         }
       }
     }
@@ -715,14 +710,22 @@ class Ventana {
     noStroke();
     if (!mostrar) return;
     fill(30);
-    rect(x, y+20, w, h-20);
+    if (desplegar) rect(x, y+20, w, h-20);
     image(barra, x, y);
+    /*
     stroke(200);
-    line(x+w-14, y+3, x+w-3, y+14);
-    line(x+w-14, y+14, x+w-3, y+3);
-
+     line(x+w-14, y+3, x+w-3, y+14);
+     line(x+w-14, y+14, x+w-3, y+3);
+     */
+    noStroke();
     fill(255);
     text(nombre, x+6, y+10);
+    int desx = int(textWidth(nombre))+12;
+    if (desplegar) {
+      triangle(x+desx, y+8, x+desx+5, y+14, x+desx+10, y+8);
+    } else {
+      triangle(x+desx+2, y+6, x+desx+2, y+16, x+desx+6+2, y+11);
+    }
   }
   void resize(int nw, int nh) {
     this.w = nw; 
@@ -751,42 +754,44 @@ class Opciones extends Ventana {
   }
   void act() {
     super.act();
+    if (!desplegar) return;
     ajustar.act(x, y);
     enemigos.act(x, y);
     if (enemigos.click) {
-      editor.menu.herramientas.val = 1;
+      editor.herramientas.herramientas.val = 1;
       editor.menu.elementos.val = 4;
     }
     powerups.act(x, y);
     if (powerups.click) { 
-      editor.menu.herramientas.val = 1;
+      editor.herramientas.herramientas.val = 1;
       editor.menu.elementos.val = 2;
     }
     tiles.act(x, y);
     if (tiles.click) { 
-      editor.menu.herramientas.val = 1;
+      editor.herramientas.herramientas.val = 1;
       editor.menu.elementos.val = 1;
     }
     trampas.act(x, y);
     if (trampas.click) { 
-      editor.menu.herramientas.val = 1;
+      editor.herramientas.herramientas.val = 1;
       editor.menu.elementos.val = 5;
     }
     puntos.act(x, y);
     if (puntos.click) { 
-      editor.menu.herramientas.val = 6;
+      editor.herramientas.herramientas.val = 6;
       editor.menu.elementos.val = 5;
     }
     widthMap.act(x, y);
     heightMap.act(x, y);
     timeMap.act(x, y);
-    if(timeMap.mover){
-       nivel.tiempo = int(timeMap.val); 
+    if (timeMap.mover) {
+      nivel.tiempo = int(timeMap.val);
     }
   }
   void dibujar() {
     if (!mostrar) return;
     super.dibujar();
+    if (!desplegar) return;
     ajustar.dibujar(x, y);
     enemigos.dibujar(x, y);
     image(recortar(sprites, 140, 196, 180, 20), x+enemigos.x, y+enemigos.y);
@@ -826,10 +831,11 @@ class Niveles extends Ventana {
         niveles.add(aux);
       }
     }
-    if((niveles.size()+1)*20 < h) h = (niveles.size()+1)*20;
+    if ((niveles.size()+1)*20 < h) h = (niveles.size()+1)*20;
   }
   void act() {
     super.act();
+    if (!desplegar) return;
     if (sobre && input.click) {
       for (int i = 0; i < niveles.size (); i++) {
         if (mouseX >= x && mouseX < x+w && mouseY >= (y+20+20*i) && mouseY < (y+20+20*i)+20) {
@@ -843,8 +849,9 @@ class Niveles extends Ventana {
   }
   void dibujar() {
     if (!mostrar) return;
-    textFont(font_chiqui);
     super.dibujar();
+    if (!desplegar) return;
+    textFont(font_chiqui);
     noStroke();
     fill(255);
     for (int i = 0; i < niveles.size (); i++) {
@@ -906,6 +913,7 @@ class Minimapa extends Ventana {
   }
   void act() {
     super.act();
+    if (!desplegar) return;
     if (mostrar) {
       if (sobre && input.press && mouseX >= x+10 && mouseX < x+w-10 && mouseY >= y+30 && mouseY < y+h-10) {
         mover = true;
@@ -924,6 +932,7 @@ class Minimapa extends Ventana {
   void dibujar() {
     if (!mostrar) return;
     super.dibujar();
+    if (!desplegar) return;
     if (frameCount%60 == 0) {
       for (int j = 0; j < mh; j++) {
         for (int i = 0; i < mw; i++) {
@@ -957,6 +966,29 @@ class Minimapa extends Ventana {
     stroke(200);
     noFill();
     rect(x+10-camara.x/16*es, y+30-camara.y/16*es, width/16*es, height/16*es);
+  }
+}
+
+class Herramientas extends Ventana {
+  Selector herramientas;
+  Herramientas() {
+    super(10, 40, 40, 160, "H");
+    herramientas = new Selector(10, 30, 20, 140, 7, 0, "");
+    herramientas.vertical = true;
+  }
+  void act() {
+    super.act();
+    if (!desplegar) return;
+    herramientas.act(x,y);
+  }
+  void dibujar() {
+    if (!mostrar) return;
+    super.dibujar();
+    if (!desplegar) return;
+    herramientas.dibujar(x,y);
+    for(int i = 0; i < 7; i++){
+      image(recortar(sprites, 0+20*i, 176, 20, 20), x+herramientas.x, y+herramientas.y+20*i);
+    }
   }
 }
 
@@ -999,7 +1031,7 @@ class Check {
 }
 
 class Selector {
-  boolean aux, click, eliminar;
+  boolean aux, click, eliminar, vertical;
   float x, y, w, h, val;
   int cant;
   String nombre;
@@ -1026,7 +1058,8 @@ class Selector {
       if ( mouseX >= x  && mouseX < x + w ) {
         if ( mouseY >= y  && mouseY < y + h ) {
           click = true;
-          val = int((mouseX - x)/(w/cant));
+          if(!vertical) val = int((mouseX - x)/(w/cant));
+          else val = int((mouseY - y)/(h/cant));
         }
       }
     }
@@ -1044,13 +1077,14 @@ class Selector {
       } else {
         fill(120);
       }
-      rect(x+(w)/cant*i, y, w/cant, h);
+      if(!vertical) rect(x+(w)/cant*i, y, w/cant, h);
+      else rect(x, y+(h)/cant*i, w, h/cant);
     }
     fill(255);
 
     textAlign(LEFT, CENTER);
     //text(nombre, x+w+4, y+9);
-    text(nombre, x + 2, y + 6+ h);
+    if(!vertical) text(nombre, x + 2, y + 6+ h);
   }
 }
 
