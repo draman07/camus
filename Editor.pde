@@ -614,11 +614,11 @@ class Menu {
   void act() {
     if (mouseX >= x && mouseX < x+w && mouseY >= y+dy && mouseY < y+dy+h) {
       sobre = true;
-      dy+=5;
+      //dy+=5;
       if (dy > 30) dy = 30;
     } else {
       sobre = false;
-      dy-=5;
+      //dy-=5;
       if (dy < 0) dy = 0;
     }
     int yy = y+dy+8;
@@ -972,7 +972,7 @@ class Minimapa extends Ventana {
 class Herramientas extends Ventana {
   Selector herramientas;
   Herramientas() {
-    super(10, 40, 40, 160, "H");
+    super(10, 50, 40, 160, "H");
     herramientas = new Selector(10, 30, 20, 140, 7, 0, "");
     herramientas.vertical = true;
   }

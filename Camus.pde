@@ -1,7 +1,7 @@
 /* //<>//
  -guardar del tiempo
-  -borrar placas viejas
-*/
+ -borrar placas viejas
+ */
 
 import ddf.minim.*;
 
@@ -32,16 +32,14 @@ UI ui;
 void setup() {
   size(800, 600);
   minim = new Minim(this);
-  cargarImagenes();
-  //cargarSonidos();
   datos = new Datos();
+  cargarImagenes();
+  cargarSonidos();
   font_chiqui = createFont("slkscr.ttf", 14, false);//loadFont("Silkscreen-14.vlw");
   font_chiqui22 = createFont("slkscr.ttf", 22, false);//loadFont("Silkscreen-22.vlw");
   font_chiqui24 = createFont("slkscr.ttf", 24, false);//loadFont("Silkscreen-22.vlw");
   font_chiqui54 = createFont("slkscr.ttf", 54, false);
   font_chiqui100 = createFont("slkscr.ttf", 100, false);
-  vol_music = new Scroll(374, 500, img_barra.width-img_barra.height, img_barra.height/2, 0, 1, 1);
-  vol_sound = new Scroll(374, 560, img_barra.width-img_barra.height, img_barra.height/2, 0, 1, 0);
   scrollNivs = new ScrollV(690, 160, 10, 370, 0, 1, 0);
   input = new Input();
   ui = new UI(0);
@@ -116,13 +114,19 @@ void draw() {
       cambiarEstado("main");
     }
   }
-  //sonido.act();
+  sonido.act();
   datos.act();
   input.act();
 }
 
 void dispose() {
   datos.guardar();
+}
+
+void stop() {
+  sonido.stop();
+  minim.stop();
+  super.stop();
 }
 
 void keyPressed() {
@@ -168,17 +172,19 @@ void dibujarPantallasInicio() {
   } else if (estado.equals("main")) {
     titulo = "main menu";
     //image(fondo_menu[1], 0, 0);
-    String campos[] = {"start game", "select level", "scoreboard", "options", "editor"};
+    String campos[] = {
+      "start game", "select level", "scoreboard", "options", "editor"
+    };
     textFont(font_chiqui24);
     stroke(#00592b);
     strokeWeight(3);
     int cant = campos.length;
-    for(int i = 0; i < cant; i++){
+    for (int i = 0; i < cant; i++) {
       int vv = i*3;
       float des = map(tiempoEstado, 0+vv, 5+vv, 0, PI/2);
-      if(des > PI/2) des = PI/2;
-      if(des <= 0) des = PI;
-      if(0 < des) des = cos(des)*-500;
+      if (des > PI/2) des = PI/2;
+      if (des <= 0) des = PI;
+      if (0 < des) des = cos(des)*-500;
       fill(#18f283);
       rect(300+des, 186+77*i, 200, 50, 8);
       fill(#00592b);
@@ -207,12 +213,16 @@ void dibujarPantallasInicio() {
   } else if (estado.equals("scoreboard")) {
     titulo = "high\nscores";
     //image(fondo_menu[2], 0, 0);
-    String campos[] = {"total points", "total time played", "total deaths", "levels"};
-    int valores[] = {datos.totalPuntos, datos.tiempoJugado, datos.cantidadMuertes, editor.niveles.niveles.size()};
+    String campos[] = {
+      "total points", "total time played", "total deaths", "levels"
+    };
+    int valores[] = {
+      datos.totalPuntos, datos.tiempoJugado, datos.cantidadMuertes, editor.niveles.niveles.size()
+    };
     textFont(font_chiqui24);
     stroke(#00592b);
     strokeWeight(3);
-    for(int i = 0; i < campos.length; i++){
+    for (int i = 0; i < campos.length; i++) {
       fill(#18f283);
       textAlign(LEFT, TOP);
       text(campos[i], 150, 252+77*i);
@@ -238,12 +248,12 @@ void dibujarPantallasInicio() {
     int cant = niveles.size();
     int des = 0;
     int max = cant;
-    if(cant > 12){
+    if (cant > 12) {
       scrollNivs.max_val = (cant-12)/4+1.95;
       scrollNivs.act();
       des = int(scrollNivs.val)*4;
       max = des+12;
-      if(max > cant) max = cant;
+      if (max > cant) max = cant;
     }
     for (int i = des; i < max; i++) {
       float x = inix + desx*((i-des)%4);
@@ -290,7 +300,9 @@ void dibujarPantallasInicio() {
     rect(300, 268, 200, 53, 6);
     rect(300, 334, 200, 53, 6);
     rect(300, 430, 200, 53, 6);
-    String campos[] = {"time", "power ups", "bonus", "reward"};
+    String campos[] = {
+      "time", "power ups", "bonus", "reward"
+    };
     textAlign(LEFT, TOP);
     textFont(font_chiqui24);
     text(campos[0], 84, 217);
@@ -311,7 +323,7 @@ void dibujarPantallasInicio() {
     int puntosTotal = puntosBonus+ui.score;
     text(puntosTotal, width/2, 456);
     image(recortar(sprites, 254, 397, 166, 58), width/2-83, 512);  
-    
+
     if (input.click && mouseX >= 318 && mouseX < 484 && mouseY >= 512 && mouseY < 570) { 
       String src = sketchPath("niveles/"+nivel.portal.src);
       if (!src.equals("")) {
@@ -336,18 +348,18 @@ void dibujarPantallasInicio() {
       cambiarEstado("juego");
     }
   }
-  
+
   if (!estado.equals("gameover") && !estado.equals("splash")) {
     float des = 1;
-    if(tiempoEstado < 8) des = sin(map(tiempoEstado, 0, 8, 0, PI/2));
+    if (tiempoEstado < 8) des = sin(map(tiempoEstado, 0, 8, 0, PI/2));
     //if(des > 1) des = 1;
     textFont(font_chiqui100);
-    textAlign(CENTER,TOP);
+    textAlign(CENTER, TOP);
     fill(#18f283);
     textLeading(94);
     text(titulo, width/2, 16-200+200*des);
   }
-  
+
   if (estado.equals("scoreboard") || estado.equals("levels") || estado.equals("options") || estado.equals("score") || estado.equals("gameover")) { 
     image(recortar(sprites, 201, 402, 53, 54), 30, 30);
     if (input.click && mouseX > 30 && mouseX < 83&&  mouseY >= 30 && mouseY < 84) {
@@ -398,6 +410,8 @@ void cargarImagenes() {
 }
 
 void cargarSonidos() {
+  vol_music = new Scroll(374, 500, img_barra.width-img_barra.height, img_barra.height/2, 0, 1, datos.volMusic);
+  vol_sound = new Scroll(374, 560, img_barra.width-img_barra.height, img_barra.height/2, 0, 1, datos.volSound);
   sonido = new Sonido();
 }
 PImage recortar(PImage ori, int x, int y, int w, int h) {
