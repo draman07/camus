@@ -1,4 +1,8 @@
-import ddf.minim.*; //<>//
+/* //<>//
+  -borrar placas viejas
+*/
+
+import ddf.minim.*;
 
 Minim minim;
 
@@ -270,8 +274,15 @@ void dibujarPantallasInicio() {
     vol_sound.act();
   } else if (estado.equals("score")) {
     titulo = "score";
+    strokeWeight(3);
+    stroke(#00592b);
+    fill(#18f283);
+    rect(236, 108, 328, 66, 6);
+    rect(300, 202, 200, 53, 6);
+    rect(300, 268, 200, 53, 6);
+    rect(300, 334, 200, 53, 6);
+    rect(300, 430, 200, 53, 6);
     fill(#00592B);
-    image(fondo_menu[5], 0, 0);
     textAlign(CENTER, CENTER);
     textFont(font_chiqui54);
     text(ui.score, width/2, 138);
@@ -285,6 +296,7 @@ void dibujarPantallasInicio() {
     int puntosTotal = puntosBonus+ui.score;
     text(puntosTotal, width/2, 456);
     image(recortar(sprites, 254, 397, 166, 58), width/2-83, 512);  
+    
     if (input.click && mouseX >= 318 && mouseX < 484 && mouseY >= 512 && mouseY < 570) { 
       String src = sketchPath("niveles/"+nivel.portal.src);
       if (!src.equals("")) {
