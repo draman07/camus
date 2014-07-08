@@ -2,6 +2,7 @@ class Sonido {
   ArrayList<AudioSample> sounds;
   AudioSample beatle, firefly, ladybug, spider;
   AudioSample jump, invi;
+  AudioSample cobra, dove, hawk, mouse, rat, viper, vulture, wolf;
   AudioPlayer musica_menu, musica_juego;
   int tiempoMusica;
   float volMusic, volSound;
@@ -73,6 +74,23 @@ class Sonido {
     invi = minim.loadSample( "sound/leonInvis.wav", 512);
     sounds.add(jump);
     sounds.add(invi);
+    cobra = minim.loadSample( "sound/cobra.wav", 512);
+    dove = minim.loadSample( "sound/dove.wav", 512);
+    hawk = minim.loadSample( "sound/hawk.wav", 512);
+    mouse = minim.loadSample( "sound/mouse.wav", 512);
+    rat = minim.loadSample( "sound/rat.wav", 512);
+    viper = minim.loadSample( "sound/viper.wav", 512);
+    vulture = minim.loadSample( "sound/vulture.wav", 512);
+    wolf = minim.loadSample( "sound/wolf.wav", 512);
+    sounds.add(cobra);
+    sounds.add(dove);
+    sounds.add(hawk);
+    sounds.add(mouse);
+    sounds.add(rat);
+    sounds.add(viper);
+    sounds.add(vulture);
+    sounds.add(wolf);
+    
     volSound = (float)(log(vol_sound.val)/log(10.0)*20.0);
     for (int i = 0; i < sounds.size (); i++) {
       sounds.get(i).setGain(volSound);
@@ -83,5 +101,13 @@ class Sonido {
   void stop() {
     musica_menu.close();
     musica_juego.close();
+    
+    beatle.close();
+    firefly.close();
+    ladybug.close();
+    spider.close();
+    
+    jump.close();
+    invi.close();
   }
 }

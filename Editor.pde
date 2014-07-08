@@ -736,7 +736,7 @@ class Ventana {
 
 class Opciones extends Ventana {
   Check ajustar;
-  Selector enemigos, powerups, trampas, tiles, puntos;
+  Selector enemigos, powerups, trampas, tiles, puntos, plataformas;
   Slider widthMap, heightMap, timeMap;
   Opciones(int x, int y, int w, int h) {
     super(x, y, w, h, "Opciones");
@@ -746,7 +746,8 @@ class Opciones extends Ventana {
     enemigos = new Selector(10, 70, 180, 20, 9, 0, "enemigos");
     powerups = new Selector(10, 110, 80, 20, 4, 0, "powerups");
     trampas = new Selector(100, 110, 60, 20, 3, 0, "trampas");
-    puntos = new Selector(10, 150, 40, 20, 2, 0, "puntos interes");
+    puntos = new Selector(10, 150, 40, 20, 2, 0, "puntos");
+    plataformas = new Selector(90, 150, 20, 20, 1, 0, "plataforma");
 
     widthMap = new Slider("widthMap", 10, 190, 180, 20, 0, 100, 50);
     heightMap = new Slider("heightMap", 10, 230, 180, 20, 0, 100, 50);
@@ -781,6 +782,11 @@ class Opciones extends Ventana {
       editor.herramientas.herramientas.val = 6;
       editor.menu.elementos.val = 5;
     }
+    plataformas.act(x, y);
+    if (plataformas.click) { 
+      editor.herramientas.herramientas.val = 1;
+      editor.menu.elementos.val = 3;
+    }
     widthMap.act(x, y);
     heightMap.act(x, y);
     timeMap.act(x, y);
@@ -802,6 +808,8 @@ class Opciones extends Ventana {
     trampas.dibujar(x, y);
     image(recortar(sprites, 320, 196, 60, 20), x+trampas.x, y+trampas.y);
     puntos.dibujar(x, y);
+    plataformas.dibujar(x,y);
+    image(recortar(sprites, 60, 196, 20, 20), x+plataformas.x, y+plataformas.y);
 
     widthMap.dibujar(x, y);
     heightMap.dibujar(x, y);
