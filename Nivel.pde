@@ -16,7 +16,8 @@ class Nivel { //<>//
     nuevo();
   }
   Nivel(String src) {
-    this.src = Paths.get(src).toString();
+    src = Paths.get(src).toString();
+    this.src = src;
     cargarNivel(src);
     actualizarJson();
     iniciar();
