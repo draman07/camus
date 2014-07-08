@@ -327,11 +327,15 @@ void dibujarPantallasInicio() {
 
     if (input.click && mouseX >= 318 && mouseX < 484 && mouseY >= 512 && mouseY < 570) { 
       String src = sketchPath("niveles/"+nivel.portal.src);
+      String nom = nivel.portal.src;
       if (!src.equals("")) {
         ArrayList<Nivel> nivs = editor.niveles.niveles;
         for (int i = 0; i < nivs.size (); i++) {
-          Nivel n = nivs.get(i);
-          if (src.equals(n.src)) {
+          Nivel n = nivs.get(i); //<>//
+          String aux[] = split(n.src, "/");
+          String an = aux[aux.length-1];
+          println(nivel.portal.src, nom); //<>//
+          if (an.equals(nom)) {
             editor.niveles.sel = i;
             nivel = n; 
             break;
