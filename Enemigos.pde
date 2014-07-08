@@ -54,7 +54,7 @@ class Mouse extends Enemigo {
   }
   boolean colisiona(Jugador ju) {
     if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y+3, w, h-6)) {
-      if(!nivel.jugador.inmune) sonido.mouse.trigger();
+      if(!nivel.jugador.inmune) sonido.mouse.trigger(); //<>//
       return true;
     }
     return false;

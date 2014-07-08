@@ -109,5 +109,14 @@ class Sonido {
     
     jump.close();
     invi.close();
+    
+    cobra.close();
+    dove.close();
+    hawk.close();
+    mouse.close();
+    rat.close();
+    viper.close();
+    vulture.close();
+    wolf.close();
   }
 }

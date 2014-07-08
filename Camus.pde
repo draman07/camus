@@ -4,6 +4,7 @@
  */
 
 import ddf.minim.*;
+import java.nio.file.Paths;
 
 Minim minim;
 
