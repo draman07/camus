@@ -461,6 +461,9 @@ class Nivel { //<>//
     if(json.hasKey("nombre")){
         nombre = json.getString("nombre");
     }else{
+      nombre = "";
+    }
+    if(nombre.equals("")){
       String aux[] = split(src, "/");
       nombre = split(aux[aux.length-1], ".")[0];
     }
