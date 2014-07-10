@@ -54,7 +54,9 @@ class Mouse extends Enemigo {
   }
   boolean colisiona(Jugador ju) {
     if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y+3, w, h-6)) {
-      if (!nivel.jugador.inmune) sonido.mouse.trigger();
+      if (!nivel.jugador.inmune) {
+        sonido.mouse.trigger();
+      }
       return true;
     }
     return false;
@@ -266,6 +268,14 @@ class Rat extends Enemigo {
       image(espejar(sprites_rat[frame][0]), x-w/2, y-h/2);
     }
   }
+
+  boolean colisiona(Jugador ju) {
+    if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y, w, h)) {
+      if (!nivel.jugador.inmune) sonido.rat.trigger();
+      return true;
+    }
+    return false;
+  }
 }
 
 class Hawk extends Enemigo {
@@ -341,6 +351,13 @@ class Hawk extends Enemigo {
     if (velx < 0) dir = 1;
     if (dir == 0) image(sprites_hawk[frame%2][frame/2], x-w/2, y-h/2);
     else image(espejar(sprites_hawk[frame%2][frame/2]), x-w/2, y-h/2);
+  }
+  boolean colisiona(Jugador ju) {
+    if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y, w, h)) {
+      if (!nivel.jugador.inmune) sonido.hawk.trigger();
+      return true;
+    }
+    return false;
   }
 }
 
@@ -419,6 +436,7 @@ class Viper extends Enemigo {
       float dis = dist(obj.x, 0, x, 0);
       if (dis <= vel) {
         ataquet = 120;
+        sonido.viper.trigger();
         estado = "atacar";
       }
     } else if (estado.equals("atacar")) { 
@@ -440,6 +458,13 @@ class Viper extends Enemigo {
   void dibujar() {
     if (dir == 0) image(sprites_viper[0][frame], x-w/2, y-h/2);
     else image(espejar(sprites_viper[0][frame]), x-w/2, y-h/2);
+  }
+    boolean colisiona(Jugador ju) {
+    if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y, w, h)) {
+      if (!nivel.jugador.inmune) sonido.viper.trigger();
+      return true;
+    }
+    return false;
   }
 }
 
@@ -485,6 +510,7 @@ class Wolf extends Enemigo {
         vel = 4;
         tiempo_reposo = 180;
         estado = "atacar";
+        sonido.wolf.trigger();
         velx = vel;
         if (obj.x-x < 0) velx = -vel;
       } else if (dis < max_dis) {
@@ -542,6 +568,13 @@ class Wolf extends Enemigo {
     else
       image(espejar(sprites_wolf[frame%2][frame/2]), x-w/2, y-h/2);
   }
+    boolean colisiona(Jugador ju) {
+    if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y, w, h)) {
+      if (!nivel.jugador.inmune) sonido.wolf.trigger();
+      return true;
+    }
+    return false;
+  }
 }
 
 class Vulture extends Enemigo {
@@ -593,6 +626,13 @@ class Vulture extends Enemigo {
   void dibujar() {
     if (dir == 0) image(sprites_vulture[frame][0], x-w/2, y-h/2);
     else image(espejar(sprites_vulture[frame][0]), x-w/2, y-h/2);
+  }
+    boolean colisiona(Jugador ju) {
+    if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y, w, h)) {
+      if (!nivel.jugador.inmune) sonido.vulture.trigger();
+      return true;
+    }
+    return false;
   }
 }
 
@@ -688,6 +728,13 @@ class Cobra extends Enemigo {
       image(sprites_cobra[frame%2][frame/2], x-w/2, y-h/2);
     else
       image(espejar(sprites_cobra[frame%2][frame/2]), x-w/2, y-h/2);
+  }
+    boolean colisiona(Jugador ju) {
+    if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y, w, h)) {
+      if (!nivel.jugador.inmune) sonido.cobra.trigger();
+      return true;
+    }
+    return false;
   }
 }
 
