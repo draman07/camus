@@ -45,7 +45,7 @@ class Nivel { //<>//
     resetMatrix();
     if (!jugador.invisible) {    
       translate(int(camara.x)/2, int(camara.y)/2);
-      //image(arboles, 0, 0);
+      image(arboles, 0, 0);
     }
     resetMatrix();
     fill(0, 40+jugador.invisibilidad*40);
@@ -481,7 +481,7 @@ class Nivel { //<>//
     w = json.getInt("width");
     h = json.getInt("height");
     if (frameCount > 0 ) { 
-      //arboles = crearFondo();
+      arboles = crearFondo();
     }
     //println((w*tam*2)-width, (h*tam*2)-height);
     tiles = new int[w][h];
