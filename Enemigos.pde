@@ -1,4 +1,4 @@
-class Enemigo extends Elemento { //<>//
+class Enemigo extends Elemento { //<>// //<>// //<>// //<>//
   float dano = 0.1;
   void dano(Jugador j) {
     if (eliminar) return;
@@ -54,7 +54,7 @@ class Mouse extends Enemigo {
   }
   boolean colisiona(Jugador ju) {
     if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y+3, w, h-6)) {
-      if(!nivel.jugador.inmune) sonido.mouse.trigger(); //<>//
+      if (!nivel.jugador.inmune) sonido.mouse.trigger();
       return true;
     }
     return false;
@@ -127,7 +127,7 @@ class Dove extends Enemigo {
   }
   boolean colisiona(Jugador ju) {
     if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y+dy, w, h)) {
-      if(!nivel.jugador.inmune) sonido.dove.trigger();
+      if (!nivel.jugador.inmune) sonido.dove.trigger();
       return true;
     }
     return false;
@@ -485,20 +485,23 @@ class Wolf extends Enemigo {
         vel = 4;
         tiempo_reposo = 180;
         estado = "atacar";
+        velx = vel;
+        if (obj.x-x < 0) velx = -vel;
       } else if (dis < max_dis) {
         vel = 1;
         estado = "seguir";
       } else {
         estado = "normal";
       }
-      velx = vel;
-      if (obj.x-x < 0) velx = -vel;
     }
     if (estado.equals("seguir")) {
-      if (obj.x-(x-30) < 0) {
-        velx = -vel;
-      } else if (obj.x-(x+30) > 0) {
-        velx = vel;
+      if (abs(obj.x-x) > 30) {
+        if (obj.x-x < 0) {
+          velx = -vel;
+        } else {
+          //println("izquierda ", obj.x-(x+10));
+          velx = vel;
+        }
       }
     } else if (estado.equals("atacar")) {
       if (abs(obj.x-x) < vel) {

@@ -1,4 +1,4 @@
-/* //<>//
+/* //<>// //<>// //<>//
  -guardar del tiempo
  -borrar placas viejas
  */
@@ -219,8 +219,8 @@ void dibujarPantallasInicio() {
     };
     int valores[] = {
       datos.totalPuntos, datos.tiempoJugado, datos.cantidadMuertes, editor.niveles.niveles.size()
-    };
-    textFont(font_chiqui24);
+      };
+      textFont(font_chiqui24);
     stroke(#00592b);
     strokeWeight(3);
     for (int i = 0; i < campos.length; i++) {
@@ -332,9 +332,8 @@ void dibujarPantallasInicio() {
         ArrayList<Nivel> nivs = editor.niveles.niveles;
         for (int i = 0; i < nivs.size (); i++) {
           Nivel n = nivs.get(i); //<>//
-          String aux[] = split(n.src, "/");
+          String aux[] = split(n.src.replace("\\", "/"), "/");
           String an = aux[aux.length-1];
-          println(nivel.portal.src, nom); //<>//
           if (an.equals(nom)) {
             editor.niveles.sel = i;
             nivel = n; 
