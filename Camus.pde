@@ -20,9 +20,9 @@ int tam = 16;
 Nivel nivel;
 Scroll vol_music, vol_sound;
 ScrollV scrollNivs;
-String estado = "splash";
+String estado = "gameover";//"splash";
 Sonido sonido;
-PFont font_chiqui, font_chiqui22, font_chiqui24, font_chiqui54, font_chiqui100;
+PFont font_chiqui, font_chiqui22, font_chiqui24, font_chiqui54, font_chiqui100, font_chiqui140; //<>//
 PImage sprites, arboles;
 PImage boton_start, boton_sound, boton_music, boton_pause, img_barra, img_bbarra, img_pauseMenu, tileMenu;
 PImage[] fondo_menu, img_arbol;
@@ -41,6 +41,7 @@ void setup() {
   font_chiqui24 = createFont("slkscr.ttf", 24, false);//loadFont("Silkscreen-22.vlw");
   font_chiqui54 = createFont("slkscr.ttf", 54, false);
   font_chiqui100 = createFont("slkscr.ttf", 100, false);
+  font_chiqui140 = createFont("slkscr.ttf", 140, false);
   scrollNivs = new ScrollV(690, 160, 10, 370, 0, 1, 0);
   input = new Input();
   ui = new UI(0);
@@ -346,6 +347,20 @@ void dibujarPantallasInicio() {
       cambiarEstado("juego");
     }
   } else if (estado.equals("gameover")) {
+    pushMatrix();
+    camara.act();
+    nivel.dibujar();
+    popMatrix();
+    fill(#1E0826, 120);
+    rect(0, 0, width, height);
+    textFont(font_chiqui140);
+    textAlign(CENTER, TOP);
+    fill(#18f283);
+    textLeading(160);
+    text("Game\nOver", width/2, 62);
+    textFont(font_chiqui24);
+    text("try again!", width/2, 380);
+    image(recortar(sprites, 254, 455, 166, 64), 318, 462);
     if (input.click && mouseX >= 318 && mouseX < 484 && mouseY >= 462 && mouseY < 520) { 
       nivel.iniciar(); 
       ui.iniciar();

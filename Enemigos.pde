@@ -1,4 +1,4 @@
-class Enemigo extends Elemento { //<>// //<>// //<>// //<>//
+class Enemigo extends Elemento { //<>//
   float dano = 0.1;
   void dano(Jugador j) {
     if (eliminar) return;
