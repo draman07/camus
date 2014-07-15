@@ -1,4 +1,4 @@
-/* //<>// //<>// //<>//
+/* //<>//
  -guardar del tiempo
  -borrar placas viejas
  */
@@ -44,7 +44,7 @@ void setup() {
   scrollNivs = new ScrollV(690, 160, 10, 370, 0, 1, 0);
   input = new Input();
   ui = new UI(0);
-  nivel = new Nivel();
+  nivel = new Nivel("niveles/nivel_0.json");
   arboles = crearFondo();
   editar = new Boton2(15, height-24, 60, 20, "EDITAR");
   editor = new Editor();
