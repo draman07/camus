@@ -1,4 +1,4 @@
-/* //<>//
+/* //<>// //<>// //<>//
  -guardar del tiempo
  -borrar placas viejas
  */
@@ -22,7 +22,7 @@ Scroll vol_music, vol_sound;
 ScrollV scrollNivs;
 String estado = "splash";
 Sonido sonido;
-PFont font_chiqui, font_chiqui22, font_chiqui24, font_chiqui54, font_chiqui100, font_chiqui140; //<>//
+PFont font_chiqui, font_chiqui22, font_chiqui24, font_chiqui54, font_chiqui100, font_chiqui140;
 PImage sprites, arboles;
 PImage boton_start, boton_sound, boton_music, boton_pause, img_barra, img_bbarra, img_pauseMenu, tileMenu;
 PImage[] fondo_menu, img_arbol;
@@ -122,6 +122,7 @@ void draw() {
 }
 
 void dispose() {
+  datos.tiempoJugado += (millis()/1000);
   datos.guardar();
 }
 
@@ -218,8 +219,8 @@ void dibujarPantallasInicio() {
     String campos[] = {
       "total points", "total time played", "total deaths", "levels"
     };
-    int valores[] = {
-      datos.totalPuntos, datos.tiempoJugado, datos.cantidadMuertes, editor.niveles.niveles.size()
+    String valores[] = {
+      str(datos.totalPuntos), stringTime(datos.tiempoJugado+(millis()/1000)), str(datos.cantidadMuertes), str(editor.niveles.niveles.size())
       };
       textFont(font_chiqui24);
     stroke(#00592b);
@@ -332,7 +333,7 @@ void dibujarPantallasInicio() {
       if (!src.equals("")) {
         ArrayList<Nivel> nivs = editor.niveles.niveles;
         for (int i = 0; i < nivs.size (); i++) {
-          Nivel n = nivs.get(i); //<>//
+          Nivel n = nivs.get(i);
           String aux[] = split(n.src.replace("\\", "/"), "/");
           String an = aux[aux.length-1];
           if (an.equals(nom)) {
@@ -343,6 +344,7 @@ void dibujarPantallasInicio() {
         }
       }
       nivel.iniciar();
+      ui.score = puntosTotal;
       ui.iniciar();
       cambiarEstado("juego");
     }
