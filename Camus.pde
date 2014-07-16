@@ -20,7 +20,7 @@ int tam = 16;
 Nivel nivel;
 Scroll vol_music, vol_sound;
 ScrollV scrollNivs;
-String estado = "gameover";//"splash";
+String estado = "splash";
 Sonido sonido;
 PFont font_chiqui, font_chiqui22, font_chiqui24, font_chiqui54, font_chiqui100, font_chiqui140; //<>//
 PImage sprites, arboles;

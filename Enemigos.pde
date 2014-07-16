@@ -54,7 +54,7 @@ class Mouse extends Enemigo {
   }
   boolean colisiona(Jugador ju) {
     if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y+3, w, h-6)) {
-      if (!nivel.jugador.inmune) {
+      if (!nivel.jugador.inmune && !nivel.jugador.invisible) {
         sonido.mouse.trigger();
       }
       return true;
@@ -129,7 +129,7 @@ class Dove extends Enemigo {
   }
   boolean colisiona(Jugador ju) {
     if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y+dy, w, h)) {
-      if (!nivel.jugador.inmune) sonido.dove.trigger();
+      if (!nivel.jugador.inmune && !nivel.jugador.invisible) sonido.dove.trigger();
       return true;
     }
     return false;
@@ -271,7 +271,7 @@ class Rat extends Enemigo {
 
   boolean colisiona(Jugador ju) {
     if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y, w, h)) {
-      if (!nivel.jugador.inmune) sonido.rat.trigger();
+      if (!nivel.jugador.inmune && !nivel.jugador.invisible) sonido.rat.trigger();
       return true;
     }
     return false;
@@ -354,7 +354,7 @@ class Hawk extends Enemigo {
   }
   boolean colisiona(Jugador ju) {
     if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y, w, h)) {
-      if (!nivel.jugador.inmune) sonido.hawk.trigger();
+      if (!nivel.jugador.inmune && !nivel.jugador.invisible) sonido.hawk.trigger();
       return true;
     }
     return false;
@@ -436,7 +436,9 @@ class Viper extends Enemigo {
       float dis = dist(obj.x, 0, x, 0);
       if (dis <= vel) {
         ataquet = 120;
+        if(!nivel.jugador.inmune && !nivel.jugador.invisible){
         sonido.viper.trigger();
+        }
         estado = "atacar";
       }
     } else if (estado.equals("atacar")) { 
@@ -461,7 +463,7 @@ class Viper extends Enemigo {
   }
     boolean colisiona(Jugador ju) {
     if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y, w, h)) {
-      if (!nivel.jugador.inmune) sonido.viper.trigger();
+      if (!nivel.jugador.inmune && !nivel.jugador.invisible) sonido.viper.trigger();
       return true;
     }
     return false;
@@ -510,7 +512,7 @@ class Wolf extends Enemigo {
         vel = 4;
         tiempo_reposo = 180;
         estado = "atacar";
-        sonido.wolf.trigger();
+        if(!nivel.jugador.inmune && !nivel.jugador.invisible) sonido.wolf.trigger();
         velx = vel;
         if (obj.x-x < 0) velx = -vel;
       } else if (dis < max_dis) {
@@ -570,7 +572,7 @@ class Wolf extends Enemigo {
   }
     boolean colisiona(Jugador ju) {
     if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y, w, h)) {
-      if (!nivel.jugador.inmune) sonido.wolf.trigger();
+      if (!nivel.jugador.inmune && !nivel.jugador.invisible) sonido.wolf.trigger();
       return true;
     }
     return false;
@@ -629,7 +631,7 @@ class Vulture extends Enemigo {
   }
     boolean colisiona(Jugador ju) {
     if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y, w, h)) {
-      if (!nivel.jugador.inmune) sonido.vulture.trigger();
+      if (!nivel.jugador.inmune && !nivel.jugador.invisible) sonido.vulture.trigger();
       return true;
     }
     return false;
@@ -731,7 +733,7 @@ class Cobra extends Enemigo {
   }
     boolean colisiona(Jugador ju) {
     if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y, w, h)) {
-      if (!nivel.jugador.inmune) sonido.cobra.trigger();
+      if (!nivel.jugador.inmune && !nivel.jugador.invisible) sonido.cobra.trigger();
       return true;
     }
     return false;
