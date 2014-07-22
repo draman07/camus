@@ -708,6 +708,7 @@ class Portal extends Elemento {
 }
 
 PImage crearFondo() {
+  int tam = 16;
   int w = width+(nivel.w*tam-width)/2;
   int h = height+(nivel.h*tam-height)/2;
   int cant = w/180;

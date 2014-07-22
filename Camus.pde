@@ -2,10 +2,10 @@
  -guardar del tiempo
  -borrar placas viejas
  */
-
 import ddf.minim.*;
 import java.nio.file.Paths;
-
+import java.util.Comparator;
+import java.util.Collections;
 Minim minim;
 
 boolean pausa, cargar;
@@ -302,6 +302,7 @@ void dibujarPantallasInicio() {
       text(nombre, x+wb/2, y+16);
       if (input.click && mouseX >= x && mouseX < x+wb && mouseY >= y && mouseY < y+hb) {
         nivel = niveles.get(i);
+        nivel.iniciar();
         cambiarEstado("juego");
         ui.iniciar();
       }

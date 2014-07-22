@@ -646,7 +646,6 @@ class Menu {
     guardarComo.dibujar();
     //elementos.dibujar();
     //image(recortar(sprites, 0, 196, 140, 20), elementos.x, elementos.y);
-    
   }
 }
 
@@ -808,7 +807,7 @@ class Opciones extends Ventana {
     trampas.dibujar(x, y);
     image(recortar(sprites, 320, 196, 60, 20), x+trampas.x, y+trampas.y);
     puntos.dibujar(x, y);
-    plataformas.dibujar(x,y);
+    plataformas.dibujar(x, y);
     image(recortar(sprites, 60, 196, 20, 20), x+plataformas.x, y+plataformas.y);
 
     widthMap.dibujar(x, y);
@@ -987,14 +986,14 @@ class Herramientas extends Ventana {
   void act() {
     super.act();
     if (!desplegar) return;
-    herramientas.act(x,y);
+    herramientas.act(x, y);
   }
   void dibujar() {
     if (!mostrar) return;
     super.dibujar();
     if (!desplegar) return;
-    herramientas.dibujar(x,y);
-    for(int i = 0; i < 7; i++){
+    herramientas.dibujar(x, y);
+    for (int i = 0; i < 7; i++) {
       image(recortar(sprites, 0+20*i, 176, 20, 20), x+herramientas.x, y+herramientas.y+20*i);
     }
   }
@@ -1066,7 +1065,7 @@ class Selector {
       if ( mouseX >= x  && mouseX < x + w ) {
         if ( mouseY >= y  && mouseY < y + h ) {
           click = true;
-          if(!vertical) val = int((mouseX - x)/(w/cant));
+          if (!vertical) val = int((mouseX - x)/(w/cant));
           else val = int((mouseY - y)/(h/cant));
         }
       }
@@ -1085,14 +1084,14 @@ class Selector {
       } else {
         fill(120);
       }
-      if(!vertical) rect(x+(w)/cant*i, y, w/cant, h);
+      if (!vertical) rect(x+(w)/cant*i, y, w/cant, h);
       else rect(x, y+(h)/cant*i, w, h/cant);
     }
     fill(255);
 
     textAlign(LEFT, CENTER);
     //text(nombre, x+w+4, y+9);
-    if(!vertical) text(nombre, x + 2, y + 6+ h);
+    if (!vertical) text(nombre, x + 2, y + 6+ h);
   }
 }
 
