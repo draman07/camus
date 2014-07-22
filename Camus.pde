@@ -97,7 +97,18 @@ void draw() {
       camara.act();
       nivel.act();
       if (nivel.pasarNivel) {
-        cambiarEstado("score");
+        boolean existe = false;
+        for (int j = 0; j < datos.nivelesPasados.size (); j++) {
+          if (datos.nivelesPasados.getString(j).equals(nivel.nombre)) existe = true;
+        }
+        if (!existe) {
+          datos.nivelesPasados.append(nivel.nombre);
+        }
+        if (datos.nivelesPasados.size() == editor.niveles.niveles.size() && !datos.terminaste) {
+          cambiarEstado("winner");
+        } else {
+          cambiarEstado("score");
+        }
       }
     }
     editar.act();
@@ -188,11 +199,20 @@ void dibujarPantallasInicio() {
       if (des > PI/2) des = PI/2;
       if (des <= 0) des = PI;
       if (0 < des) des = cos(des)*-500;
-      fill(#18f283);
-      rect(300+des, 186+77*i, 200, 50, 8);
-      fill(#00592b);
-      textAlign(CENTER, TOP);
-      text(campos[i], width/2+des, 200+77*i);
+      if (datos.terminaste || i <= cant-2) {
+        fill(#18f283);
+        rect(300+des, 186+77*i, 200, 50, 8);
+        fill(#00592b);
+        textAlign(CENTER, TOP);
+        text(campos[i], width/2+des, 200+77*i);
+      } else {
+        stroke(43);
+        fill(132);
+        rect(300+des, 186+77*i, 200, 50, 8);
+        fill(43);
+        textAlign(CENTER, TOP);
+        text(campos[i], width/2+des, 200+77*i);
+      }
     }
     if (input.click && mouseX >= 300 && mouseX < 500) {
       if (mouseY >= 190 && mouseY < 240) {
@@ -208,7 +228,7 @@ void dibujarPantallasInicio() {
       if (mouseY >= 420 && mouseY < 470) {
         cambiarEstado("options");
       }
-      if (mouseY >= 495 && mouseY < 550) {
+      if (mouseY >= 495 && mouseY < 550 && datos.terminaste) {
         cambiarEstado("editor");
       }
     }
@@ -261,12 +281,24 @@ void dibujarPantallasInicio() {
     for (int i = des; i < max; i++) {
       float x = inix + desx*((i-des)%4);
       float y = iniy + desy*((i-des)/4);
-      stroke(#00592b);
-      fill(#18f283);
-      rect(x, y, wb, hb, 18);
       String nombre = niveles.get(i).nombre;
+      boolean pasado = false;
+      for (int j = 0; j < datos.nivelesPasados.size (); j++) {
+        if (datos.nivelesPasados.getString(j).equals(nombre)) {
+          pasado = true;
+        }
+      } 
+      if (pasado) {
+        stroke(#a60051);
+        fill(#d9418b);
+      } else {
+        stroke(#00592b);
+        fill(#18f283);
+      }
+      rect(x, y, wb, hb, 18);
       if (nombre.length() > 9) nombre = nombre.substring(0, 9);
-      fill(#00592b);
+      if (pasado) fill(#a60051);
+      else fill(#00592b);
       text(nombre, x+wb/2, y+16);
       if (input.click && mouseX >= x && mouseX < x+wb && mouseY >= y && mouseY < y+hb) {
         nivel = niveles.get(i);
@@ -348,6 +380,13 @@ void dibujarPantallasInicio() {
       ui.iniciar();
       cambiarEstado("juego");
     }
+  } else if (estado.equals("winner")) {
+    fill(#18f283);
+    textLeading(180);
+    //text("Game\nOver", width/2, 62);
+    textFont(font_chiqui54);
+    text("congratulations\nyou just unlocked\nthe level editor.", width/2, 192);
+    datos.terminaste = true;
   } else if (estado.equals("gameover")) {
     pushMatrix();
     camara.act();
@@ -381,7 +420,7 @@ void dibujarPantallasInicio() {
     text(titulo, width/2, 16-200+200*des);
   }
 
-  if (estado.equals("scoreboard") || estado.equals("levels") || estado.equals("options") || estado.equals("score") || estado.equals("gameover")) { 
+  if (estado.equals("scoreboard") || estado.equals("levels") || estado.equals("options") || estado.equals("score") || estado.equals("gameover") || estado.equals("winner")) { 
     image(recortar(sprites, 201, 402, 53, 54), 30, 30);
     if (input.click && mouseX > 30 && mouseX < 83&&  mouseY >= 30 && mouseY < 84) {
       cambiarEstado("main");
