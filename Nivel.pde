@@ -40,7 +40,7 @@ class Nivel { //<>//
     dibujar();
   }
   void dibujar() {
-    if(estado.equals("gameover")) return;
+    if (estado.equals("gameover")) return;
     pushMatrix();
     resetMatrix();
     if (!jugador.invisible) {    
@@ -458,12 +458,12 @@ class Nivel { //<>//
   }
   void iniciar() {
     pasarNivel = false;
-    if(json.hasKey("nombre")){
-        nombre = json.getString("nombre");
-    }else{
+    if (json.hasKey("nombre")) {
+      nombre = json.getString("nombre");
+    } else {
       nombre = "";
     }
-    if(nombre.equals("")){
+    if (nombre.equals("")) {
       String aux[] = split(src, "/");
       nombre = split(aux[aux.length-1], ".")[0];
     }
@@ -607,10 +607,10 @@ class Nivel { //<>//
     }
     /*
     if (editor != null) {
-      editor.ventanas.remove(editor.minimapa);
-       //editor.minimapa = new Minimapa(w, h);
-       editor.ventanas.add(editor.minimapa);
-    }*/
+     editor.ventanas.remove(editor.minimapa);
+     //editor.minimapa = new Minimapa(w, h);
+     editor.ventanas.add(editor.minimapa);
+     }*/
   }
   boolean colisiona(Jugador ju) {
     int x0 = int((ju.x - ju.w)/tam); 
@@ -677,6 +677,20 @@ class Nivel { //<>//
     plataformas.remove(e);
     enemigos.remove(e);
     trampas.remove(e);
+  }
+  void resize(int nw, int nh) {
+    int auxt[][] = new int[nw][nh];
+    for (int j = 0; j < nh; j++) {
+      for (int i = 0; i < nw; i++) {
+        int val = 0;
+        if (i < w && j < h) val = tiles[i][j];
+        auxt[i][j] = val;
+      }
+    }
+    w = nw; 
+    h = nh;
+    tiles = auxt;
+    editor.minimapa.iniciar(w,h);
   }
 }
 

@@ -17,7 +17,7 @@ class Editor { //<>//
     menu = new Menu(0, -30, width, 38);
     herramientas = new Herramientas();
     minimapa = new Minimapa(nivel.w, nivel.h); 
-    opciones = new Opciones(width-220, 50, 200, 310);
+    opciones = new Opciones(width-220, 50, 200, 320);
     niveles = new Niveles(10, 240, 140, 260);
     ventanas = new ArrayList<Ventana>();
     ventanas.add(minimapa);
@@ -688,11 +688,11 @@ class Ventana {
       if (mouseX >= x && mouseX < x+w && mouseY >= y && mouseY < y+h && input.amouseX >= x && input.amouseX < x+w && input.amouseY >= y && input.amouseY < y+h) {
         sobre = true;
       } else sobre = false;
-      if (sobre &&  input.dclick && mouseButton == LEFT) {
-        desplegar = !desplegar;
-      }
       if (input.click && mouseY < y+20 && mouseButton == LEFT) {
         if (sobre && mouseY < y+20) {
+          if (input.dclick && mouseButton == LEFT) {
+            desplegar = !desplegar;
+          }
           mover = true;
         }
       }
@@ -748,9 +748,9 @@ class Opciones extends Ventana {
     puntos = new Selector(10, 150, 40, 20, 2, 0, "puntos");
     plataformas = new Selector(90, 150, 20, 20, 1, 0, "plataforma");
 
-    widthMap = new Slider("widthMap", 10, 190, 180, 20, 0, 100, 50);
-    heightMap = new Slider("heightMap", 10, 230, 180, 20, 0, 100, 50);
-    timeMap = new Slider("timeMap", 10, 270, 180, 20, 10, 240, 50);
+    timeMap = new Slider("timeMap", 10, 190, 180, 20, 10, 240, 50);
+    widthMap = new Slider("widthMap", 10, 230, 180, 20, 52, 412, 50);
+    heightMap = new Slider("heightMap", 10, 270, 180, 20, 40, 400, 50);
   }
   void act() {
     super.act();
@@ -786,11 +786,16 @@ class Opciones extends Ventana {
       editor.herramientas.herramientas.val = 1;
       editor.menu.elementos.val = 3;
     }
-    widthMap.act(x, y);
-    heightMap.act(x, y);
     timeMap.act(x, y);
     if (timeMap.mover) {
       nivel.tiempo = int(timeMap.val);
+    }
+
+    widthMap.act(x, y);
+    heightMap.act(x, y);
+    if (input.click && mouseX >= x+10 && mouseX < x+110 && mouseY >= y+310 && mouseY < y+330) {
+      println("fwerrew");
+      nivel.resize(widthMap.getInt(), heightMap.getInt());
     }
   }
   void dibujar() {
@@ -810,9 +815,18 @@ class Opciones extends Ventana {
     plataformas.dibujar(x, y);
     image(recortar(sprites, 60, 196, 20, 20), x+plataformas.x, y+plataformas.y);
 
+    timeMap.dibujar(x, y);
     widthMap.dibujar(x, y);
     heightMap.dibujar(x, y);
-    timeMap.dibujar(x, y);
+    if (mouseX >= x+10 && mouseX < x+110 && mouseY >= y+310 && mouseY < y+330) {
+      fill(150);
+    } else fill(120);
+    rect(x+10, y+310, 100, 20);
+    fill(255);
+    pushStyle();
+    textAlign(CENTER, CENTER);
+    text("escalar", x+10, y+310-2, 100, 20);
+    popStyle();
   }
 }
 
@@ -878,7 +892,7 @@ class Minimapa extends Ventana {
   int mw, mh, es;
   PImage img;
   Minimapa(int mw, int mh) {
-    super(580, 390, 100, 100, "Minimapa");
+    super(580, 400, 100, 100, "Minimapa");
     iniciar(mw, mh);
   }
   void iniciar(int mw, int mh) {
