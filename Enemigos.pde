@@ -422,6 +422,9 @@ class Viper extends Enemigo {
       if (dis < max_dis && !nivel.jugador.invisible) {
         if ((dir == 0 && x-jug.x < 0) || (dir == 1 && x-jug.x > 0)) {
           obj = jug;
+          if (!nivel.jugador.inmune && !nivel.jugador.invisible){
+            sonido.viper.trigger();
+          }
           estado = "seguir";
         }
       }
@@ -436,9 +439,6 @@ class Viper extends Enemigo {
       float dis = dist(obj.x, 0, x, 0);
       if (dis <= vel) {
         ataquet = 120;
-        if(!nivel.jugador.inmune && !nivel.jugador.invisible){
-        sonido.viper.trigger();
-        }
         estado = "atacar";
       }
     } else if (estado.equals("atacar")) { 
@@ -460,13 +460,6 @@ class Viper extends Enemigo {
   void dibujar() {
     if (dir == 0) image(sprites_viper[0][frame], x-w/2, y-h/2);
     else image(espejar(sprites_viper[0][frame]), x-w/2, y-h/2);
-  }
-    boolean colisiona(Jugador ju) {
-    if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y, w, h)) {
-      if (!nivel.jugador.inmune && !nivel.jugador.invisible) sonido.viper.trigger();
-      return true;
-    }
-    return false;
   }
 }
 
@@ -512,7 +505,7 @@ class Wolf extends Enemigo {
         vel = 4;
         tiempo_reposo = 180;
         estado = "atacar";
-        if(!nivel.jugador.inmune && !nivel.jugador.invisible) sonido.wolf.trigger();
+        if (!nivel.jugador.inmune && !nivel.jugador.invisible) sonido.wolf.trigger();
         velx = vel;
         if (obj.x-x < 0) velx = -vel;
       } else if (dis < max_dis) {
@@ -570,7 +563,7 @@ class Wolf extends Enemigo {
     else
       image(espejar(sprites_wolf[frame%2][frame/2]), x-w/2, y-h/2);
   }
-    boolean colisiona(Jugador ju) {
+  boolean colisiona(Jugador ju) {
     if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y, w, h)) {
       if (!nivel.jugador.inmune && !nivel.jugador.invisible) sonido.wolf.trigger();
       return true;
@@ -629,7 +622,7 @@ class Vulture extends Enemigo {
     if (dir == 0) image(sprites_vulture[frame][0], x-w/2, y-h/2);
     else image(espejar(sprites_vulture[frame][0]), x-w/2, y-h/2);
   }
-    boolean colisiona(Jugador ju) {
+  boolean colisiona(Jugador ju) {
     if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y, w, h)) {
       if (!nivel.jugador.inmune && !nivel.jugador.invisible) sonido.vulture.trigger();
       return true;
@@ -731,7 +724,7 @@ class Cobra extends Enemigo {
     else
       image(espejar(sprites_cobra[frame%2][frame/2]), x-w/2, y-h/2);
   }
-    boolean colisiona(Jugador ju) {
+  boolean colisiona(Jugador ju) {
     if (colisionRect(ju.x, ju.y, ju.w, ju.h, x, y, w, h)) {
       if (!nivel.jugador.inmune && !nivel.jugador.invisible) sonido.cobra.trigger();
       return true;

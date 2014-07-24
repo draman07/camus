@@ -794,7 +794,6 @@ class Opciones extends Ventana {
     widthMap.act(x, y);
     heightMap.act(x, y);
     if (input.click && mouseX >= x+10 && mouseX < x+110 && mouseY >= y+310 && mouseY < y+330) {
-      println("fwerrew");
       nivel.resize(widthMap.getInt(), heightMap.getInt());
     }
   }
