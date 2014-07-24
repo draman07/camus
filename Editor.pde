@@ -852,6 +852,24 @@ class Niveles extends Ventana {
       }
     }
     if ((niveles.size()+1)*20 < h) h = (niveles.size()+1)*20;
+    ordenarNiveles();
+  }
+  void ordenarNiveles() {
+    ArrayList<Nivel> aux = new ArrayList<Nivel>(); 
+    for (int i = 0; i < niveles.size (); i++) {
+      Nivel agre = niveles.get(i);
+      boolean agrego = false;
+      for(int j = 0; j < aux.size(); j++){
+         Nivel compa = aux.get(j); 
+         if (compa.nombre.compareTo(agre.nombre) > 0){
+           aux.add(j, agre);
+           agrego = true;
+           break;
+         }
+      }
+      if(!agrego) aux.add(agre);
+    }
+    niveles = aux;
   }
   void act() {
     super.act();

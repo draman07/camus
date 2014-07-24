@@ -1,4 +1,4 @@
-class Nivel { //<>//
+class Nivel{ //<>//
   ArrayList<Elemento> elementos;
   ArrayList<Enemigo> enemigos;
   ArrayList<PowerUp> powerups;

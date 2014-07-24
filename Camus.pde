@@ -1,4 +1,6 @@
-import ddf.minim.*; //<>//
+import java.util.Comparator; //<>//
+import java.util.Collections;
+import ddf.minim.*;
 import java.nio.file.Paths;
 Minim minim;
 
