@@ -4,7 +4,7 @@ import ddf.minim.*;
 import java.nio.file.Paths;
 Minim minim;
 
-boolean pausa, cargar;
+boolean pausa, cargar, editable;
 Boton2 editar;
 Camara camara;
 Datos datos;
@@ -108,7 +108,7 @@ void draw() {
       }
     }
     editar.act();
-    if (input.EDITAR.click || editar.click) {
+    if (editable && (input.EDITAR.click || editar.click)) {
       float ax = nivel.jugador.x;
       float ay = nivel.jugador.y;
       nivel.iniciar();
@@ -212,6 +212,7 @@ void dibujarPantallasInicio() {
     }
     if (input.click && mouseX >= 300 && mouseX < 500) {
       if (mouseY >= 190 && mouseY < 240) {
+        editable = false;
         cambiarEstado("juego");
         ui.iniciar();
       }
@@ -225,6 +226,7 @@ void dibujarPantallasInicio() {
         cambiarEstado("options");
       }
       if (mouseY >= 495 && mouseY < 550 && datos.terminaste) {
+        editable = true;
         cambiarEstado("editor");
       }
     }
