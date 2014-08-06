@@ -23,7 +23,7 @@ class Jugador {
     if (inmune) inmuneTime -= 1;
     if (inmuneTime <= 0) inmune = false;
     if (!invisible && invisibilidad < 1) invisibilidad += 0.001;
-    if (invisible) invisibilidad -= 0.002;
+    if (invisible) invisibilidad -= 0.002 + 0.0006;
     if (invisibilidad <= 0) invisible = false;
     mover = false;
     if (input.ABAJO.click) {
